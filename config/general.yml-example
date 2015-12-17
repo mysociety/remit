@@ -1,0 +1,9 @@
+# This is where application-specific configuration goes. It will be loaded
+# into the Rails configuration object when the application boots under the
+# Rails.configuration.x key.
+# mySociety's deployment system handles putting this in the right place for
+# staging and production servers, in development the default values are
+# copied from general.yml-example.
+
+# e.g.
+# ELASTICSEARCH_INDEX_NAMESPACE = development
