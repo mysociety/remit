@@ -1,0 +1,7 @@
+language: ruby
+rvm:
+  - 1.9.3
+before_script:
+  - cp config/database.yml-example config/database.yml
+  - cp config/general.yml-example config/general.yml
+  - cp config/secrets.yml-example config/secrets.yml
