@@ -23,3 +23,6 @@
 
 # Ignore vagrant stuff
 /.vagrant
+
+# Ignore rspec's state files
+/spec/examples.txt
