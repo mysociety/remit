@@ -36,6 +36,8 @@ group :development, :test do
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'debugger'
   gem 'rspec-rails', '~> 3.0'
+  gem 'capybara'
+  gem 'factory_girl'
 end
 
 group :development do
