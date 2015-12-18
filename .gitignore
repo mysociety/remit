@@ -22,7 +22,7 @@
 /config/general.yml
 # Ignore the mysociety deployed versions too
 /config/*.deployed
-/config/*.tmp.*
+/config/*.tmp.yml
 
 # Ignore vagrant stuff
 /.vagrant
