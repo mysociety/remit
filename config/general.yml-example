@@ -5,5 +5,4 @@
 # staging and production servers, in development the default values are
 # copied from general.yml-example.
 
-# e.g.
-# ELASTICSEARCH_INDEX_NAMESPACE = development
+example: example
