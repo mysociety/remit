@@ -2,10 +2,12 @@ language: ruby
 rvm:
   - 1.9.3
 before_script:
-  - cp config/database.yml-example config/database.yml
+  - cp config/database.yml-travis config/database.yml
   - cp config/general.yml-example config/general.yml
   - cp config/secrets.yml-example config/secrets.yml
-
+  - psql -c 'create database travis_ci_test;' -U postgres
+services:
+  - postgresql
 addons:
   code_climate:
     repo_token: b75b81d7ca7bdef69d7396035759a1f1767fcb646a8ebcadc08554cecf883ae8

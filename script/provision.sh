@@ -26,15 +26,25 @@ source .bash_profile
 
 rvm install 1.9.3-p551
 
-cd /vagrant
+# Create a database user and the databases we expect
+echo "CREATE ROLE remit WITH PASSWORD 'password' CREATEDB LOGIN" | sudo -u postgres psql
+echo "CREATE DATABASE remit_development WITH OWNER remit" | sudo -u postgres psql
+echo "CREATE DATABASE remit_test WITH OWNER remit" | sudo -u postgres psql
 
+
+# Install site deps
+cd /vagrant
+bundle install
+
+# Setup the site config files
 # cp config/carrierwave.yml-example config/carrierwave.yml
 # cp config/exception_notification.yml-example config/exception_notification.yml
 cp config/database.yml-example config/database.yml
 cp config/secrets.yml-example config/secrets.yml
 cp config/general.yml-example config/general.yml
 
-bundle install
+# Migrate the db
+rake db:migrate
 
 echo "ReMIT installed successfully!"
 echo "To start the server: vagrant ssh, cd /vagrant, rails s -b 0.0.0.0, the server will then run at http://localhost:3000/"
