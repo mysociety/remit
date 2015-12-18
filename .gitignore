@@ -20,12 +20,21 @@
 /config/secrets.yml
 /config/database.yml
 /config/general.yml
+
 # Ignore the mysociety deployed versions too
 /config/*.deployed
 /config/*.tmp.yml
+
+# Ignore mySociety's down.html
+/public/down.html
 
 # Ignore vagrant stuff
 /.vagrant
 
 # Ignore rspec's state files
 /spec/examples.txt
+
+# Ignore any ruby version files
+.ruby-version
+.rbenv-version
+.rvmrc
