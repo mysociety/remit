@@ -34,6 +34,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
   gem 'factory_girl'
+  gem 'codeclimate-test-reporter'
 end
 
 group :development do
