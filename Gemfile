@@ -16,6 +16,13 @@ gem 'uglifier', '>= 1.3.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
+# Bootstrap
+gem 'bootstrap-sass'
+
+# Bootstrap uses autoprefixer, but that has dropped Ruby 1.9 support in recent
+# versions
+gem 'autoprefixer-rails', '<= 6.1.1'
+
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
