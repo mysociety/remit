@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Make sure we're in the right directory
+cd "$(dirname "$BASH_SOURCE")/../"
+
+if [ -e config/httpd.conf ] && egrep -q '^\s*RackEnv\s*production' config/httpd.conf
+then
+    export RAILS_ENV=production
+else
+    export RAILS_ENV=development
+fi
+
+bundle install --deployment
+bundle exec rake db:migrate
+
+if [ "$RAILS_ENV" = production ]
+then
+    bundle exec rake assets:precompile
+fi
