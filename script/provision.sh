@@ -11,7 +11,7 @@ wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add 
 echo "deb http://packages.elastic.co/elasticsearch/0.90/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-0.90.list
 
 sudo apt-get update
-sudo apt-get install -y curl git openjdk-6-jre libpq-dev postgresql nodejs
+sudo apt-get install -y curl git openjdk-6-jre libpq-dev postgresql
 sudo apt-get install elasticsearch=0.90.3
 
 # Make elastic search run at startup
