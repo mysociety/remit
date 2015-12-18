@@ -20,6 +20,9 @@
 /config/secrets.yml
 /config/database.yml
 /config/general.yml
+# Ignore the mysociety deployed versions too
+/config/*.deployed
+/config/*.tmp.*
 
 # Ignore vagrant stuff
 /.vagrant
