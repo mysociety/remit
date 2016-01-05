@@ -29,6 +29,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # For annotating our model files with fields
 gem 'annotate'
 
+# For user auth/accounts
+gem 'devise'
+
+# For a helpful country field using the ISO3166 country list
+gem 'countries'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
