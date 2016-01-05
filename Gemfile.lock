@@ -43,6 +43,7 @@ GEM
     autoprefixer-rails (6.1.1)
       execjs
       json
+    bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.6)
@@ -59,6 +60,10 @@ GEM
       simplecov (>= 0.7.1, < 1.0.0)
     columnize (0.9.0)
     concurrent-ruby (1.0.0)
+    countries (1.2.2)
+      currencies (~> 0.4.2)
+      i18n_data (~> 0.7.0)
+    currencies (0.4.2)
     debug_inspector (0.0.2)
     debugger (1.6.8)
       columnize (>= 0.3.1)
@@ -66,6 +71,13 @@ GEM
       debugger-ruby_core_source (~> 1.3.5)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.3.8)
+    devise (3.5.3)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      responders
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
@@ -75,6 +87,7 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
+    i18n_data (0.7.0)
     jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -90,6 +103,7 @@ GEM
     minitest (5.8.3)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
+    orm_adapter (0.5.0)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -122,6 +136,8 @@ GEM
     rdoc (4.2.0)
       json (~> 1.4)
     ref (2.0.0)
+    responders (2.1.1)
+      railties (>= 4.2.0, < 5.1)
     rspec-core (3.4.1)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -173,6 +189,8 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    warden (1.2.4)
+      rack (>= 1.0)
     web-console (2.2.1)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
@@ -190,7 +208,9 @@ DEPENDENCIES
   bootstrap-sass
   capybara
   codeclimate-test-reporter
+  countries
   debugger
+  devise
   factory_girl
   jquery-rails
   pg
