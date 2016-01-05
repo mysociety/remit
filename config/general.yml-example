@@ -5,4 +5,14 @@
 # staging and production servers, in development the default values are
 # copied from general.yml-example.
 
-example: example
+development:
+  # What host are we running on? Used to set default_url_options so that fully
+  # qualified links can be built in e.g. devise emails
+  hostname: localhost
+  port: 3000
+
+test:
+  hostname: example.com
+
+production:
+  hostname: localhost # Change this is in production

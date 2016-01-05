@@ -22,5 +22,19 @@ module Remit
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Load mySociety config file and place the keys into Rails.configuration.x
+    MysocietyConfig = YAML.load_file(Rails.root.join('config/general.yml'))[Rails.env].symbolize_keys!
+    MysocietyConfig.each do |key, value|
+      config.x.send("#{key}=".to_sym, value)
+    end
+
+    # Set default_url_options for ActionMailer
+    if config.x.port
+      config.action_mailer.default_url_options = { host: config.x.hostname,
+                                                   port: config.x.port }
+    else
+      config.action_mailer.default_url_options = { host: 'localhost' }
+    end
   end
 end
