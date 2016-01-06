@@ -49,7 +49,7 @@ group :development, :test do
   gem 'debugger'
   gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
-  gem 'factory_girl'
+  gem 'factory_girl_rails', "~> 4.0"
   gem 'codeclimate-test-reporter'
   # Used for nice ActiveRecord/Model matchers in specs
   # Version 3+ don't support Ruby 1.9, hence sticking to 2.x
