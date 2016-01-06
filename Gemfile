@@ -51,6 +51,9 @@ group :development, :test do
   gem 'capybara'
   gem 'factory_girl'
   gem 'codeclimate-test-reporter'
+  # Used for nice ActiveRecord/Model matchers in specs
+  # Version 3+ don't support Ruby 1.9, hence sticking to 2.x
+  gem 'shoulda-matchers', '< 3.0.0'
 end
 
 group :development do
