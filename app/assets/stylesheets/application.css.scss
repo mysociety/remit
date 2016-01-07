@@ -12,8 +12,14 @@
  *
  */
 
+
+@import "variables";
+
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "bootstrap-sprockets";
 // TODO - this imports *everything* from bootstrap, replace this with the
 // specific files when we know what we're using.
 @import "bootstrap";
+
+@import "shared";
+@import "header";

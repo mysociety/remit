@@ -1,0 +1,26 @@
+$color-red: #EE0000;
+
+$color-dark-blue: #374C75;
+$color-light-blue: #D0E1F5;
+$color-hyperlink-blue: #4373D0;
+
+$color-off-white: #F8F8F8;
+$color-platinum-white: #F0EEEF;
+$color-silver-white: #E6E6E6;
+$color-black: #231F20;
+
+$color-pale-green: #D6EDBC;
+$color-dark-green: #417505;
+
+$color-pale-toffee: #FFEDB4;
+$color-mid-toffee: #EDD487;
+$color-dark-toffee: #90741F;
+
+
+// Override bootstrap-sass settings
+
+$text-color: $color-black;
+$link-color: $color-hyperlink-blue;
+$font-size-base: 16px;
+$font-size-large: 18px;
+$font-size-small: 14px;

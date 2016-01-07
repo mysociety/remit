@@ -1,0 +1,54 @@
+.site__nav {
+  @extend .clearfix;
+}
+
+.site-nav__logo {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1.25em; // logo is a quarter bigger than base font size
+  line-height: 0.8em * $line-height-base; // but has same line height as 1em siblings
+  padding: 0.8em 0.8em 0.8em 50px; // likewise, same padding as 1em siblings
+  color: inherit;
+
+  // TODO: un-floated mobile layout!
+  float: left;
+
+  // Bootstrap mixin handles the @1x and @2x PNGs
+  @include img-retina("msf-running-man.png", "msf-running-man@2x.png", 39px, 30px);
+
+  // Upgrade to SVG for modern browsers
+  background-image: url("msf-running-man.svg"), none;
+
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+  }
+}
+
+.site-nav__list {
+  @extend .clearfix;
+  @extend .list-unstyled;
+
+  margin: 0 -1em;
+
+  // TODO: un-floated mobile layout!
+  float: right;
+
+  li {
+    float: left;
+  }
+
+  a {
+    display: inline-block;
+    color: inherit;
+    padding: 1em;
+
+    &:hover,
+    &:focus {
+      color: $link-hover-color;
+    }
+  }
+}
