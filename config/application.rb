@@ -1,6 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path("../boot", __FILE__)
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -28,7 +28,7 @@ module Remit
     config.active_record.raise_in_transactional_callbacks = true
 
     # Load mySociety config file and place the keys into Rails.configuration.x
-    MysocietyConfig = YAML.load_file(Rails.root.join('config/general.yml'))[Rails.env].symbolize_keys!
+    MysocietyConfig = YAML.load_file(Rails.root.join("config/general.yml"))[Rails.env].symbolize_keys!
     MysocietyConfig.each do |key, value|
       config.x.send("#{key}=".to_sym, value)
     end
@@ -38,7 +38,7 @@ module Remit
       config.action_mailer.default_url_options = { host: config.x.hostname,
                                                    port: config.x.port }
     else
-      config.action_mailer.default_url_options = { host: 'localhost' }
+      config.action_mailer.default_url_options = { host: "localhost" }
     end
   end
 end
