@@ -32,23 +32,79 @@
   @extend .clearfix;
   @extend .list-unstyled;
 
+  clear: both;
   margin: 0 -1em;
+  padding: 0.5em 0;
+  border-top: 1px solid $color-platinum-white;
+  background-color: $color-off-white;
 
-  // TODO: un-floated mobile layout!
-  float: right;
+  // Hide menu by default
+  display: none;
 
-  li {
-    float: left;
+  // Reveal menu when checkbox is checked
+  .site-nav__mobile-menu-checkbox:checked + & {
+    display: block;
   }
 
   a {
-    display: inline-block;
+    display: block;
     color: inherit;
-    padding: 1em;
+    padding: 0.5em 1em;
 
     &:hover,
     &:focus {
       color: $link-hover-color;
     }
   }
+
+  @media (min-width: $desktop-menu-breakpoint) {
+    float: right;
+
+    // Reveal menu on wide screens
+    display: block;
+
+    // Negate the mobile styles
+    border-top: none;
+    background-color: transparent;
+    clear: none;
+    padding: 0;
+
+    li {
+      float: left;
+    }
+
+    a {
+      display: inline-block;
+      padding: 1em;
+    }
+  }
+}
+
+.site-nav__mobile-menu-toggle {
+  float: right;
+  margin: 0 -1em;
+
+  padding: 1em 0;
+  width: 2em + $line-height-base;
+  text-indent: 10em;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  @include img-retina("menu-toggle.png", "menu-toggle@2x.png", 20px, 20px);
+
+  // Upgrade to SVG for modern browsers
+  background-image: url("menu-toggle.svg"), none;
+
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  @media (min-width: $desktop-menu-breakpoint) {
+    display: none;
+  }
+}
+
+.site-nav__mobile-menu-checkbox {
+  position: absolute;
+  top: -10em;
 }
