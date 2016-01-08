@@ -1,0 +1,30 @@
+.site-footer {
+  @extend .clearfix;
+  padding: 2em 0;
+  color: mix($color-dark-blue, $color-light-blue, 50%);
+  text-align: center;
+
+  @media (min-width: $desktop-menu-breakpoint) {
+    text-align: inherit;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+.site-footer__legal {
+  margin-bottom: 0;
+
+  @media (min-width: $desktop-menu-breakpoint) {
+    float: left;
+  }
+}
+
+.site-footer__links {
+  @extend .list-unstyled;
+
+  @media (min-width: $desktop-menu-breakpoint) {
+    float: right;
+  }
+}
