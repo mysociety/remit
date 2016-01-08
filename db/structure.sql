@@ -52,7 +52,43 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: dissemination_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE active_admin_comments (
+    id integer NOT NULL,
+    namespace character varying,
+    body text,
+    resource_id character varying NOT NULL,
+    resource_type character varying NOT NULL,
+    author_id integer,
+    author_type character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE active_admin_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
+
+
+--
+-- Name: dissemination_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE dissemination_categories (
@@ -85,7 +121,7 @@ ALTER SEQUENCE dissemination_categories_id_seq OWNED BY dissemination_categories
 
 
 --
--- Name: disseminations; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: disseminations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE disseminations (
@@ -120,7 +156,7 @@ ALTER SEQUENCE disseminations_id_seq OWNED BY disseminations.id;
 
 
 --
--- Name: document_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: document_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE document_types (
@@ -152,7 +188,7 @@ ALTER SEQUENCE document_types_id_seq OWNED BY document_types.id;
 
 
 --
--- Name: documents; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: documents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE documents (
@@ -184,7 +220,7 @@ ALTER SEQUENCE documents_id_seq OWNED BY documents.id;
 
 
 --
--- Name: enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE enabler_barriers (
@@ -216,7 +252,7 @@ ALTER SEQUENCE enabler_barriers_id_seq OWNED BY enabler_barriers.id;
 
 
 --
--- Name: enabler_barriers_studies; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: enabler_barriers_studies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE enabler_barriers_studies (
@@ -226,7 +262,7 @@ CREATE TABLE enabler_barriers_studies (
 
 
 --
--- Name: erb_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: erb_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE erb_statuses (
@@ -257,7 +293,7 @@ ALTER SEQUENCE erb_statuses_id_seq OWNED BY erb_statuses.id;
 
 
 --
--- Name: impact_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: impact_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE impact_types (
@@ -289,7 +325,7 @@ ALTER SEQUENCE impact_types_id_seq OWNED BY impact_types.id;
 
 
 --
--- Name: msf_locations; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: msf_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE msf_locations (
@@ -320,9 +356,8 @@ CREATE SEQUENCE msf_locations_id_seq
 ALTER SEQUENCE msf_locations_id_seq OWNED BY msf_locations.id;
 
 
-
 --
--- Name: publications; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: publications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE publications (
@@ -358,7 +393,7 @@ ALTER SEQUENCE publications_id_seq OWNED BY publications.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
@@ -367,7 +402,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: studies; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: studies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE studies (
@@ -420,7 +455,7 @@ ALTER SEQUENCE studies_id_seq OWNED BY studies.id;
 
 
 --
--- Name: study_impacts; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_impacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_impacts (
@@ -453,7 +488,7 @@ ALTER SEQUENCE study_impacts_id_seq OWNED BY study_impacts.id;
 
 
 --
--- Name: study_notes; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_notes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_notes (
@@ -485,7 +520,7 @@ ALTER SEQUENCE study_notes_id_seq OWNED BY study_notes.id;
 
 
 --
--- Name: study_settings; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_settings (
@@ -517,7 +552,7 @@ ALTER SEQUENCE study_settings_id_seq OWNED BY study_settings.id;
 
 
 --
--- Name: study_stages; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_stages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_stages (
@@ -548,7 +583,7 @@ ALTER SEQUENCE study_stages_id_seq OWNED BY study_stages.id;
 
 
 --
--- Name: study_topics; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_topics (
@@ -580,7 +615,7 @@ ALTER SEQUENCE study_topics_id_seq OWNED BY study_topics.id;
 
 
 --
--- Name: study_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: study_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE study_types (
@@ -612,7 +647,7 @@ ALTER SEQUENCE study_types_id_seq OWNED BY study_types.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE users (
@@ -657,6 +692,13 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
 
 
 --
@@ -779,7 +821,15 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: dissemination_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY active_admin_comments
+    ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dissemination_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY dissemination_categories
@@ -787,7 +837,7 @@ ALTER TABLE ONLY dissemination_categories
 
 
 --
--- Name: disseminations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: disseminations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY disseminations
@@ -795,7 +845,7 @@ ALTER TABLE ONLY disseminations
 
 
 --
--- Name: document_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: document_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY document_types
@@ -803,7 +853,7 @@ ALTER TABLE ONLY document_types
 
 
 --
--- Name: documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY documents
@@ -811,7 +861,7 @@ ALTER TABLE ONLY documents
 
 
 --
--- Name: enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY enabler_barriers
@@ -819,7 +869,7 @@ ALTER TABLE ONLY enabler_barriers
 
 
 --
--- Name: erb_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: erb_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY erb_statuses
@@ -827,7 +877,7 @@ ALTER TABLE ONLY erb_statuses
 
 
 --
--- Name: impact_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: impact_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY impact_types
@@ -835,7 +885,7 @@ ALTER TABLE ONLY impact_types
 
 
 --
--- Name: msf_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: msf_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY msf_locations
@@ -843,7 +893,7 @@ ALTER TABLE ONLY msf_locations
 
 
 --
--- Name: publications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: publications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY publications
@@ -851,7 +901,7 @@ ALTER TABLE ONLY publications
 
 
 --
--- Name: studies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: studies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY studies
@@ -859,7 +909,7 @@ ALTER TABLE ONLY studies
 
 
 --
--- Name: study_impacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_impacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_impacts
@@ -867,7 +917,7 @@ ALTER TABLE ONLY study_impacts
 
 
 --
--- Name: study_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_notes
@@ -875,7 +925,7 @@ ALTER TABLE ONLY study_notes
 
 
 --
--- Name: study_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_settings
@@ -883,7 +933,7 @@ ALTER TABLE ONLY study_settings
 
 
 --
--- Name: study_stages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_stages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_stages
@@ -891,7 +941,7 @@ ALTER TABLE ONLY study_stages
 
 
 --
--- Name: study_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_topics
@@ -899,7 +949,7 @@ ALTER TABLE ONLY study_topics
 
 
 --
--- Name: study_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: study_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY study_types
@@ -907,7 +957,7 @@ ALTER TABLE ONLY study_types
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users
@@ -915,224 +965,245 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_dissemination_categories_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
+
+
+--
+-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
+
+
+--
+-- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
+
+
+--
+-- Name: index_dissemination_categories_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_dissemination_categories_on_name ON dissemination_categories USING btree (name);
 
 
 --
--- Name: index_disseminations_on_dissemination_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_disseminations_on_dissemination_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_disseminations_on_dissemination_category_id ON disseminations USING btree (dissemination_category_id);
 
 
 --
--- Name: index_disseminations_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_disseminations_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_disseminations_on_study_id ON disseminations USING btree (study_id);
 
 
 --
--- Name: index_document_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_document_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_document_types_on_name ON document_types USING btree (name);
 
 
 --
--- Name: index_documents_on_document_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_documents_on_document_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_documents_on_document_type_id ON documents USING btree (document_type_id);
 
 
 --
--- Name: index_documents_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_documents_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_documents_on_study_id ON documents USING btree (study_id);
 
 
 --
--- Name: index_enabler_barriers_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_enabler_barriers_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_enabler_barriers_on_name ON enabler_barriers USING btree (name);
 
 
 --
--- Name: index_enabler_barriers_studies_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_enabler_barriers_studies_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_enabler_barriers_studies_on_enabler_barrier_id ON enabler_barriers_studies USING btree (enabler_barrier_id);
 
 
 --
--- Name: index_enabler_barriers_studies_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_enabler_barriers_studies_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_enabler_barriers_studies_on_study_id ON enabler_barriers_studies USING btree (study_id);
 
 
 --
--- Name: index_erb_statuses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_erb_statuses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_erb_statuses_on_name ON erb_statuses USING btree (name);
 
 
 --
--- Name: index_impact_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_impact_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_impact_types_on_name ON impact_types USING btree (name);
 
 
 --
--- Name: index_msf_locations_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_msf_locations_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_msf_locations_on_name ON msf_locations USING btree (name);
 
 
 --
--- Name: index_publications_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_publications_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_publications_on_study_id ON publications USING btree (study_id);
 
 
 --
--- Name: index_studies_on_erb_status_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_erb_status_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_erb_status_id ON studies USING btree (erb_status_id);
 
 
 --
--- Name: index_studies_on_principal_investigator_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_principal_investigator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_principal_investigator_id ON studies USING btree (principal_investigator_id);
 
 
 --
--- Name: index_studies_on_research_manager_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_research_manager_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_research_manager_id ON studies USING btree (research_manager_id);
 
 
 --
--- Name: index_studies_on_study_setting_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_study_setting_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_study_setting_id ON studies USING btree (study_setting_id);
 
 
 --
--- Name: index_studies_on_study_stage_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_study_stage_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_study_stage_id ON studies USING btree (study_stage_id);
 
 
 --
--- Name: index_studies_on_study_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_study_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_study_topic_id ON studies USING btree (study_topic_id);
 
 
 --
--- Name: index_studies_on_study_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_studies_on_study_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_study_type_id ON studies USING btree (study_type_id);
 
 
 --
--- Name: index_study_impacts_on_impact_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_impacts_on_impact_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_study_impacts_on_impact_type_id ON study_impacts USING btree (impact_type_id);
 
 
 --
--- Name: index_study_impacts_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_impacts_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_study_impacts_on_study_id ON study_impacts USING btree (study_id);
 
 
 --
--- Name: index_study_notes_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_notes_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_study_notes_on_study_id ON study_notes USING btree (study_id);
 
 
 --
--- Name: index_study_settings_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_settings_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_study_settings_on_name ON study_settings USING btree (name);
 
 
 --
--- Name: index_study_stages_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_stages_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_study_stages_on_name ON study_stages USING btree (name);
 
 
 --
--- Name: index_study_topics_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_topics_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_study_topics_on_name ON study_topics USING btree (name);
 
 
 --
--- Name: index_study_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_study_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_study_types_on_name ON study_types USING btree (name);
 
 
 --
--- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING btree (confirmation_token);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_msf_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_users_on_msf_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_users_on_msf_location_id ON users USING btree (msf_location_id);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
@@ -1271,3 +1342,6 @@ ALTER TABLE ONLY publications
 --
 
 SET search_path TO "$user",public;
+
+INSERT INTO schema_migrations (version) VALUES ('20160108112933');
+

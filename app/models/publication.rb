@@ -3,7 +3,6 @@
 # Table name: publications
 #
 #  id                    :integer          not null, primary key
-#  publication_type_id   :integer          not null
 #  study_id              :integer
 #  doi_number            :text
 #  lead_author           :text             not null
@@ -15,8 +14,7 @@
 #
 # Indexes
 #
-#  index_publications_on_publication_type_id  (publication_type_id)
-#  index_publications_on_study_id             (study_id)
+#  index_publications_on_study_id  (study_id)
 #
 
 class Publication < ActiveRecord::Base
