@@ -1,6 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path("../boot", __FILE__)
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -44,7 +44,7 @@ module Remit
     elsif config.x.hostname.present?
       config.action_mailer.default_url_options = { host: config.x.hostname }
     else
-      config.action_mailer.default_url_options = { host: 'localhost' }
+      config.action_mailer.default_url_options = { host: "localhost" }
     end
   end
 end
