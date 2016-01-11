@@ -1,0 +1,28 @@
+.site-subnav__tabs {
+  @extend .list-unstyled;
+  @extend .row;
+  margin-bottom: 0;
+
+  li {
+    @extend .col-md-4;
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    background-color: $color-light-blue;
+    @include gradient-vertical(
+      $start-color: mix(#fff, $color-light-blue, 33%),
+      $end-color: $color-light-blue,
+      $start-percent: 50%
+    );
+    color: $color-black;
+    font-size: 1.25em;
+    padding: 0.6em;
+
+    &.active {
+      background-color: #fff;
+      background-image: none;
+    }
+  }
+}

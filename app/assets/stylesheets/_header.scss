@@ -1,110 +1,80 @@
-.site__nav {
-  @extend .clearfix;
+.site-header {
+  padding: 3em 0; // might want to reduce this on small screens?
 }
 
-.site-nav__logo {
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1.25em; // logo is a quarter bigger than base font size
-  line-height: 0.8em * $line-height-base; // but has same line height as 1em siblings
-  padding: 0.8em 0.8em 0.8em 50px; // likewise, same padding as 1em siblings
-  color: inherit;
+.site-header__title {
+  @extend .row;
 
-  // TODO: un-floated mobile layout!
-  float: left;
+  h1, h2 {
+    @extend .col-xs-12;
 
-  // Bootstrap mixin handles the @1x and @2x PNGs
-  @include img-retina("msf-running-man.png", "msf-running-man@2x.png", 39px, 30px);
+    margin: 0;
+    font-weight: bold;
+  }
 
-  // Upgrade to SVG for modern browsers
-  background-image: url("msf-running-man.svg"), none;
+  h1 {
+    font-size: 2.4em; // ~38px
+  }
 
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-
-  &:hover,
-  &:focus {
-    color: $link-hover-color;
+  h2 {
+    font-size: 1.7em; // ~26px
+    margin-top: 0.2em;
   }
 }
 
-.site-nav__list {
-  @extend .clearfix;
-  @extend .list-unstyled;
+.site-header__search {
+  @extend .row;
 
-  clear: both;
-  margin: 0 -1em;
-  padding: 0.5em 0;
-  border-top: 1px solid $color-platinum-white;
-  background-color: $color-off-white;
+  margin-top: 2em;
 
-  // Hide menu by default
-  display: none;
+  label {
+    @extend .col-md-8;
 
-  // Reveal menu when checkbox is checked
-  .site-nav__mobile-menu-checkbox:checked + & {
-    display: block;
+    color: $color-light-blue;
+    font-weight: inherit;
+    font-size: 1.25em; // 20px
   }
 
-  a {
-    display: block;
-    color: inherit;
-    padding: 0.5em 1em;
-
-    &:hover,
-    &:focus {
-      color: $link-hover-color;
-    }
+  input {
+    font-size: 1.5em;
+    height: auto;
+    padding-left: 2em; // 48px
   }
 
-  @media (min-width: $desktop-menu-breakpoint) {
-    float: right;
-
-    // Reveal menu on wide screens
+  button {
+    position: absolute;
     display: block;
+    top: 0;
+    left: ($grid-gutter-width / 2);
+    bottom: 0;
+    width: 3em; // 48px
 
-    // Negate the mobile styles
-    border-top: none;
+    // Hide button text
+    text-indent: 4em;
+    overflow: hidden;
+
+    // Make button transparent
+    border: none;
     background-color: transparent;
-    clear: none;
-    padding: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 
-    li {
-      float: left;
-    }
+    @include img-retina("search.png", "search@2x.png", 27px, 27px);
 
-    a {
-      display: inline-block;
-      padding: 1em;
+    // Upgrade to SVG for modern browsers
+    background-image: url("search.svg"), none;
+
+    opacity: 0.5;
+
+    &:hover, &:focus {
+      opacity: 1;
     }
   }
 }
 
-.site-nav__mobile-menu-toggle {
-  float: right;
-  margin: 0 -1em;
+.site-header__search__wrapper {
+  @extend .col-md-8;
 
-  padding: 1em 0;
-  width: 2em + $line-height-base;
-  text-indent: 10em;
-  overflow: hidden;
-
-  cursor: pointer;
-
-  @include img-retina("menu-toggle.png", "menu-toggle@2x.png", 20px, 20px);
-
-  // Upgrade to SVG for modern browsers
-  background-image: url("menu-toggle.svg"), none;
-
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-
-  @media (min-width: $desktop-menu-breakpoint) {
-    display: none;
-  }
-}
-
-.site-nav__mobile-menu-checkbox {
-  position: absolute;
-  top: -10em;
+  position: relative;
+  margin-top: 0.2em;
 }

@@ -12,9 +12,34 @@
 </nav>
 <header class="site-header">
     <div class="container">
-        <h1>Hello World</h1>
+        <div class="site-header__title">
+            <h1>231 active studies, in 78 locations</h1>
+            <h2>174 studies with recorded impact</h2>
+        </div>
+        <form class="site-header__search" action="/search" method="get">
+            <label for="header-search">Search by topic, researcher, or location</label>
+            <div class="site-header__search__wrapper">
+                <input id="header-search" class="form-control">
+                <button type="submit">Search</button>
+            </div>
+        </form>
     </div>
 </header>
+<div class="site-subnav">
+    <div class="container">
+        <ul class="site-subnav__tabs">
+            <li>
+                <a href="/" class="active">All studies</a>
+            </li>
+            <li>
+                <a href="/my-studies">Your studies</a>
+            </li>
+            <li>
+                <a href="/following">Studies you&rsquo;re following</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="site-main">
     <div class="container">
         <p>A big list of studies will go here.</p>
