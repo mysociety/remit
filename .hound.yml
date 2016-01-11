@@ -3,3 +3,6 @@ scss:
   exclude:
     - "app/assets/stylesheets/application.scss"
     - "app/assets/stylesheets/application.css.scss"
+
+ruby:
+  config_file: config/linters/ruby.yml
