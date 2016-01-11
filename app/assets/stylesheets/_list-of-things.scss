@@ -1,0 +1,148 @@
+.list-of-things {
+  @extend .row;
+}
+
+.list-of-things__primary {
+  @extend .col-sm-8;
+}
+
+.list-of-things__secondary {
+  @extend .col-sm-4;
+}
+
+.list-of-things__sorting {
+  padding-bottom: 2em;
+  margin: 0;
+  border-bottom: 1px solid $color-silver-white;
+
+  select {
+    margin: 0 0.2em;
+  }
+}
+
+.list-of-things__list__item {
+  margin-top: 2em;
+
+  .dl-horizontal {
+    color: mix(#fff, $color-black, 40%);
+
+    dt {
+      font-weight: inherit;
+      color: inherit;
+      text-align: inherit;
+
+      @media (min-width: $screen-md-min) {
+        width: 11em;
+      }
+    }
+
+    dd {
+      color: inherit;
+      margin-bottom: 0.3em;
+
+      @media (min-width: $screen-md-min) {
+        margin-left: 12.25em; // 11em dt, plus 1.25em (20px) gutter
+      }
+    }
+
+    a {
+      color: $color-black;
+    }
+  }
+}
+
+.list-of-things__list__item__badge {
+  @extend .label;
+  @extend .label-default;
+
+  text-transform: uppercase;
+  font-size: 0.875em; // ~14px
+}
+
+.list-of-things__list__item__badge--active {
+  background-color: $color-bright-orange;
+}
+
+.list-of-things__list__item__badge--completed {
+  background-color: $color-bright-green;
+}
+
+.list-of-things__list__item__badge--protocol-review {
+  background-color: darken($color-light-blue, 20%);
+}
+
+.list-of-things__list__item__title {
+  font-size: 1.75em; // ~28px
+  line-height: 1.2em;
+  margin: 0.5em 0 0.4em 0;
+
+  a {
+    display: block;
+  }
+}
+
+.list-of-things__pagination {
+  @extend .pagination;
+}
+
+.list-of-things__secondary-action {
+  display: block;
+  margin-bottom: 2em;
+  padding: 1.25em;
+  border-radius: 0.3em;
+  background-color: $color-lighter-blue;
+  border: 1px solid $color-light-blue;
+
+  h2, label {
+    display: block;
+    font-size: 1em;
+    margin: 0 0 1em 0;
+  }
+
+  label {
+    margin-bottom: 0.3em;
+    font-weight: bold;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  a {
+    color: $color-black;
+  }
+
+  p {
+    margin-bottom: 1em;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+a.list-of-things__secondary-action {
+  color: $color-black;
+}
+
+.list-of-things__secondary-action--quick-filters {
+  background-color: $color-pale-toffee;
+  border-color: $color-mid-toffee;
+}
+
+.list-of-things__secondary-action--download {
+  background-color: $color-platinum-white;
+  border-color: $color-silver-white;
+}
+
+.quick-filters {
+  a {
+    display: block;
+    margin-bottom: 1em;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+

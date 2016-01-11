@@ -42,8 +42,135 @@
 </div>
 <div class="site-main">
     <div class="container">
-        <p>A big list of studies will go here.</p>
-        <p>With a sidebar full of filters and admin actions.</p>
+        <div class="list-of-things">
+            <div class="list-of-things__primary">
+                <p class="list-of-things__sorting">
+                    Showing 1–10 of 231 studies by
+                    <select>
+                        <option selected>most recently updated</option>
+                        <option>most recently created</option>
+                    </select>
+                </p>
+                <div class="list-of-things__list">
+                    <div class="list-of-things__list__item list-of-things__list__item--study">
+                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed">Completed</p>
+                        <h2 class="list-of-things__list__item__title">
+                            <a href="/study/231">Comparison of HIV testing algorithms in Ethiopia</a>
+                        </h2>
+                        <dl class="dl-horizontal">
+                            <dt>Study details</dt>
+                            <dd>
+                                <a href="/search?methodology=cohort%20study">Cohort study</a>
+                                in
+                                <a href="/search?location=ethiopia">Ethiopia</a>
+                            </dd>
+                            <dt>Principal investigator:</dt>
+                            <dd>
+                                <a href="/search?pi=irwan%20pirou">Irwan Pirou</a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="list-of-things__list__item list-of-things__list__item--study">
+                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--active">Active</p>
+                        <h2 class="list-of-things__list__item__title">
+                            <a href="/study/230">Secondary prophylaxis of visceral leishmaniasis relapses in HIV co-infected patients using pentamidine as a prophylactic agent: a prospective cohort study</a>
+                        </h2>
+                        <dl class="dl-horizontal">
+                            <dt>Study details</dt>
+                            <dd>
+                                <a href="/search?methodology=cohort%20study">Cohort study</a>
+                                in
+                                <a href="/search?location=ethiopia">Ethiopia</a>
+                            </dd>
+                            <dt>Principal investigator:</dt>
+                            <dd>
+                                <a href="/search?pi=johan%20van%20griensven">Johan van Griensven</a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="list-of-things__list__item list-of-things__list__item--study">
+                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--protocol-review">Protocol Review</p>
+                        <h2 class="list-of-things__list__item__title">
+                            <a href="/study/229">Outcome Evaluation Study of MSF Mental Health Programs in Grozny, Chechnya Republic</a>
+                        </h2>
+                        <dl class="dl-horizontal">
+                            <dt>Study details</dt>
+                            <dd>
+                                <a href="/search?methodology=randomised%20control%20trial">Randomised Control Trial</a>
+                                in
+                                <a href="/search?location=russia">Russia</a>
+                            </dd>
+                            <dt>Principal investigator:</dt>
+                            <dd>
+                                <a href="/search?pi=barbara%20lopes%20cardozo">Barbara Lopes Cardozo</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <ul class="list-of-things__pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="list-of-things__secondary">
+                <div class="list-of-things__secondary-action list-of-things__secondary-action--quick-filters">
+                    <h2>Quick filters</h2>
+                    <div class="quick-filters">
+                        <a href="/search?impacts=true" class="quick-filters__filter quick-filters__filter--impact">
+                            Studies with publications or registered impacts
+                        </a>
+                        <a href="/search?erb=pending" class="quick-filters__filter quick-filters__filter--pending">
+                            Studies with ERB approval pending
+                        </a>
+                        <a href="/search?erb=expiring" class="quick-filters__filter quick-filters__filter--expiring">
+                            Studies with ERB approval expiring
+                        </a>
+                    </div>
+                </div>
+                <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
+                    <p>
+                        <label>Stage:</label>
+                        <select>
+                            <option>All stages</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Location:</label>
+                        <select>
+                            <option>All locations</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Topic:</label>
+                        <select>
+                            <option>All topics</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Methodology:</label>
+                        <select>
+                            <option>All methodologies</option>
+                        </select>
+                    </p>
+                </div>
+                <a href="/export" class="list-of-things__secondary-action list-of-things__secondary-action--download">
+                    Download this page as a CSV for Excel
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 <footer class="site-footer">
