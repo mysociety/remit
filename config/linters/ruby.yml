@@ -1,13 +1,6 @@
 AllCops:
   Exclude:
     - "vendor/**/*"
-    - "db/schema.rb"
-    - "config/environment.rb"
-    - "config/environments/*.rb"
-    - "config/boot.rb"
-    - "config/assets.rb"
-    - "config/routes.rb"
-    - "config/initializers/*.rb"
     - "lib/tasks/auto_annotate_models.rake"
     - "bin/*"
     - "Vagrantfile"
