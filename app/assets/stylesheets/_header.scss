@@ -12,7 +12,7 @@
   }
 
   h1 {
-    font-size: 2.4em; // ~38px
+    font-size: 2.25em; // 36px
   }
 
   h2 {
@@ -53,7 +53,7 @@
     overflow: hidden;
 
     // Make button transparent
-    border: none;
+    border: 0;
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -76,4 +76,85 @@
 
   position: relative;
   margin-top: 0.2em;
+}
+
+.study-header {
+  @extend .row;
+}
+
+.study-header__primary {
+  @extend .col-sm-8;
+}
+
+.study-header__secondary {
+  @extend .col-sm-4;
+  padding-top: 0.4em; // visually line up with the top of headline x-height
+}
+
+.study-header__details {
+  @extend .row;
+  margin-top: 1em;
+
+  & > div {
+    @extend .col-sm-6;
+    margin-top: 1em;
+  }
+}
+
+.study-header__details__key {
+  margin: 0;
+  font-size: 0.875em; // 14px
+  font-weight: inherit;
+  color: $color-light-blue;
+  text-transform: uppercase;
+}
+
+.study-header__details__value a {
+  color: inherit;
+}
+
+.site-header__card {
+  background-color: $color-pale-toffee;
+  color: $color-dark-toffee;
+  padding: 1em;
+
+  &:first-child {
+    border-top-left-radius: 0.3em;
+    border-top-right-radius: 0.3em;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 0.3em;
+    border-bottom-right-radius: 0.3em;
+  }
+
+  & + & {
+    background-color: $color-mid-toffee;
+    border-top: 1px solid darken($color-mid-toffee, 10%);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 0.875em; // 14px
+    font-weight: inherit;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  p {
+    margin: 0.2em 0 0 0;
+    font-size: 0.875em; // 14px
+  }
+
+  .site-header__stage {
+    font-weight: bold;
+    color: $color-black;
+    font-size: 1.3em;
+  }
+
+  .site-header__recent {
+    font-weight: bold;
+    color: $color-black;
+    font-size: 1.2em;
+  }
 }

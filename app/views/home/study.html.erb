@@ -1,0 +1,203 @@
+<nav class="site-nav">
+    <div class="container">
+        <a href="/" class="site-nav__logo">ReMIT</a>
+        <label class="site-nav__mobile-menu-toggle" for="toggle-mobile-menu">Menu</label>
+        <input type="checkbox" class="site-nav__mobile-menu-checkbox" id="toggle-mobile-menu">
+        <ul class="site-nav__list">
+            <li><a href="/study/">Studies</a></li>
+            <li><a href="#">Publications</a></li>
+            <li><a href="#">Sign In</a></li>
+        </ul>
+    </div>
+</nav>
+<header class="site-header">
+    <div class="container">
+        <div class="study-header">
+            <div class="study-header__primary">
+                <div class="site-header__title">
+                    <h1>Addressing water and sanitation needs of displaced women in emergencies</h1>
+                </div>
+                <div class="study-header__details">
+                    <div>
+                        <h3 class="study-header__details__key">Methodology</h3>
+                        <p class="study-header__details__value"><a href="/search?methodology=mixed%20methods%20study">Mixed methods study</a></p>
+                    </div>
+                    <div>
+                        <h3 class="study-header__details__key">Topic</h3>
+                        <p class="study-header__details__value"><a href="/search?topic=tuberculosis">Tuberculosis</a></p>
+                    </div>
+                    <div>
+                        <h3 class="study-header__details__key">Principal investigator</h3>
+                        <p class="study-header__details__value"><a href="/search?pi=janet%20bloggs">Janet Bloggs</a></p>
+                    </div>
+                    <div>
+                        <h3 class="study-header__details__key">Location</h3>
+                        <p class="study-header__details__value"><a href="/search?location=south%20sudan">South Sudan</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="study-header__secondary">
+                <div class="site-header__card">
+                    <h3>Stage:</h3>
+                    <p class="site-header__stage">Protocol &amp; ERB</p>
+                    <p class="site-header__stage-since">Since 11th October</p>
+                </div>
+                <div class="site-header__card">
+                    <h3>Most recent action:</h3>
+                    <p class="site-header__recent">Protocol revision requested</p>
+                    <p class="site-header__recent-since">10th November</p>
+                    <p><a href="#">Read ERB feedback document &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="site-subnav study-subnav">
+    <div class="container">
+        <ul>
+            <li class="step--done">
+                <img src="<%= image_path('tick.png') %>" srcset="<%= image_path('tick.svg') %>" width="18" height="16">
+                Concept
+            </li>
+            <li class="step--doing">Protocol &amp; ERB</li>
+            <li>Delivery</li>
+            <li>Completed</li>
+            <li>Archived</li>
+        </ul>
+    </div>
+</div>
+<div class="site-main">
+    <div class="container">
+        <div class="study-main">
+            <div class="study-main__primary">
+                <div class="study-main__actions">
+                    <ul>
+                        <li>
+                            <a class="btn btn-default">Add a document</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-default">Add a note</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-default">Record an output</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="study-main__timeline timeline">
+                    <ol reversed>
+                        <li class="timeline__item timeline__item--negative">
+                            <h2 class="timeline__item__title">
+                                Protocol revision requested
+                                <span class="timeline__item__date">
+                                    10th November 2015
+                                </span>
+                            </h2>
+                            <p class="timeline__item__details">
+                                <a href="#">Read ERB feedback document &raquo;</a>
+                            </p>
+                        </li>
+                        <li class="timeline__item timeline__item--affirmative">
+                            <h2 class="timeline__item__title">
+                                Protocol review form submitted
+                                <span class="timeline__item__date">
+                                    28th October 2015
+                                </span>
+                            </h2>
+                            <p class="timeline__item__details">
+                                <a href="#">Read protocol review form &raquo;</a>
+                            </p>
+                        </li>
+                        <li class="timeline__item">
+                            <p class="timeline__item__details">
+                                Note left by
+                                <a href="#">Joe Smith (Medical Director)</a>
+                                <span class="timeline__item__date">
+                                    11th October 2015
+                                </span>
+                            </p>
+                            <blockquote class="timeline__item__note">
+                                <p>
+                                    Thankyou for the detailed concept doc, Janet.
+                                    I think this study could fit very well into
+                                    research strand 4A. I suggest you contact
+                                    Robert Black about sampling, he might have
+                                    some useful experience in South Sudan.
+                                </p>
+                            </blockquote>
+                        </li>
+                        <li class="timeline__item timeline__item--affirmative">
+                            <h2 class="timeline__item__title">
+                                Concept note added
+                                <span class="timeline__item__date">
+                                    4th October 2015
+                                </span>
+                            </h2>
+                            <p class="timeline__item__details">
+                                <a href="#">Read concept note &raquo;</a>
+                            </p>
+                        </li>
+                        <li class="timeline__item">
+                            <p class="timeline__item__details">
+                                Study created by
+                                <a href="#">Kim West (Administrator)</a>
+                                <span class="timeline__item__date">
+                                    4th October 2015
+                                </span>
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="study-main__secondary">
+                <div class="study-main__secondary__section">
+                    <h3>Documents:</h3>
+                    <ul class="document-list">
+                        <li>
+                            <h4>
+                                <a href="#">ERB feedback document</a>
+                            </h4>
+                            <p>Uploaded 10th November by <a href="#">Kim West (Administrator)</a></p>
+                        </li>
+                        <li>
+                            <h4>
+                                <a href="#">Protocol review form</a>
+                            </h4>
+                            <p>Uploaded 28th October by <a href="#">Janet Bloggs</a></p>
+                        </li>
+                        <li>
+                            <h4>
+                                <a href="#">Concept note</a>
+                            </h4>
+                            <p>Uploaded 4th October by <a href="#">Kim West (Administrator)</a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="study-main__secondary__section">
+                    <h3>Publications &amp; Impact:</h3>
+                    <p class="study-main__secondary__section__blank">No publications recorded.</p>
+                </div>
+                <div class="study-main__secondary__section">
+                    <h3>Follow this study:</h3>
+                    <p>Be notified when there is activity on this study.</p>
+                    <p><a href="#" class="btn btn-success">Follow this study</a></p>
+                </div>
+                <div class="study-main__secondary__section study-main__secondary__section--admin">
+                    <h3>Admin actions:</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Edit study details</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="site-footer">
+    <div class="container">
+        <ul class="site-footer__links">
+            <li><a href="#">Admin panel</a></li>
+        </ul>
+        <p class="site-footer__legal">&copy; Médecins Sans Frontières</p>
+    </div>
+</footer>

@@ -3,12 +3,12 @@ body {
 }
 
 .site-nav {
-  background-color: #fff;
+  background-color: $color-white;
 }
 
 .site-header {
   background-color: $color-dark-blue;
-  color: #fff;
+  color: $color-white;
 }
 
 .site-subnav {
@@ -16,7 +16,7 @@ body {
 }
 
 .site-main {
-  background-color: #fff;
+  background-color: $color-white;
   padding: 2em 0; // should this be in here?
 }
 

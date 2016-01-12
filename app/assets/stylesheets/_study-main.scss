@@ -1,0 +1,164 @@
+.study-main {
+  @extend .row;
+}
+
+.study-main__primary {
+  @extend .col-sm-8;
+}
+
+.study-main__secondary {
+  @extend .col-sm-4;
+}
+
+.study-main__actions {
+  margin-bottom: 2em;
+
+  ul {
+    @extend .list-inline;
+    margin: 0;
+  }
+}
+
+.timeline {
+  position: relative;
+
+  ol {
+    @extend .list-unstyled;
+    margin: 0;
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 2px; // a fake 2px vertical "border"
+
+    background-color: $color-silver-white;
+
+    position: absolute;
+    top: 0.5em;
+    left: 1em;
+    bottom: 0.5em;
+
+    margin-left: -1px; // shift over half the "border" width
+  }
+}
+
+.timeline__item {
+  position: relative;
+  z-index: 1; // position the dots above the parent's fake "border"
+  margin-top: 1.5em;
+  padding-left: 2em;
+
+  &:last-child {
+    background-color: $color-white; // hide the fake border, even if this item wraps onto multiple lines
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 1em;
+    height: 1em;
+
+    border-radius: 100%;
+    background: $color-mid-grey;
+    border: 0.2em solid $color-white;
+
+    position: absolute;
+    top: 0.1em;
+    left: 0.5em;
+  }
+}
+
+.timeline__item--affirmative {
+  &:after {
+    background-color: $color-bright-green;
+  }
+}
+
+.timeline__item--negative {
+  &:after {
+    background-color: $color-red;
+  }
+}
+
+.timeline__item__date {
+  color: $color-mid-grey;
+  margin-left: 0.5em;
+}
+
+.timeline__item__title {
+  font-size: 1.125em; // 18px
+  margin: 0;
+
+  .timeline__item__date {
+    font-size: (14em / 18); // 14px
+    font-weight: normal;
+  }
+}
+
+.timeline__item__details {
+  font-size: 0.875em; // 14px
+}
+
+.timeline__item__note {
+  border-left: 0;
+  font-size: 0.875em; // 14px
+  max-width: 35em;
+  padding: 1em 1.3em;
+  background-color: $color-lighter-blue;
+  border-radius: 0.3em;
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.study-main__secondary__section {
+  display: block;
+  margin-bottom: 2em;
+  padding: 1.25em;
+  border-radius: 0.3em;
+  background-color: $color-off-white;
+  border: 1px solid $color-silver-white;
+
+  h3 {
+    font-size: 1em;
+    margin: 0 0 0.8em 0;
+  }
+
+  p {
+    font-size: 0.875em; // 14px
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.study-main__secondary__section--admin {
+  background-color: $color-pale-green;
+  border-color: darken($color-pale-green, 10%);
+}
+
+.study-main__secondary__section__blank {
+  color: $color-mid-grey-alternate;
+}
+
+.document-list {
+  @extend .list-unstyled;
+  margin: 0;
+
+  li {
+    margin-top: 1em;
+  }
+
+  h4 {
+    font-size: 0.875em; // 14px
+    margin: 0 0 0.3em 0;
+  }
+
+  p {
+    font-size: 0.75em; // 12px
+    margin: 0;
+  }
+}

@@ -5,9 +5,16 @@ $color-light-blue: #D0E1F5;
 $color-lighter-blue: #E2Ebf6;
 $color-hyperlink-blue: #4373D0;
 
+$color-white: #FFF;
 $color-off-white: #F8F8F8;
 $color-platinum-white: #F0EEEF;
 $color-silver-white: #E6E6E6;
+
+$color-semi-transparent-shadow: rgba(0, 0, 0, 0.1);
+$color-light-grey: #AAA;
+$color-mid-grey: #999;
+$color-mid-grey-alternate: #9B9B9B;
+$color-dark-grey: #666;
 $color-black: #231F20;
 
 $color-pale-green: #D6EDBC;
@@ -32,3 +39,6 @@ $font-size-base: 16px;
 $font-size-large: 18px;
 $font-size-small: 14px;
 $headings-font-weight: bold;
+$btn-default-bg: $color-off-white;
+$btn-default-color: $color-dark-grey;
+$btn-default-border: $color-silver-white;
