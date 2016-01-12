@@ -26,6 +26,15 @@ gem 'autoprefixer-rails', '<= 6.1.1'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# For annotating our model files with fields
+gem 'annotate'
+
+# For user auth/accounts
+gem 'devise'
+
+# For a helpful country field using the ISO3166 country list
+gem 'countries'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -40,8 +49,11 @@ group :development, :test do
   gem 'debugger'
   gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
-  gem 'factory_girl'
+  gem 'factory_girl_rails', "~> 4.0"
   gem 'codeclimate-test-reporter'
+  # Used for nice ActiveRecord/Model matchers in specs
+  # Version 3+ don't support Ruby 1.9, hence sticking to 2.x
+  gem 'shoulda-matchers', '< 3.0.0'
 end
 
 group :development do
