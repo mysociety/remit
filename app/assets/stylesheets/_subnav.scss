@@ -36,7 +36,7 @@
     $start-percent: 50%,
     $end-percent: 50%
   );
-  color: #c9c9c9;
+  color: #aaa;
 
   @media(max-width: $screen-xs-max){
     display: none;
@@ -66,7 +66,7 @@
     float: left;
     padding: 1em 2em 1em 1.5em;
 
-    color: #c9c9c9;
+    color: #aaa;
     background-color: $color-off-white;
 
     // Bootstrap mixin handles the @1x and @2x PNGs
