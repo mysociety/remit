@@ -30,6 +30,8 @@ if Rails.env.development?
       'sort'                    => "false",
       'force'                   => "false",
       'trace'                   => "false",
+      'wrapper-open'            => "# rubocop:disable Metrics/LineLength",
+      'wrapper-close'           => "# rubocop:enable Metrics/LineLength",
     })
   end
 
