@@ -26,3 +26,86 @@
     }
   }
 }
+
+.study-subnav {
+  position: relative;
+  background-color: $color-off-white;
+  @include gradient-horizontal(
+    $start-color: $color-pale-green,
+    $end-color: $color-off-white,
+    $start-percent: 50%,
+    $end-percent: 50%
+  );
+  color: #c9c9c9;
+
+  @media(max-width: $screen-xs-max){
+    display: none;
+  }
+
+  // Semi-transparent bottom border that sits on top of the
+  // coloured segments (saves giving each segment its own
+  // border, which would be tricky with the triangle ends).
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  ul {
+    @extend .list-unstyled;
+    @extend .clearfix;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    padding: 1em 2em 1em 1.5em;
+
+    color: #c9c9c9;
+    background-color: $color-off-white;
+
+    // Bootstrap mixin handles the @1x and @2x PNGs
+    @include img-retina("stage-todo.png", "stage-todo@2x.png", 16px, 100px);
+
+    // Upgrade to SVG for modern browsers
+    background-image: url("stage-todo.svg"), none;
+
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      background-image: none;
+    }
+  }
+
+  .step--done {
+    background-color: $color-pale-green;
+    color: $color-dark-green;
+
+    @include img-retina("stage-done.png", "stage-done@2x.png", 16px, 100px);
+    background-image: url("stage-done.svg"), none;
+
+    // The tick!
+    img {
+      vertical-align: -0.1em;
+      margin-right: 0.2em;
+    }
+  }
+
+  .step--doing {
+    background-color: $color-pale-toffee;
+    color: $color-dark-toffee;
+
+    @include img-retina("stage-doing.png", "stage-doing@2x.png", 16px, 100px);
+    background-image: url("stage-doing.svg"), none;
+  }
+}

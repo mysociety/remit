@@ -42,6 +42,12 @@
                     <p class="site-header__stage">Protocol &amp; ERB</p>
                     <p class="site-header__stage-since">Since 11th October</p>
                 </div>
+                <div class="site-header__card">
+                    <h3>Most recent action:</h3>
+                    <p class="site-header__recent">Protocol revision requested</p>
+                    <p class="site-header__recent-since">10th November</p>
+                    <p><a href="#">Read ERB feedback document &raquo;</a></p>
+                </div>
             </div>
         </div>
     </div>
@@ -49,8 +55,11 @@
 <div class="site-subnav study-subnav">
     <div class="container">
         <ul>
-            <li>Concept</li>
-            <li>Protocol &amp; ERB</li>
+            <li class="step--done">
+                <img src="<%= image_path('tick.png') %>" srcset="<%= image_path('tick.svg') %>">
+                Concept
+            </li>
+            <li class="step--doing">Protocol &amp; ERB</li>
             <li>Delivery</li>
             <li>Completed</li>
             <li>Archived</li>
