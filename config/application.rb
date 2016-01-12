@@ -20,8 +20,15 @@ module Remit
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # Use structure.sql instead of schema.rb, because we use some postgresql
+    # stuff (ENUMS) that schema.rb can't handle
+    config.active_record.schema_format = :sql
+
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Add custom validators to autoload path
+    config.autoload_paths += %W["#{config.root}/app/validators/"]
 
     # Load mySociety config file and place the keys into Rails.configuration.x
     config_file = YAML.load_file(Rails.root.join("config", "general.yml"))
