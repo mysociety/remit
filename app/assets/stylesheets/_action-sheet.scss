@@ -1,0 +1,106 @@
+// Styling for the "action sheets" currently
+// only displayed on the study page.
+
+.action-sheet {
+  margin-top: 1em;
+  background-color: $color-pale-toffee;
+  border-radius: 0.3em;
+
+  select, input[type="text"], textarea {
+    width: 100%;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.action-sheet__section {
+  padding: 1.5em;
+}
+
+.action-sheet__section--child {
+  background-color: $color-mid-toffee;
+  padding-left: 4em;
+  margin: 0.5em 0;
+
+  // Vertical space between rows in this section
+  p + p,
+  .row p {
+    margin-top: 1em;
+  }
+
+  // No space above first row in this section
+  & > .row:first-child p {
+    margin-top: 0;
+  }
+}
+
+.action-sheet__section--last {
+  border-top: 1px solid $color-mid-toffee;
+}
+
+.action-sheet__warning {
+  font-size: 0.875em; // 14px
+  color: $color-dark-toffee;
+  line-height: 1.3em;
+}
+
+.action-sheet__submit {
+  @media (min-width: $screen-sm-min) {
+    text-align: right;
+  }
+}
+
+.output-type-accordion {
+  padding: 1em 0;
+}
+
+.output-type-input {
+  float: left;
+
+  // override Bootstrap-sass's default margin and
+  // margin-top (designed for inline checkboxes)
+  margin: 0.7em 0 0 2em !important;
+}
+
+.output-type-label {
+  display: block;
+  padding: 0.5em 1.5em 0.5em 4em;
+  margin: 0;
+}
+
+.manual-publication-details-link {
+  display: block;
+  margin: 0.5em 0 0 0;
+  font-weight: inherit;
+  color: $link-color;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+
+  // Cleverly position the DOI link to the right of the DOI input
+  @media (min-width: $screen-sm-min) {
+    position: absolute;
+    right: -100%;
+    width: 100%;
+    bottom: 0.5em;
+    margin-top: 0;
+  }
+}
+
+.other-impact-type {
+  input[type="checkbox"] {
+    margin: 0 0.5em 0 0;
+    vertical-align: 1px;
+  }
+
+  textarea {
+    margin-top: 0.5em;
+  }
+}

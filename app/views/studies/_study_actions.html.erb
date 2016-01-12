@@ -1,0 +1,179 @@
+<ul>
+    <li>
+        <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
+    </li>
+    <li>
+        <label class="btn btn-default houdini-label" for="add-note">Add a note</label>
+    </li>
+    <li>
+        <label class="btn btn-default houdini-label" for="record-output">Record an output</label>
+    </li>
+</ul>
+
+<input class="houdini-input" type="radio" name="action-sheet-accordion" id="add-document">
+
+<form class="action-sheet houdini-target">
+    <div class="action-sheet__section">
+        <div class="row">
+            <p class="col-sm-7">
+                <label for="document-choose">Choose document:</label>
+                <input type="file" id="document-choose">
+            </p>
+            <p class="col-sm-5">
+                <label for="document-type">Document type:</label>
+                <select class="form-control" id="document-type">
+                  <% ["Protocol", "ERB documentation", "Data sharing agreements", "Dataset", "Study report", "Other"].each do |x| %>
+                    <option><%= x %></option>
+                  <% end %>
+                </select>
+            </p>
+        </div>
+    </div>
+    <div class="action-sheet__section action-sheet__section--last">
+        <div class="row">
+            <p class="col-sm-7 action-sheet__warning">
+                <strong>Remember:</strong><br>
+                This document will be publicly accessible
+            </p>
+            <p class="col-sm-5 action-sheet__submit">
+                <button class="btn btn-success">Add document</button>
+            </p>
+        </div>
+    </div>
+</form>
+
+<input class="houdini-input" type="radio" name="action-sheet-accordion" id="add-note">
+
+<form class="action-sheet houdini-target">
+    <div class="action-sheet__section">
+        <div class="row">
+            <p class="col-sm-12">
+                <label for="note-content">Note:</label>
+                <textarea id="note-content" class="form-control"></textarea>
+            </p>
+        </div>
+    </div>
+    <div class="action-sheet__section action-sheet__section--last">
+        <div class="row">
+            <p class="col-sm-7 action-sheet__warning">
+                <strong>Remember:</strong><br>
+                This note will be publicly accessible
+            </p>
+            <p class="col-sm-5 action-sheet__submit">
+                <button class="btn btn-success">Add note</button>
+            </p>
+        </div>
+    </div>
+</form>
+
+<input class="houdini-input" type="radio" name="action-sheet-accordion" id="record-output">
+
+<form class="action-sheet houdini-target">
+    <div class="output-type-accordion">
+
+        <input type="radio" name="output-type" id="output-type-publication" class="output-type-input houdini-input houdini-input--visible">
+        <label for="output-type-publication" class="output-type-label houdini-label">
+            Publication
+        </label>
+
+        <div class="action-sheet__section action-sheet__section--child houdini-target">
+            <div class="row">
+                <p class="col-sm-6">
+                    <label for="publication-doi">DOI:</label>
+                    <input type="text" class="form-control" id="publication-doi">
+                    <label for="manual-publication-details" class="manual-publication-details-link houdini-label">Or enter details manually&hellip;</label>
+                </p>
+            </div>
+
+            <input type="checkbox" class="houdini-input" id="manual-publication-details">
+            <div class="houdini-target">
+                <div class="row">
+                    <p class="col-sm-6">
+                        <label for="article_title">Article title:</label>
+                        <input type="text" class="form-control" id="article_title">
+                    </p>
+                    <p class="col-sm-6">
+                        <label for="lead_author">Lead author:</label>
+                        <input type="text" class="form-control" id="lead_author">
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="col-sm-6">
+                        <label for="book_or_journal_title">Publication title:</label>
+                        <input type="text" class="form-control" id="book_or_journal_title">
+                    </p>
+                    <p class="col-sm-6">
+                        <label for="publication_year">Publication year:</label>
+                        <input type="text" class="form-control" id="publication_year">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <input type="radio" name="output-type" id="output-type-dissemination" class="output-type-input houdini-input houdini-input--visible">
+        <label for="output-type-dissemination" class="output-type-label houdini-label">
+            Dissemination
+        </label>
+
+        <div class="action-sheet__section action-sheet__section--child houdini-target">
+            <p>
+                <label for="dissemination_category">Category:</label>
+                <select class="form-control" id="dissemination_category">
+                    <optgroup label="Internal">
+                        <option>Working group</option>
+                        <option>Internal MSF publication</option>
+                        <option>MSF conference</option>
+                        <option>Email group</option>
+                    </optgroup>
+                    <optgroup label="External">
+                        <option>Field</option>
+                        <option>Scientific meeting</option>
+                        <option>Press release or press conference</option>
+                        <option>Talk or presentation</option>
+                        <option>Policy briefing paper</option>
+                        <option>Formal working group, expert panel, advisory body</option>
+                        <option>Magazine, newsletter or online publication</option>
+                        <option>Bilateral meeting</option>
+                        <option>Community involved with research</option>
+                    </optgroup>
+                    <option>Other</option>
+                </select>
+            </p>
+            <p>
+                <label for="dissemination_details">Details</label>
+                <textarea id="dissemination_details" class="form-control"></textarea>
+            </p>
+            <p>
+                <label class="checkbox-inline"><input type="checkbox"> This has been fed back to the field</label>
+            </p>
+        </div>
+
+        <input type="radio" name="output-type" id="output-type-other" class="output-type-input houdini-input houdini-input--visible">
+        <label for="output-type-other" class="output-type-label houdini-label">
+            Other impact
+        </label>
+
+        <div class="action-sheet__section action-sheet__section--child houdini-target">
+          <% ['Programmes', 'Patients', 'MSF policy', 'External policy', 'Other'].each do |x| %>
+            <p class="other-impact-type">
+                <input type="checkbox" class="houdini-input houdini-input--visible" id="impact_type_<%= x.parameterize %>">
+                <label class="houdini-label" for="impact_type_<%= x.parameterize %>"><%= x %></label>
+                <textarea class="form-control houdini-target" placeholder="Description&hellip;"></textarea>
+            </p>
+          <% end %>
+        </div>
+
+    </div>
+
+    <div class="action-sheet__section action-sheet__section--last">
+        <div class="row">
+            <p class="col-sm-7 action-sheet__warning">
+                <strong>Remember:</strong><br>
+                This output will be publicly accessible
+            </p>
+            <p class="col-sm-5 action-sheet__submit">
+                <button class="btn btn-success">Add output</button>
+            </p>
+        </div>
+    </div>
+</form>

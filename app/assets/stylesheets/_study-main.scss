@@ -15,7 +15,11 @@
 
   ul {
     @extend .list-inline;
-    margin: 0;
+    margin: 0 -5px; // compensate for 5px padding on children
+  }
+
+  .action-sheet {
+    max-width: (40em * 0.875) + 2; // Line up right edge with blockquotes in timeline
   }
 }
 
@@ -103,7 +107,7 @@
 .timeline__item__note {
   border-left: 0;
   font-size: 0.875em; // 14px
-  max-width: 35em;
+  max-width: 40em;
   padding: 1em 1.3em;
   background-color: $color-lighter-blue;
   border-radius: 0.3em;

@@ -26,3 +26,7 @@ body {
 .site-footer {
   background-color: $color-light-blue;
 }
+
+.btn-success {
+  text-shadow: 0 1px 1px $color-semi-transparent-shadow-darker;
+}
