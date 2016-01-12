@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/LineLength
 # == Schema Information
 #
 # Table name: disseminations
@@ -16,6 +17,7 @@
 #  index_disseminations_on_dissemination_category_id  (dissemination_category_id)
 #  index_disseminations_on_study_id                   (study_id)
 #
+# rubocop:enable Metrics/LineLength
 
 class Dissemination < ActiveRecord::Base
   belongs_to :dissemination_category, inverse_of: :disseminations
