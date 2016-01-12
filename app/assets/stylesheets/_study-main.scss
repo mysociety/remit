@@ -50,7 +50,7 @@
   padding-left: 2em;
 
   &:last-child {
-    background-color: #fff; // hide the fake border, even if this item wraps onto multiple lines
+    background-color: $color-white; // hide the fake border, even if this item wraps onto multiple lines
   }
 
   &:after {
@@ -60,8 +60,8 @@
     height: 1em;
 
     border-radius: 100%;
-    background: #999;
-    border: 0.2em solid #fff;
+    background: $color-mid-grey;
+    border: 0.2em solid $color-white;
 
     position: absolute;
     top: 0.1em;
@@ -82,7 +82,7 @@
 }
 
 .timeline__item__date {
-  color: #999;
+  color: $color-mid-grey;
   margin-left: 0.5em;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .timeline__item__note {
-  border-left: none;
+  border-left: 0;
   font-size: 0.875em; // 14px
   max-width: 35em;
   padding: 1em 1.3em;
@@ -141,7 +141,7 @@
 }
 
 .study-main__secondary__section__blank {
-  color: #9B9B9B;
+  color: $color-mid-grey-alternate;
 }
 
 .document-list {
