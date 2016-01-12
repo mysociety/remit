@@ -12,7 +12,7 @@
     text-align: center;
     background-color: $color-light-blue;
     @include gradient-vertical(
-      $start-color: mix(#fff, $color-light-blue, 33%),
+      $start-color: mix($color-white, $color-light-blue, 33%),
       $end-color: $color-light-blue,
       $start-percent: 50%
     );
@@ -21,7 +21,7 @@
     padding: 0.6em;
 
     &.active {
-      background-color: #fff;
+      background-color: $color-white;
       background-image: none;
     }
   }
@@ -36,7 +36,7 @@
     $start-percent: 50%,
     $end-percent: 50%
   );
-  color: #aaa;
+  color: $color-light-grey;
 
   @media(max-width: $screen-xs-max){
     display: none;
@@ -53,7 +53,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(0, 0, 0, 0.1);
+    background: $color-semi-transparent-shadow;
   }
 
   ul {
@@ -66,7 +66,7 @@
     float: left;
     padding: 1em 2em 1em 1.5em;
 
-    color: #aaa;
+    color: $color-light-grey;
     background-color: $color-off-white;
 
     // Bootstrap mixin handles the @1x and @2x PNGs

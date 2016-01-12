@@ -24,7 +24,7 @@
   margin-top: 2em;
 
   .dl-horizontal {
-    color: mix(#fff, $color-black, 40%);
+    color: mix($color-white, $color-black, 40%);
 
     dt {
       font-weight: inherit;
