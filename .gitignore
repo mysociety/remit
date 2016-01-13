@@ -28,6 +28,9 @@
 /config/*.deployed
 /config/*.tmp.yml
 
+# Ignore any apache conf too
+/config/httpd.conf
+
 # Ignore mySociety's down.html
 /public/down.html
 

@@ -20,5 +20,6 @@ test:
   from_email: 'do-not-reply@example.com'
 
 production:
-  hostname: localhost # Change this in production
-  from_email: 'do-not-reply@localhost' # Change this in production
+  # Change these in production
+  hostname: localhost
+  from_email: 'do-not-reply@localhost'
