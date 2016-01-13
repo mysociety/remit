@@ -40,78 +40,32 @@
                     </select>
                 </p>
                 <div class="list-of-things__list">
-                    <div class="list-of-things__list__item list-of-things__list__item--study">
-                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed">Completed</p>
+                    <% @studies.each do |study| %>
+                        <div class="list-of-things__list__item list-of-things__list__item--study">
+                            <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage.name %></p>
                         <h2 class="list-of-things__list__item__title">
-                            <a href="/study/231">Comparison of HIV testing algorithms in Ethiopia</a>
+                            <a href="/study/231"><%= study.title %></a>
                         </h2>
                         <dl class="dl-horizontal">
                             <dt>Study details</dt>
                             <dd>
-                                <a href="/search?methodology=cohort%20study">Cohort study</a>
-                                in
-                                <a href="/search?location=ethiopia">Ethiopia</a>
+                                <a href="/search?methodology=cohort%20study"><%= study.study_type.name %></a>
+                                <% unless study.country_code.blank? %>
+                                    in
+                                    <a href="/search?location=ethiopia"><%= study.country_code %></a>
+                                <% end %>
                             </dd>
-                            <dt>Principal investigator:</dt>
-                            <dd>
-                                <a href="/search?pi=irwan%20pirou">Irwan Pirou</a>
-                            </dd>
+                            <% unless study.principal_investigator.blank? %>
+                                <dt>Principal investigator:</dt>
+                                <dd>
+                                    <a href="/search?pi=irwan%20pirou"><%= study.principal_investigator.name %></a>
+                                </dd>
+                            <% end %>
                         </dl>
-                    </div>
-                    <div class="list-of-things__list__item list-of-things__list__item--study">
-                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--active">Active</p>
-                        <h2 class="list-of-things__list__item__title">
-                            <a href="/study/230">Secondary prophylaxis of visceral leishmaniasis relapses in HIV co-infected patients using pentamidine as a prophylactic agent: a prospective cohort study</a>
-                        </h2>
-                        <dl class="dl-horizontal">
-                            <dt>Study details</dt>
-                            <dd>
-                                <a href="/search?methodology=cohort%20study">Cohort study</a>
-                                in
-                                <a href="/search?location=ethiopia">Ethiopia</a>
-                            </dd>
-                            <dt>Principal investigator:</dt>
-                            <dd>
-                                <a href="/search?pi=johan%20van%20griensven">Johan van Griensven</a>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="list-of-things__list__item list-of-things__list__item--study">
-                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--protocol-review">Protocol Review</p>
-                        <h2 class="list-of-things__list__item__title">
-                            <a href="/study/229">Outcome Evaluation Study of MSF Mental Health Programs in Grozny, Chechnya Republic</a>
-                        </h2>
-                        <dl class="dl-horizontal">
-                            <dt>Study details</dt>
-                            <dd>
-                                <a href="/search?methodology=randomised%20control%20trial">Randomised Control Trial</a>
-                                in
-                                <a href="/search?location=russia">Russia</a>
-                            </dd>
-                            <dt>Principal investigator:</dt>
-                            <dd>
-                                <a href="/search?pi=barbara%20lopes%20cardozo">Barbara Lopes Cardozo</a>
-                            </dd>
-                        </dl>
-                    </div>
+                        </div>
+                    <% end %>
                 </div>
-                <ul class="list-of-things__pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+                <%= paginate @studies %>
             </div>
             <div class="list-of-things__secondary">
                 <div class="list-of-things__secondary-action list-of-things__secondary-action--quick-filters">
