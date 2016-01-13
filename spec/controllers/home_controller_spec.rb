@@ -6,5 +6,9 @@ RSpec.describe HomeController, type: :controller do
       get :index
       expect(response).to have_http_status(:success)
     end
+
+    it "lists all the studies"
+    it "paginates the studies"
+    it "sorts the studies"
   end
 end
