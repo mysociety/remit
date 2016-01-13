@@ -33,11 +33,11 @@
 
         <nav class="site-nav">
             <div class="container">
-                <a href="#" class="site-nav__logo">ReMIT</a>
+                <a href="<%= root_path %>" class="site-nav__logo">ReMIT</a>
                 <label class="site-nav__mobile-menu-toggle" for="toggle-mobile-menu">Menu</label>
                 <input type="checkbox" class="site-nav__mobile-menu-checkbox" id="toggle-mobile-menu">
                 <ul class="site-nav__list">
-                    <li><a href="#">Studies</a></li>
+                    <li><a href="<%= root_path %>">Studies</a></li>
                     <li><a href="#">Publications</a></li>
                   <% if user_signed_in? %>
                     <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
