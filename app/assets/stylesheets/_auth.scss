@@ -1,0 +1,18 @@
+.devise {
+  h2 {
+    margin-bottom: 1em;
+  }
+
+  .actions {
+    margin-top: 1em;
+  }
+}
+
+.devise-shared-links {
+  @extend .list-inline;
+
+  font-size: 0.875em;
+  margin: 2em 0 0 0;
+  padding: 2em 0 0 0;
+  border-top: 1px solid $color-light-blue;
+}
