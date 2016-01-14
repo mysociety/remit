@@ -33,16 +33,18 @@ module Remit
     config.active_record.raise_in_transactional_callbacks = true
 
     # Load mySociety config file and place the keys into Rails.configuration.x
-    config_file = YAML.load_file(Rails.root.join("config/general.yml"))
+    config_file = YAML.load_file(Rails.root.join("config", "general.yml"))
     MysocietyConfig = config_file[Rails.env].symbolize_keys!
     MysocietyConfig.each do |key, value|
       config.x.send("#{key}=".to_sym, value)
     end
 
     # Set default_url_options for ActionMailer
-    if config.x.port
+    if config.x.hostname.present? && config.x.port.present?
       config.action_mailer.default_url_options = { host: config.x.hostname,
                                                    port: config.x.port }
+    elsif config.x.hostname.present?
+      config.action_mailer.default_url_options = { host: config.x.hostname }
     else
       config.action_mailer.default_url_options = { host: "localhost" }
     end
