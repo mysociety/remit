@@ -54,7 +54,7 @@
         <footer class="site-footer">
             <div class="container">
                 <ul class="site-footer__links">
-                    <% if user_signed_in? && current_user.admin? %>
+                    <% if user_signed_in? && current_user.is_admin %>
                         <li><a href="<%= admin_dashboard_path %>">Admin panel</a></li>
                     <% end %>
                 </ul>

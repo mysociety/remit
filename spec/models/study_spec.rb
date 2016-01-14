@@ -105,32 +105,4 @@ RSpec.describe Study, type: :model do
       expect(study).to be_valid
     end
   end
-
-  context "when principal_investigator is set" do
-    it "is valid when the pi user has the pi role" do
-      pi = FactoryGirl.create(:principal_investigator)
-      study = FactoryGirl.build(:study, principal_investigator: pi)
-      expect(study).to be_valid
-    end
-
-    it "is invalid when the pi user doesn't have the pi role" do
-      normal_user = FactoryGirl.create(:normal_user)
-      study = FactoryGirl.build(:study, principal_investigator: normal_user)
-      expect(study).to be_invalid
-    end
-  end
-
-  context "when research_manager is set" do
-    it "is valid when the rm user has the rm role" do
-      pi = FactoryGirl.create(:research_manager)
-      study = FactoryGirl.build(:study, research_manager: pi)
-      expect(study).to be_valid
-    end
-
-    it "is invalid when the rm user doesn't have the rm role" do
-      normal_user = FactoryGirl.create(:normal_user)
-      study = FactoryGirl.build(:study, research_manager: normal_user)
-      expect(study).to be_invalid
-    end
-  end
 end

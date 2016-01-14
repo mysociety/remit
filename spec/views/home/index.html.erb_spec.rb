@@ -23,7 +23,7 @@ RSpec.describe "home/index.html.erb", type: :view do
   end
 
   it "shows the PI when there is one" do
-    pi = FactoryGirl.create(:principal_investigator)
+    pi = FactoryGirl.create(:user)
     @studies.first.principal_investigator = pi
     @studies.first.save!
     render

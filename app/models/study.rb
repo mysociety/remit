@@ -68,34 +68,12 @@ class Study < ActiveRecord::Base
   validates :study_topic, presence: true
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
-  validate :principal_investigator_has_correct_role
-  validate :research_manager_has_correct_role
 
   def other_study_type_is_set_when_study_type_is_other
     if study_type == StudyType.other_study_type && other_study_type.blank?
       message = "You must describe the study type if you choose " \
         "\"#{StudyType::OTHER_STUDY_TYPE_NAME}\""
       errors.add(:other_study_type, message)
-    end
-  end
-
-  def principal_investigator_has_correct_role
-    return if principal_investigator.blank?
-
-    message = "The Principal Investigator for this Study has to have the " \
-      "Principal Investigator role"
-    unless principal_investigator.principal_investigator?
-      errors.add(:principal_investigator, message)
-    end
-  end
-
-  def research_manager_has_correct_role
-    return if research_manager.blank?
-
-    message = "The Research Manager for this Study has to have the Research" \
-      "Manager role"
-    unless research_manager.research_manager?
-      errors.add(:research_manager, message)
     end
   end
 end

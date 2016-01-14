@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   def authenticate_admin_user!
     if !current_user
       redirect_to new_user_session_path
-    elsif !current_user.admin?
+    elsif !current_user.is_admin
       render status: :forbidden,
              text: "Sorry, you don't have access to this page"
     end
@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   # Redirect admins to the admin dashboard
   def after_sign_in_path_for(resource)
     stored_location_for(resource) ||
-      if resource.is_a?(User) && resource.admin?
+      if resource.is_a?(User) && resource.is_admin
         admin_dashboard_path
       else
         root_path

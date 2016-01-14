@@ -34,19 +34,6 @@ CREATE TYPE dissemination_category_type AS ENUM (
 );
 
 
---
--- Name: role; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE role AS ENUM (
-    'principal_investigator',
-    'research_manager',
-    'admin',
-    'contributor',
-    'normal_user'
-);
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -671,7 +658,7 @@ CREATE TABLE users (
     name text NOT NULL,
     msf_location_id integer,
     external_location text,
-    role role DEFAULT 'normal_user'::role NOT NULL
+    is_admin boolean DEFAULT false NOT NULL
 );
 
 
@@ -1344,4 +1331,8 @@ ALTER TABLE ONLY publications
 SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20160108112933');
+
+INSERT INTO schema_migrations (version) VALUES ('20160114173551');
+
+INSERT INTO schema_migrations (version) VALUES ('20160114175311');
 

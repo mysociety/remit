@@ -23,6 +23,7 @@
 #  msf_location_id        :integer
 #  external_location      :text
 #  role                   :enum             default("normal_user"), not null
+#  is_admin               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -55,7 +56,6 @@ class User < ActiveRecord::Base
            inverse_of: :research_manager
 
   validates :name, presence: true
-  validates :role, presence: true
   validate :external_location_is_set_if_msf_location_is_external
 
   def external_location_is_set_if_msf_location_is_external

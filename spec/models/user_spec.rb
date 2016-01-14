@@ -9,8 +9,8 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_db_column(:msf_location_id).of_type(:integer) }
   it { is_expected.to have_db_column(:external_location).of_type(:text) }
   it do
-    is_expected.to have_db_column(:role).of_type(:enum).
-      with_options(null: false, default: "normal_user")
+    is_expected.to have_db_column(:is_admin).of_type(:boolean).
+      with_options(null: false, default: false)
   end
 
   # Associations
@@ -26,15 +26,7 @@ RSpec.describe User, type: :model do
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_presence_of(:role) }
-  expected_enum_options = {
-    principal_investigator: "principal_investigator",
-    research_manager: "research_manager",
-    admin: "admin",
-    contributor: "contributor",
-    normal_user: "normal_user",
-  }
-  it { is_expected.to define_enum_for(:role).with(expected_enum_options) }
+  it { is_expected.to validate_inclusion_of(:is_admin).in_array([true, false]) }
 
   context "when the when msf_location field is 'External'" do
     let(:external_location) { MsfLocation.find_by_name("External") }

@@ -169,7 +169,7 @@
                     <p>Be notified when there is activity on this study.</p>
                     <p><a href="#" class="btn btn-success">Follow this study</a></p>
                 </div>
-                <% if user_signed_in? && current_user.admin? %>
+                <% if user_signed_in? && current_user.is_admin %>
                     <div class="study-main__secondary__section study-main__secondary__section--admin">
                         <h3>Admin actions:</h3>
                         <ul>

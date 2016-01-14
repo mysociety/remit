@@ -11,16 +11,8 @@ FactoryGirl.define do
     # This makes the user full confirmed
     after :create, &:confirm
 
-    factory :principal_investigator do
-      role "principal_investigator"
-    end
-
-    factory :research_manager do
-      role "research_manager"
-    end
-
     factory :admin_user do
-      role "admin"
+      is_admin true
     end
   end
 end

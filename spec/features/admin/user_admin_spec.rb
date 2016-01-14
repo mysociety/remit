@@ -20,7 +20,6 @@ RSpec.describe "UserAdmin" do
       fill_in "Password", with: "password"
     end
     fill_in "Password confirmation", with: "password"
-    select "normal_user", from: "Role"
     click_button "Create User"
     expect(page).to have_text "User was successfully created"
     user = User.find_by_name("A New User")
@@ -38,10 +37,10 @@ RSpec.describe "UserAdmin" do
 
     it "allows you to edit the user" do
       click_link "Edit", href: edit_admin_user_path(user)
-      select "admin", from: "Role"
+      check "Is admin"
       click_button "Update User"
       expect(page).to have_text "User was successfully updated"
-      expect(user.reload.role).to eq "admin"
+      expect(user.reload.is_admin).to be true
     end
 
     it "allows you to delete the user" do

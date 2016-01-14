@@ -1,10 +1,10 @@
 ActiveAdmin.register User do
-  permit_params :name, :email, :role, :msf_location_id, :external_location,
+  permit_params :name, :email, :is_admin, :msf_location_id, :external_location,
                 :password, :password_confirmation
 
   menu priority: 2
 
-  filter :role, as: :select, collection: User.roles
+  filter :is_admin
   filter :msf_location
   filter :created_at
 
@@ -14,7 +14,7 @@ ActiveAdmin.register User do
     column :email
     column :msf_location
     column :external_location
-    column :role
+    column :is_admin
     column :created_at
     column :last_sign_in_at
 
@@ -29,7 +29,7 @@ ActiveAdmin.register User do
       f.input :external_location, as: :string
       f.input :password
       f.input :password_confirmation
-      f.input :role, as: :select, collection: User.roles
+      f.input :is_admin
     end
     f.actions
   end
