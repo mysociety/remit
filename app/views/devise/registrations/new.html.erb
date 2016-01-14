@@ -12,6 +12,11 @@
           </p>
 
           <p class="field">
+            <%= f.label :name %><br />
+            <%= f.text_field :name, class: "form-control" %>
+          </p>
+
+          <p class="field">
             <%= f.label :password %>
             <% if @minimum_password_length %>
             <em>(<%= @minimum_password_length %> characters minimum)</em>

@@ -16,6 +16,11 @@
           <% end %>
 
           <p class="field">
+            <%= f.label :name %><br />
+            <%= f.text_field :name, class: "form-control" %>
+          </p>
+
+          <p class="field">
             <%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
             <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
           </p>
