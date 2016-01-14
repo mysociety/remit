@@ -26,7 +26,11 @@
             <ul class="site-nav__list">
                 <li><a href="#">Studies</a></li>
                 <li><a href="#">Publications</a></li>
-                <li><a href="<%= new_user_session_path %>">Sign In</a></li>
+                <% if user_signed_in? %>
+                  <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
+                <% else %>
+                  <li><a href="<%= new_user_session_path %>">Sign In</a></li>
+                <% end %>
             </ul>
         </div>
     </nav>
