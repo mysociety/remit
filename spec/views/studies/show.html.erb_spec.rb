@@ -2,8 +2,6 @@ require "rails_helper"
 require "support/devise.rb"
 
 RSpec.describe "studies/show.html.erb", type: :view do
-  let!(:external_location) { FactoryGirl.create(:external_location) }
-  let!(:other_type) { FactoryGirl.create(:other_type) }
   let(:study) { FactoryGirl.create(:study) }
 
   before do

@@ -2,7 +2,6 @@ require "rails_helper"
 require "support/devise.rb"
 
 RSpec.describe "layouts/application.html.erb", type: :view do
-  let!(:external_location) { FactoryGirl.create(:external_location) }
   let(:admin_user) { FactoryGirl.create(:admin_user) }
   let(:normal_user) { FactoryGirl.create(:user) }
 

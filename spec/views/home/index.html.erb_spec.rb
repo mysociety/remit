@@ -2,9 +2,6 @@ require "rails_helper"
 require "support/devise.rb"
 
 RSpec.describe "home/index.html.erb", type: :view do
-  let!(:external_location) { FactoryGirl.create(:external_location) }
-  let!(:other_type) { FactoryGirl.create(:other_type) }
-
   before do
     @studies = FactoryGirl.create_list(:study, 10)
     # The view expects to be able to paginate the the list of studies

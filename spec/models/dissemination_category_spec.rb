@@ -24,6 +24,14 @@ RSpec.describe DisseminationCategory, type: :model do
 
   # Validation
   describe "validations" do
+    let(:other_internal) do
+      DisseminationCategory.find_by_name("Other internal")
+    end
+
+    let(:other_external) do
+      DisseminationCategory.find_by_name("Other external")
+    end
+
     subject { FactoryGirl.build(:dissemination_category) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_uniqueness_of(:name) }
@@ -38,26 +46,24 @@ RSpec.describe DisseminationCategory, type: :model do
     end
 
     it "should not allow changing the 'Other (internal)' category name" do
-      other_category = FactoryGirl.create(:other_internal)
-      other_category.name = "new name"
-      expect(other_category).to be_invalid
+      other_internal.name = "new name"
+      expect(other_internal).to be_invalid
     end
 
     it "should not allow changing the 'Other (external)' category name" do
-      other_category = FactoryGirl.create(:other_external)
-      other_category.name = "new name"
-      expect(other_category).to be_invalid
+      other_external.name = "new name"
+      expect(other_external).to be_invalid
     end
 
     # Methods
     describe "#other_internal_category" do
       it "should return the 'Other (internal)' category record" do
-        other_category = FactoryGirl.create(:other_internal)
         expect(DisseminationCategory.other_internal_category).to(
-          eq(other_category))
+          eq(other_internal))
       end
 
       it "should error if no 'Other (internal)' category record exists" do
+        other_internal.destroy
         expect { DisseminationCategory.other_internal_category }.to(
           raise_error(ActiveRecord::RecordNotFound))
       end
@@ -65,12 +71,12 @@ RSpec.describe DisseminationCategory, type: :model do
 
     describe "#other_external_category" do
       it "should return the 'Other (external)' category record" do
-        other_category = FactoryGirl.create(:other_external)
         expect(DisseminationCategory.other_external_category).to(
-          eq(other_category))
+          eq(other_external))
       end
 
       it "should error if no 'Other (external)' category record exists" do
+        other_external.destroy
         expect { DisseminationCategory.other_external_category }.to(
           raise_error(ActiveRecord::RecordNotFound))
       end

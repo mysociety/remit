@@ -8,7 +8,6 @@ RSpec.describe HomeController, type: :controller do
     end
 
     context "when there are some studies" do
-      let!(:other_study_type) { FactoryGirl.create(:other_type) }
       let(:studies) { FactoryGirl.create_list(:study, 20) }
 
       before do

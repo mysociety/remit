@@ -1,10 +1,6 @@
 require "rails_helper"
 
 RSpec.describe Dissemination, type: :model do
-  let!(:other_study_type) { FactoryGirl.create(:other_type) }
-  let!(:other_internal_category) { FactoryGirl.create(:other_internal) }
-  let!(:other_external_category) { FactoryGirl.create(:other_external) }
-
   # Columns
   it do
     is_expected.to have_db_column(:dissemination_category_id).
@@ -44,6 +40,10 @@ RSpec.describe Dissemination, type: :model do
   end
 
   context "when dissemination_category is 'Other internal'" do
+    let(:other_internal_category) do
+      DisseminationCategory.find_by_name("Other internal")
+    end
+
     it "should be invalid when the dissemination_category field is nil" do
       category = FactoryGirl.build(
         :dissemination,
@@ -70,6 +70,10 @@ RSpec.describe Dissemination, type: :model do
   end
 
   context "when dissemination_category is 'Other external'" do
+    let(:other_external_category) do
+      DisseminationCategory.find_by_name("Other external")
+    end
+
     it "should be invalid when the dissemination_category field is nil" do
       category = FactoryGirl.build(
         :dissemination,

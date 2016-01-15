@@ -1,9 +1,6 @@
 require "rails_helper"
 
 RSpec.describe Study, type: :model do
-  let!(:other_study_type) { FactoryGirl.create(:other_type) }
-  let!(:external_location) { FactoryGirl.create(:external_location) }
-
   # Columns
   it do
     is_expected.to have_db_column(:study_stage_id).of_type(:integer).
@@ -88,6 +85,7 @@ RSpec.describe Study, type: :model do
 
   context "when the when study_type field is 'Other'" do
     let(:study) { FactoryGirl.build(:study) }
+    let(:other_study_type) { StudyType.find_by_name("Other") }
 
     it "should be invalid when the other_study_type field is nil" do
       study.study_type = other_study_type

@@ -1,8 +1,6 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  let!(:external_location) { FactoryGirl.create(:external_location) }
-
   # Columns
   it do
     is_expected.to have_db_column(:name).of_type(:text).
@@ -39,21 +37,26 @@ RSpec.describe User, type: :model do
   it { is_expected.to define_enum_for(:role).with(expected_enum_options) }
 
   context "when the when msf_location field is 'External'" do
+    let(:external_location) { MsfLocation.find_by_name("External") }
+
     it "should be invalid when the external_location field is nil" do
-      user = FactoryGirl.build(:user, msf_location: external_location,
-                                      external_location: nil)
+      user = FactoryGirl.build(:user)
+      user.msf_location = external_location
+      user.external_location = nil
       expect(user).to be_invalid
     end
 
     it "should be invalid when the external_location field is empty" do
-      user = FactoryGirl.build(:user, msf_location: external_location,
-                                      external_location: "")
+      user = FactoryGirl.build(:user)
+      user.msf_location = external_location
+      user.external_location = ""
       expect(user).to be_invalid
     end
 
     it "should be valid when we set the external_location field" do
-      user = FactoryGirl.build(:user, msf_location: external_location,
-                                      external_location: "some other location")
+      user = FactoryGirl.build(:user)
+      user.msf_location = external_location
+      user.external_location = "some external location"
       expect(user).to be_valid
     end
   end

@@ -57,4 +57,16 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:all) do
+    # These DB records are needed by so many tests it makes sense to make them
+    # here.
+    external = MsfLocation.find_by_name("External")
+    FactoryGirl.create(:external_location) unless external
+    FactoryGirl.create(:other_type) unless StudyType.find_by_name("Other")
+    other_internal = DisseminationCategory.find_by_name("Other internal")
+    FactoryGirl.create(:other_internal) unless other_internal
+    other_external = DisseminationCategory.find_by_name("Other external")
+    FactoryGirl.create(:other_external) unless other_external
+  end
 end
