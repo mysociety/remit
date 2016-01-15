@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    @studies = Study.order(:updated_at).page params[:page]
+    @studies = Study.order(updated_at: :desc).page(params[:page]).per(10)
   end
 end
