@@ -7,8 +7,24 @@ RSpec.describe HomeController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "lists all the studies"
-    it "paginates the studies"
-    it "sorts the studies"
+    context "when there are some studies" do
+      let!(:other_study_type) { FactoryGirl.create(:other_type) }
+      let(:studies) { FactoryGirl.create_list(:study, 20) }
+
+      before do
+        studies.sort! { |a, b| a.updated_at <=> b.updated_at }
+        studies.reverse!
+      end
+
+      it "lists the studies" do
+        get :index
+        expect(assigns[:studies]).to match_array(studies.first(10))
+      end
+
+      it "paginates the studies" do
+        get :index, page: 2
+        expect(assigns[:studies]).to match_array(studies.last(10))
+      end
+    end
   end
 end
