@@ -10,6 +10,9 @@ RSpec.describe StudiesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "shows the study"
+    it "sets the study" do
+      get :show, id: study.id
+      expect(assigns[:study]).to eq study
+    end
   end
 end
