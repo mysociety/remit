@@ -7,10 +7,16 @@ FactoryGirl.define do
 
     # Associations are to things that must have unique names, so we create
     # them in these hooks and look up any existing ones first
-    before(:create) do |study|
-      study.study_stage = StudyStage.find_by_name("Concept") || create(:concept_stage)
-      study.study_type = StudyType.find_by_name("Randomised controlled trial (RCT)") || create(:randomised_type)
-      study.study_setting = StudySetting.find_by_name("Stable") || create(:stable_setting)
+    after(:build) do |study|
+      concept_stage = StudyStage.find_by_name("Concept")
+      study.study_stage = concept_stage || create(:concept_stage)
+
+      rct_stage = StudyType.find_by_name("Randomised controlled trial (RCT)")
+      study.study_type = rct_stage || create(:randomised_type)
+
+      stable_setting = StudySetting.find_by_name("Stable")
+      study.study_setting = stable_setting || create(:stable_setting)
+
       study.study_topic = StudyTopic.find_by_name("AMR") || create(:amr_topic)
     end
   end

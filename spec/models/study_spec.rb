@@ -87,27 +87,23 @@ RSpec.describe Study, type: :model do
   end
 
   context "when the when study_type field is 'Other'" do
+    let(:study) { FactoryGirl.build(:study) }
+
     it "should be invalid when the other_study_type field is nil" do
-      study = FactoryGirl.build(
-        :study,
-        study_type: other_study_type,
-        other_study_type: nil)
+      study.study_type = other_study_type
+      study.other_study_type = nil
       expect(study).to be_invalid
     end
 
     it "should be invalid when the other_study_type field is empty" do
-      study = FactoryGirl.build(
-        :study,
-        study_type: other_study_type,
-        other_study_type: "")
+      study.study_type = other_study_type
+      study.other_study_type = ""
       expect(study).to be_invalid
     end
 
     it "should be valid when we set the other_study_type field" do
-      study = FactoryGirl.build(
-        :study,
-        study_type: other_study_type,
-        other_study_type: "some other type")
+      study.study_type = other_study_type
+      study.other_study_type = "some other type"
       expect(study).to be_valid
     end
   end
