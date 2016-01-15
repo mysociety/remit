@@ -6,6 +6,8 @@ FactoryGirl.define do
 
     # This is the best way to set the password for the factory
     after(:build) { |u| u.password_confirmation = u.password = "password" }
+    # This makes the user full confirmed
+    after :create, &:confirm
 
     factory :principal_investigator do
       role "principal_investigator"
@@ -13,6 +15,10 @@ FactoryGirl.define do
 
     factory :research_manager do
       role "research_manager"
+    end
+
+    factory :admin_user do
+      role "admin"
     end
   end
 end
