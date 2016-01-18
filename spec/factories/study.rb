@@ -11,8 +11,8 @@ FactoryGirl.define do
       concept_stage = StudyStage.find_by_name("Concept")
       study.study_stage = concept_stage || create(:concept_stage)
 
-      rct_stage = StudyType.find_by_name("Randomised controlled trial (RCT)")
-      study.study_type = rct_stage || create(:randomised_type)
+      rct_type = StudyType.find_by_name("Randomised controlled trial (RCT)")
+      study.study_type = rct_type || create(:randomised_type)
 
       stable_setting = StudySetting.find_by_name("Stable")
       study.study_setting = stable_setting || create(:stable_setting)
