@@ -19,7 +19,7 @@ FactoryGirl.define do
     end
 
     factory :withdrawn_postponed_stage do
-      name "Withdrawn/Postponed"
+      name "Withdrawn or Postponed"
     end
   end
 end
