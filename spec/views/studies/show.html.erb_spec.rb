@@ -25,6 +25,13 @@ RSpec.describe "studies/show.html.erb", type: :view do
     expect(rendered).to match(/#{Regexp.escape(study.study_type.name)}/)
   end
 
+  it "shows the country when there is one" do
+    study.country_code = "GB"
+    study.save!
+    render
+    expect(rendered).to match(/United Kingdom/)
+  end
+
   describe "admin edit link" do
     let(:admin_user) { FactoryGirl.create(:admin_user) }
     let(:normal_user) { FactoryGirl.create(:user) }

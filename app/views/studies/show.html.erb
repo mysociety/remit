@@ -18,10 +18,12 @@
                         <h3 class="study-header__details__key">Principal investigator</h3>
                         <p class="study-header__details__value"><a href="/search?pi=janet%20bloggs">Janet Bloggs</a></p>
                     </div>
+                  <% unless @study.country.blank? %>
                     <div>
                         <h3 class="study-header__details__key">Location</h3>
-                        <p class="study-header__details__value"><a href="/search?location=south%20sudan">South Sudan</a></p>
+                        <p class="study-header__details__value"><a href="/search?location=south%20sudan"><%= @study.country %></a></p>
                     </div>
+                  <% end %>
                 </div>
             </div>
             <div class="study-header__secondary">
