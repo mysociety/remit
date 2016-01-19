@@ -34,6 +34,7 @@ gem 'devise'
 
 # For a helpful country field using the ISO3166 country list
 gem 'countries'
+gem 'country_select'
 
 # For an admin site
 gem 'activeadmin', '~> 1.0.0.pre2'
