@@ -27,6 +27,7 @@ RSpec.describe "StudyAdmin" do
     select amr_topic.name, from: "Study topic"
     select randomised_type.name, from: "Study type"
     select stable_setting.name, from: "Study setting"
+    select "United Kingdom", from: "Country"
     within "#study_concept_paper_date_input" do
       select "2015", from: "Year"
       select "January", from: "Month"
@@ -35,7 +36,14 @@ RSpec.describe "StudyAdmin" do
     check "Protocol needed"
     click_button "Create Study"
     expect(page).to have_text "Study was successfully created"
-    expect(Study.find_by_title("Test study title")).not_to be nil
+    study = Study.find_by_title("Test study title")
+    expect(study).not_to be nil
+    expect(study.study_stage).to eq concept_stage
+    expect(study.study_topic).to eq amr_topic
+    expect(study.study_type).to eq randomised_type
+    expect(study.study_setting).to eq stable_setting
+    expect(study.country_code).to eq "GB"
+    expect(study.concept_paper_date).to eq Date.new(2015, 1, 1)
   end
 
   context "with an existing study" do

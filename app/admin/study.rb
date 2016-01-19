@@ -46,7 +46,12 @@ ActiveAdmin.register Study do
       f.input :study_type
       f.input :other_study_type, as: :string
       f.input :study_setting
-      f.input :country_code, as: :string
+      f.input(
+        :country_code,
+        label: "Country",
+        as: :country,
+        include_blank: true,
+        priority_countries: %w(BD CD ET HT NG SS UZ ZW))
       f.input :principal_investigator
       f.input :research_manager
       f.input :research_team
