@@ -105,4 +105,27 @@ RSpec.describe Study, type: :model do
       expect(study).to be_valid
     end
   end
+
+  describe "country field" do
+    let(:study) { FactoryGirl.build(:study) }
+
+    it "returns an ISO3166 country name" do
+      study.country_code = "GB"
+      expect(study.country).to eq "United Kingdom"
+    end
+
+    it "returns nil for an unknown ISO3166 country name" do
+      study.country_code = "XX"
+      expect(study.country).to eq nil
+    end
+
+    it "returns nil when country_code is nil" do
+      expect(study.country).to eq nil
+    end
+
+    it "returns nil when country_code is empty" do
+      study.country_code = ""
+      expect(study.country).to eq nil
+    end
+  end
 end

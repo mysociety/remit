@@ -76,4 +76,10 @@ class Study < ActiveRecord::Base
       errors.add(:other_study_type, message)
     end
   end
+
+  def country
+    return if country_code.blank?
+    country = ISO3166::Country.new(country_code)
+    country.name unless country.nil?
+  end
 end
