@@ -14,13 +14,11 @@ RSpec.describe EnablerBarrier, type: :model do
 
   # Associations
   it do
-    is_expected.to have_and_belong_to_many(:studies).
-      inverse_of(:enabler_barriers)
+    is_expected.to have_many(:study_enabler_barriers).
+      inverse_of(:enabler_barrier)
   end
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_uniqueness_of(:name) }
-
-  it_behaves_like "study_activity_trackable"
 end

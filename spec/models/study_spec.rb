@@ -63,9 +63,9 @@ RSpec.describe Study, type: :model do
   it { is_expected.to belong_to(:study_topic) }
   it { is_expected.to belong_to(:study_setting) }
   it { is_expected.to belong_to(:erb_status) }
-  it { is_expected.to have_and_belong_to_many(:enabler_barriers) }
   it { is_expected.to belong_to(:principal_investigator).class_name(:User) }
   it { is_expected.to belong_to(:research_manager).class_name(:User) }
+  it { is_expected.to have_many(:study_enabler_barriers) }
   it { is_expected.to have_many(:study_impacts) }
   it { is_expected.to have_many(:disseminations) }
   it { is_expected.to have_many(:publications) }
