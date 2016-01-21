@@ -36,6 +36,19 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       date = Date.strptime(row[:concept_paper_date], "%d/%m/%Y")
     end
 
+    country_code = nil
+    unless row[:study_location].blank?
+      study_location = row[:study_location]
+      # The countries gem is very particular about some names
+      if study_location == "Democratic Republic of the Congo"
+        study_location = "Congo, The Democratic Republic Of The"
+      elsif study_location == "Burma"
+        study_location = "Myanmar"
+      end
+      country = ISO3166::Country.find_country_by_name(study_location)
+      country_code = country.alpha2 unless country.nil?
+    end
+
     Study.create!(
       reference_number: row[:study_reference_],
       title: row[:study_title],
@@ -47,7 +60,8 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       # This isn't specified in the CSV at all, so just assume a value
       protocol_needed: true,
       # This isn't specified either
-      study_setting: default_setting
+      study_setting: default_setting,
+      country_code: country_code
     )
   end
 end
