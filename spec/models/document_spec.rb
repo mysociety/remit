@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/study_activity_trackable_shared_examples"
 
 RSpec.describe Document, type: :model do
   # Columns
@@ -18,4 +19,6 @@ RSpec.describe Document, type: :model do
   # Validation
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:document_type) }
+
+  it_behaves_like "study_activity_trackable"
 end

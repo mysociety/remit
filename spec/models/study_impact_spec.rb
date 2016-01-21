@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/study_activity_trackable_shared_examples"
 
 RSpec.describe StudyImpact, type: :model do
   # Columns
@@ -23,4 +24,6 @@ RSpec.describe StudyImpact, type: :model do
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:impact_type) }
   it { is_expected.to validate_presence_of(:description) }
+
+  it_behaves_like "study_activity_trackable"
 end
