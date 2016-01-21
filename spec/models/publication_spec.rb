@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/study_activity_trackable_shared_examples"
 
 RSpec.describe Publication, type: :model do
   # Columns
@@ -29,4 +30,6 @@ RSpec.describe Publication, type: :model do
   it { is_expected.to validate_presence_of(:article_title) }
   it { is_expected.to validate_presence_of(:book_or_journal_title) }
   it { is_expected.to validate_presence_of(:publication_year) }
+
+  it_behaves_like "study_activity_trackable"
 end

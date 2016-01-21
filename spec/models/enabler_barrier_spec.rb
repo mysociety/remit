@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/study_activity_trackable_shared_examples"
 
 RSpec.describe EnablerBarrier, type: :model do
   # Columns
@@ -20,4 +21,6 @@ RSpec.describe EnablerBarrier, type: :model do
   # Validation
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_uniqueness_of(:name) }
+
+  it_behaves_like "study_activity_trackable"
 end

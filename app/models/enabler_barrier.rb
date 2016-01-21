@@ -14,6 +14,8 @@
 #
 
 class EnablerBarrier < ActiveRecord::Base
+  include StudyActivityTrackable
+
   has_and_belongs_to_many :studies, inverse_of: :enabler_barriers
 
   validates :name, presence: true, uniqueness: true

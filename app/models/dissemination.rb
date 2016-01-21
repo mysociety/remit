@@ -20,6 +20,8 @@
 # rubocop:enable Metrics/LineLength
 
 class Dissemination < ActiveRecord::Base
+  include StudyActivityTrackable
+
   belongs_to :dissemination_category, inverse_of: :disseminations
   belongs_to :study, inverse_of: :disseminations
 
