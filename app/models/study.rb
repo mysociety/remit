@@ -55,13 +55,13 @@ class Study < ActiveRecord::Base
   belongs_to :study_topic, inverse_of: :studies
   belongs_to :study_setting, inverse_of: :studies
   belongs_to :erb_status, inverse_of: :studies
-  has_and_belongs_to_many :enabler_barriers, inverse_of: :studies
   belongs_to :principal_investigator,
              class_name: :User,
              inverse_of: :principal_investigator_studies
   belongs_to :research_manager,
              class_name: :User,
              inverse_of: :research_manager_studies
+  has_many :study_enabler_barriers, inverse_of: :study
   has_many :study_impacts, inverse_of: :study
   has_many :disseminations, inverse_of: :study
   has_many :publications, inverse_of: :study

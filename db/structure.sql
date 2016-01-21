@@ -277,16 +277,6 @@ ALTER SEQUENCE enabler_barriers_id_seq OWNED BY enabler_barriers.id;
 
 
 --
--- Name: enabler_barriers_studies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE enabler_barriers_studies (
-    enabler_barrier_id integer NOT NULL,
-    study_id integer NOT NULL
-);
-
-
---
 -- Name: erb_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -477,6 +467,39 @@ CREATE SEQUENCE studies_id_seq
 --
 
 ALTER SEQUENCE studies_id_seq OWNED BY studies.id;
+
+
+--
+-- Name: study_enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE study_enabler_barriers (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    enabler_barrier_id integer NOT NULL,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: study_enabler_barriers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE study_enabler_barriers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: study_enabler_barriers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE study_enabler_barriers_id_seq OWNED BY study_enabler_barriers.id;
 
 
 --
@@ -807,6 +830,13 @@ ALTER TABLE ONLY studies ALTER COLUMN id SET DEFAULT nextval('studies_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY study_enabler_barriers ALTER COLUMN id SET DEFAULT nextval('study_enabler_barriers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY study_impacts ALTER COLUMN id SET DEFAULT nextval('study_impacts_id_seq'::regclass);
 
 
@@ -946,6 +976,14 @@ ALTER TABLE ONLY publications
 
 ALTER TABLE ONLY studies
     ADD CONSTRAINT studies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: study_enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT study_enabler_barriers_pkey PRIMARY KEY (id);
 
 
 --
@@ -1096,20 +1134,6 @@ CREATE UNIQUE INDEX index_enabler_barriers_on_name ON enabler_barriers USING btr
 
 
 --
--- Name: index_enabler_barriers_studies_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_enabler_barriers_studies_on_enabler_barrier_id ON enabler_barriers_studies USING btree (enabler_barrier_id);
-
-
---
--- Name: index_enabler_barriers_studies_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_enabler_barriers_studies_on_study_id ON enabler_barriers_studies USING btree (study_id);
-
-
---
 -- Name: index_erb_statuses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1184,6 +1208,20 @@ CREATE INDEX index_studies_on_study_topic_id ON studies USING btree (study_topic
 --
 
 CREATE INDEX index_studies_on_study_type_id ON studies USING btree (study_type_id);
+
+
+--
+-- Name: index_study_enabler_barriers_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_enabler_barriers_on_enabler_barrier_id ON study_enabler_barriers USING btree (enabler_barrier_id);
+
+
+--
+-- Name: index_study_enabler_barriers_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_enabler_barriers_on_study_id ON study_enabler_barriers USING btree (study_id);
 
 
 --
@@ -1335,6 +1373,14 @@ ALTER TABLE ONLY studies
 
 
 --
+-- Name: fk_rails_81b054efe8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT fk_rails_81b054efe8 FOREIGN KEY (enabler_barrier_id) REFERENCES enabler_barriers(id);
+
+
+--
 -- Name: fk_rails_84b1d4daed; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1391,6 +1437,14 @@ ALTER TABLE ONLY documents
 
 
 --
+-- Name: fk_rails_eb4617db9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT fk_rails_eb4617db9d FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
 -- Name: fk_rails_fd8844a90c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1411,4 +1465,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160114173551');
 INSERT INTO schema_migrations (version) VALUES ('20160114175311');
 
 INSERT INTO schema_migrations (version) VALUES ('20160119150601');
+
+INSERT INTO schema_migrations (version) VALUES ('20160121123326');
 
