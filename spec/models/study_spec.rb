@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/matchers/have_latest_activity"
 
 RSpec.describe Study, type: :model do
   # Columns
@@ -126,6 +127,146 @@ RSpec.describe Study, type: :model do
     it "returns nil when country_code is empty" do
       study.country_code = ""
       expect(study.country).to eq nil
+    end
+  end
+
+  describe "activity log" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    context "when a study is created" do
+      it "creates a 'created' log entry" do
+        expect(study.reload.activities.first.key).to eq "study.created"
+      end
+
+      it "only creates one log entry" do
+        expect(study.reload.activities.length).to eq 1
+      end
+    end
+
+    context "given an existing study" do
+      let(:protocol_stage) { FactoryGirl.create(:protocol_stage) }
+      let(:accept_status) { FactoryGirl.create(:accept) }
+      let(:pi) { FactoryGirl.create(:user) }
+      let(:rm) { FactoryGirl.create(:user) }
+
+      it "doesn't create any activities when nothing changes" do
+        study.save!
+        expect(study.reload.activities.length).to eq 1
+      end
+
+      it "logs changes to the title" do
+        old_title = study.title
+        study.title = "Some new title"
+        study.save!
+        study.reload
+        expect(study.activities.length).to eq 2
+        expect(study).to have_latest_activity("study.title_changed",
+                                              attribute: "title",
+                                              before: old_title,
+                                              after: study.title)
+      end
+
+      it "logs changes to the study stage" do
+        old_stage = study.study_stage
+        study.study_stage = protocol_stage
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity("study.study_stage_id_changed",
+                                              attribute: "study_stage_id",
+                                              before: old_stage.id,
+                                              after: protocol_stage.id)
+      end
+
+      it "logs changes to the erb status" do
+        study.erb_status = accept_status
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity("study.erb_status_id_changed",
+                                              attribute: "erb_status_id",
+                                              before: nil,
+                                              after: accept_status.id)
+      end
+
+      it "logs changes to the principal investigator" do
+        study.principal_investigator = pi
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          "study.principal_investigator_id_changed",
+          attribute: "principal_investigator_id",
+          before: nil,
+          after: pi.id)
+      end
+
+      it "logs changes to the research manager" do
+        study.research_manager = rm
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          "study.research_manager_id_changed",
+          attribute: "research_manager_id",
+          before: nil,
+          after: rm.id)
+      end
+
+      it "logs changes to the local erb approved date" do
+        study.local_erb_approved = Date.new(2015, 1, 1)
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          "study.local_erb_approved_changed",
+          attribute: "local_erb_approved",
+          before: nil,
+          after: Date.new(2015, 1, 1))
+      end
+
+      it "logs changes to the local erb submitted date" do
+        study.local_erb_submitted = Date.new(2015, 1, 1)
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          "study.local_erb_submitted_changed",
+          attribute: "local_erb_submitted",
+          before: nil,
+          after: Date.new(2015, 1, 1))
+      end
+
+      it "logs changes to the completed date" do
+        study.completed = Date.new(2015, 1, 1)
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity("study.completed_changed",
+                                              attribute: "completed",
+                                              before: nil,
+                                              after: Date.new(2015, 1, 1))
+      end
+
+      it "creates separate log entries for multiple changes at once" do
+        old_title = study.title
+        study.title = "Some new title"
+        study.erb_status = accept_status
+        study.save!
+        expect(study.reload.activities.length).to eq 3
+        activities = study.reload.activities.last(2)
+
+        expect(activities[0].key).to eq "study.title_changed"
+        expect(activities[0].parameters[:attribute]).to eq "title"
+        expect(activities[0].parameters[:before]).to eq old_title
+        expect(activities[0].parameters[:after]).to eq study.title
+
+        expect(activities[1].key).to eq "study.erb_status_id_changed"
+        expect(activities[1].parameters[:attribute]).to eq "erb_status_id"
+        expect(activities[1].parameters[:before]).to eq nil
+        expect(activities[1].parameters[:after]).to eq accept_status.id
+      end
     end
   end
 end
