@@ -18,6 +18,8 @@
 #
 
 class Publication < ActiveRecord::Base
+  include StudyActivityTrackable
+
   belongs_to :study, inverse_of: :publications
 
   validates :lead_author, presence: true

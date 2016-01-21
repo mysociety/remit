@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/study_activity_trackable_shared_examples"
 
 RSpec.describe Dissemination, type: :model do
   # Columns
@@ -98,4 +99,6 @@ RSpec.describe Dissemination, type: :model do
       expect(category).to be_valid
     end
   end
+
+  it_behaves_like "study_activity_trackable"
 end

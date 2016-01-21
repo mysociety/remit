@@ -8,6 +8,7 @@ AllCops:
     - "Gemfile.lock"
     - "Rakefile"
     - "config.ru"
+    - "db/migrate/*"
   UseCache: false
 Style/CollectionMethods:
   Description: Preferred collection methods.

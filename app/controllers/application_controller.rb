@@ -1,7 +1,12 @@
 class ApplicationController < ActionController::Base
+  # Use PublicActivity's StoreController so that we can default to all
+  # activities belonging to the current_user
+  include PublicActivity::StoreController
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
   # Configure Devise's permitted params
   before_action :configure_permitted_parameters, if: :devise_controller?
 

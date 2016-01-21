@@ -75,6 +75,44 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 
 --
+-- Name: activities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE activities (
+    id integer NOT NULL,
+    trackable_id integer,
+    trackable_type character varying,
+    owner_id integer,
+    owner_type character varying,
+    key character varying,
+    parameters text,
+    recipient_id integer,
+    recipient_type character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
+
+
+--
 -- Name: dissemination_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -236,16 +274,6 @@ CREATE SEQUENCE enabler_barriers_id_seq
 --
 
 ALTER SEQUENCE enabler_barriers_id_seq OWNED BY enabler_barriers.id;
-
-
---
--- Name: enabler_barriers_studies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE enabler_barriers_studies (
-    enabler_barrier_id integer NOT NULL,
-    study_id integer NOT NULL
-);
 
 
 --
@@ -439,6 +467,39 @@ CREATE SEQUENCE studies_id_seq
 --
 
 ALTER SEQUENCE studies_id_seq OWNED BY studies.id;
+
+
+--
+-- Name: study_enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE study_enabler_barriers (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    enabler_barrier_id integer NOT NULL,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: study_enabler_barriers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE study_enabler_barriers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: study_enabler_barriers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE study_enabler_barriers_id_seq OWNED BY study_enabler_barriers.id;
 
 
 --
@@ -692,6 +753,13 @@ ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('acti
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY dissemination_categories ALTER COLUMN id SET DEFAULT nextval('dissemination_categories_id_seq'::regclass);
 
 
@@ -762,6 +830,13 @@ ALTER TABLE ONLY studies ALTER COLUMN id SET DEFAULT nextval('studies_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY study_enabler_barriers ALTER COLUMN id SET DEFAULT nextval('study_enabler_barriers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY study_impacts ALTER COLUMN id SET DEFAULT nextval('study_impacts_id_seq'::regclass);
 
 
@@ -813,6 +888,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY active_admin_comments
     ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY activities
+    ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -896,6 +979,14 @@ ALTER TABLE ONLY studies
 
 
 --
+-- Name: study_enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT study_enabler_barriers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: study_impacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -973,6 +1064,27 @@ CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON act
 
 
 --
+-- Name: index_activities_on_owner_id_and_owner_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_owner_id_and_owner_type ON activities USING btree (owner_id, owner_type);
+
+
+--
+-- Name: index_activities_on_recipient_id_and_recipient_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_recipient_id_and_recipient_type ON activities USING btree (recipient_id, recipient_type);
+
+
+--
+-- Name: index_activities_on_trackable_id_and_trackable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_trackable_id_and_trackable_type ON activities USING btree (trackable_id, trackable_type);
+
+
+--
 -- Name: index_dissemination_categories_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1019,20 +1131,6 @@ CREATE INDEX index_documents_on_study_id ON documents USING btree (study_id);
 --
 
 CREATE UNIQUE INDEX index_enabler_barriers_on_name ON enabler_barriers USING btree (name);
-
-
---
--- Name: index_enabler_barriers_studies_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_enabler_barriers_studies_on_enabler_barrier_id ON enabler_barriers_studies USING btree (enabler_barrier_id);
-
-
---
--- Name: index_enabler_barriers_studies_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_enabler_barriers_studies_on_study_id ON enabler_barriers_studies USING btree (study_id);
 
 
 --
@@ -1110,6 +1208,20 @@ CREATE INDEX index_studies_on_study_topic_id ON studies USING btree (study_topic
 --
 
 CREATE INDEX index_studies_on_study_type_id ON studies USING btree (study_type_id);
+
+
+--
+-- Name: index_study_enabler_barriers_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_enabler_barriers_on_enabler_barrier_id ON study_enabler_barriers USING btree (enabler_barrier_id);
+
+
+--
+-- Name: index_study_enabler_barriers_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_enabler_barriers_on_study_id ON study_enabler_barriers USING btree (study_id);
 
 
 --
@@ -1261,6 +1373,14 @@ ALTER TABLE ONLY studies
 
 
 --
+-- Name: fk_rails_81b054efe8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT fk_rails_81b054efe8 FOREIGN KEY (enabler_barrier_id) REFERENCES enabler_barriers(id);
+
+
+--
 -- Name: fk_rails_84b1d4daed; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1317,6 +1437,14 @@ ALTER TABLE ONLY documents
 
 
 --
+-- Name: fk_rails_eb4617db9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT fk_rails_eb4617db9d FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
 -- Name: fk_rails_fd8844a90c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1335,4 +1463,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160108112933');
 INSERT INTO schema_migrations (version) VALUES ('20160114173551');
 
 INSERT INTO schema_migrations (version) VALUES ('20160114175311');
+
+INSERT INTO schema_migrations (version) VALUES ('20160119150601');
+
+INSERT INTO schema_migrations (version) VALUES ('20160121123326');
 

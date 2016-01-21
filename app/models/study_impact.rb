@@ -16,6 +16,8 @@
 #
 
 class StudyImpact < ActiveRecord::Base
+  include StudyActivityTrackable
+
   belongs_to :study, inverse_of: :study_impacts
   belongs_to :impact_type, inverse_of: :study_impacts
   validates :study, presence: true

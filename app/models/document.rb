@@ -15,6 +15,8 @@
 #
 
 class Document < ActiveRecord::Base
+  include StudyActivityTrackable
+
   belongs_to :document_type, inverse_of: :documents
   belongs_to :study, inverse_of: :documents
   validates :document_type, presence: true
