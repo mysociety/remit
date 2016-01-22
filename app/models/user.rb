@@ -22,7 +22,6 @@
 #  name                   :text             not null
 #  msf_location_id        :integer
 #  external_location      :text
-#  role                   :enum             default("normal_user"), not null
 #  is_admin               :boolean          default(FALSE), not null
 #
 # Indexes
