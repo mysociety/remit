@@ -17,6 +17,11 @@ RSpec.describe "studies/show.html.erb", type: :view do
     expect(rendered).to match(/#{Regexp.escape(study.study_stage_label)}/)
   end
 
+  it "shows the study stage since date" do
+    expected_date = study.study_stage_since.to_formatted_s(:short_ordinal)
+    expect(rendered).to match(/Since #{Regexp.escape(expected_date)}/)
+  end
+
   it "shows the study topic" do
     expect(rendered).to match(/#{Regexp.escape(study.study_topic.name)}/)
   end

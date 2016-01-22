@@ -278,4 +278,58 @@ RSpec.describe Study, type: :model do
       end
     end
   end
+
+  describe "#latest_stage_change" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    it "returns nil when there's been no stage change" do
+      expect(study.latest_stage_change).to be nil
+    end
+
+    it "returns the latest stage change" do
+      study.study_stage = "protocol_erb"
+      study.save!
+      study.study_stage = "delivery"
+      study.save!
+
+      change = study.latest_stage_change
+      expect(change.key).to eq "study.study_stage_changed"
+      expect(change.parameters[:before]).to eq "protocol_erb"
+      expect(change.parameters[:after]).to eq "delivery"
+    end
+  end
+
+  describe "#study_stage_since" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    it "returns created_at when there's been no stage change" do
+      expect(study.study_stage_since).to eq study.created_at
+    end
+
+    it "returns the time of the latest study change" do
+      study.study_stage = "protocol_erb"
+      study.save!
+      study.study_stage = "delivery"
+      study.save!
+
+      latest_change = study.latest_stage_change
+      expect(study.study_stage_since).to eq latest_change.created_at
+    end
+  end
 end

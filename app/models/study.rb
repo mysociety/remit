@@ -135,4 +135,22 @@ class Study < ActiveRecord::Base
   def study_stage_label
     STUDY_STAGE_LABELS[study_stage.to_sym]
   end
+
+  # When did this study enter the stage it's currently in?
+  def study_stage_since
+    study_change = latest_stage_change
+    if study_change.blank?
+      created_at
+    else
+      study_change.created_at
+    end
+  end
+
+  # Return the most recent study change activity
+  def latest_stage_change
+    activities.
+      where(key: "study.study_stage_changed").
+      order(created_at: :desc).
+      take
+  end
 end
