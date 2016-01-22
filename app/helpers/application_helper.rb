@@ -38,6 +38,21 @@ module ApplicationHelper
     timeline
   end
 
+  # Return a string that describes a transition from one study stage to
+  # another, for printing
+  def study_stage_transition(before = nil, after = nil)
+    # We don't need a state machine, because actually we only care about
+    # either the end state or the before state for the purposes of this
+    unless after.blank?
+      label = after_stage_transitions(after)
+      return label unless label.blank?
+    end
+
+    unless before.blank?
+      return before_stage_transitions(before)
+    end
+  end
+
   protected
 
   def initial_study_timeline(stages)
@@ -71,5 +86,20 @@ module ApplicationHelper
       end
     end
     timeline
+  end
+
+  def after_stage_transitions(after)
+    case after
+    when "completion" then "Study completed"
+    when "withdrawn_postponed" then "Study was withdrawn or postponed"
+    end
+  end
+
+  def before_stage_transitions(before)
+    case before
+    when "concept" then "Concept note approved"
+    when "protocol_erb" then "Protocol passed ERB"
+    when "delivery" then "Study delivery ended"
+    end
   end
 end

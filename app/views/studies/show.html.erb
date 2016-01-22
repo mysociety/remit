@@ -36,9 +36,7 @@
                 </div>
                 <div class="site-header__card">
                     <h3>Most recent action:</h3>
-                    <p class="site-header__recent">Protocol revision requested</p>
-                    <p class="site-header__recent-since">10th November</p>
-                    <p><a href="#">Read ERB feedback document &raquo;</a></p>
+                    <%= render_activity @study.activities.last, layout: :most_recent %>
                 </div>
             </div>
         </div>
@@ -59,66 +57,8 @@
                 </div>
                 <div class="study-main__timeline timeline">
                     <ol reversed>
-                        <li class="timeline__item timeline__item--negative">
-                            <h2 class="timeline__item__title">
-                                Protocol revision requested
-                                <span class="timeline__item__date">
-                                    10th November 2015
-                                </span>
-                            </h2>
-                            <p class="timeline__item__details">
-                                <a href="#">Read ERB feedback document &raquo;</a>
-                            </p>
-                        </li>
-                        <li class="timeline__item timeline__item--affirmative">
-                            <h2 class="timeline__item__title">
-                                Protocol review form submitted
-                                <span class="timeline__item__date">
-                                    28th October 2015
-                                </span>
-                            </h2>
-                            <p class="timeline__item__details">
-                                <a href="#">Read protocol review form &raquo;</a>
-                            </p>
-                        </li>
-                        <li class="timeline__item">
-                            <p class="timeline__item__details">
-                                Note left by
-                                <a href="#">Joe Smith (Medical Director)</a>
-                                <span class="timeline__item__date">
-                                    11th October 2015
-                                </span>
-                            </p>
-                            <blockquote class="timeline__item__note">
-                                <p>
-                                    Thankyou for the detailed concept doc, Janet.
-                                    I think this study could fit very well into
-                                    research strand 4A. I suggest you contact
-                                    Robert Black about sampling, he might have
-                                    some useful experience in South Sudan.
-                                </p>
-                            </blockquote>
-                        </li>
-                        <li class="timeline__item timeline__item--affirmative">
-                            <h2 class="timeline__item__title">
-                                Concept note added
-                                <span class="timeline__item__date">
-                                    4th October 2015
-                                </span>
-                            </h2>
-                            <p class="timeline__item__details">
-                                <a href="#">Read concept note &raquo;</a>
-                            </p>
-                        </li>
-                        <li class="timeline__item">
-                            <p class="timeline__item__details">
-                                Study created by
-                                <a href="#">Kim West (Administrator)</a>
-                                <span class="timeline__item__date">
-                                    4th October 2015
-                                </span>
-                            </p>
-                        </li>
+                        <%= render_activities @study.activities.reverse,
+                                              layout: :timeline %>
                     </ol>
                 </div>
             </div>
