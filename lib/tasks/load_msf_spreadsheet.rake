@@ -7,18 +7,18 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
                                    converters: :all)
   default_topic = StudyTopic.find_by_name!("Other")
   default_concept_paper_date = Time.zone.today
-  default_stage = StudyStage.find_by_name!("Concept")
+  default_stage = "concept"
   default_setting = StudySetting.find_by_name!("Stable")
   rows.each do |row|
     next if row[:study_title].blank? || row[:study_reference_].blank?
 
     # We need to map some of the spreadsheet values to the new data structure
     stage = row[:study_status]
-    stage = "Delivery" if stage == "Active"
-    stage = "Protocol & ERB" if stage == "Protocol review"
-    stage = "Concept" if stage == "Concept paper"
-    stage = "Completion" if stage == "Completed"
-    stage = "Withdrawn or Postponed" if stage == "Postponed / withdrawn"
+    stage = "delivery" if stage == "Active"
+    stage = "protocol_erb" if stage == "Protocol review"
+    stage = "concept" if stage == "Concept paper"
+    stage = "completion" if stage == "Completed"
+    stage = "withdrawn_postponed" if stage == "Postponed / withdrawn"
 
     unless row[:study_type].blank?
       type = row[:study_type].gsub(/\s\(.*\)/, "")
@@ -54,7 +54,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       title: row[:study_title],
       study_type: type,
       other_study_type: other_study_type,
-      study_stage: StudyStage.find_by_name(stage) || default_stage,
+      study_stage: Study.study_stages[stage] || default_stage,
       concept_paper_date: date,
       study_topic: StudyTopic.find_by_name(row[:disease]) || default_topic,
       # This isn't specified in the CSV at all, so just assume a value

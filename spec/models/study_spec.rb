@@ -4,8 +4,8 @@ require "support/matchers/have_latest_activity"
 RSpec.describe Study, type: :model do
   # Columns
   it do
-    is_expected.to have_db_column(:study_stage_id).of_type(:integer).
-      with_options(null: false)
+    is_expected.to have_db_column(:study_stage).of_type(:enum).
+      with_options(null: false, default: "concept")
   end
   it do
     is_expected.to have_db_column(:title).of_type(:text).
@@ -58,7 +58,6 @@ RSpec.describe Study, type: :model do
   end
 
   # Associations
-  it { is_expected.to belong_to(:study_stage) }
   it { is_expected.to belong_to(:study_type) }
   it { is_expected.to belong_to(:study_topic) }
   it { is_expected.to belong_to(:study_setting) }
@@ -82,6 +81,17 @@ RSpec.describe Study, type: :model do
   it do
     is_expected.to validate_inclusion_of(:protocol_needed).
       in_array([true, false])
+  end
+  it do
+    enum_options = {
+      concept: "concept",
+      protocol_erb: "protocol_erb",
+      delivery: "delivery",
+      output: "output",
+      completion: "completion",
+      withdrawn_postponed: "withdrawn_postponed",
+    }
+    is_expected.to define_enum_for(:study_stage).with(enum_options)
   end
 
   context "when the when study_type field is 'Other'" do
@@ -152,7 +162,6 @@ RSpec.describe Study, type: :model do
     end
 
     context "given an existing study" do
-      let(:protocol_stage) { FactoryGirl.create(:protocol_stage) }
       let(:accept_status) { FactoryGirl.create(:accept) }
       let(:pi) { FactoryGirl.create(:user) }
       let(:rm) { FactoryGirl.create(:user) }
@@ -176,13 +185,13 @@ RSpec.describe Study, type: :model do
 
       it "logs changes to the study stage" do
         old_stage = study.study_stage
-        study.study_stage = protocol_stage
+        study.study_stage = :protocol_erb
         study.save!
         expect(study.reload.activities.length).to eq 2
-        expect(study).to have_latest_activity("study.study_stage_id_changed",
-                                              attribute: "study_stage_id",
-                                              before: old_stage.id,
-                                              after: protocol_stage.id)
+        expect(study).to have_latest_activity("study.study_stage_changed",
+                                              attribute: "study_stage",
+                                              before: old_stage,
+                                              after: "protocol_erb")
       end
 
       it "logs changes to the erb status" do

@@ -6,14 +6,12 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Studies over 12 months old that haven't completed" do
           ul do
-            completion = StudyStage.find_by_name!("Completion")
-            withdrawn = StudyStage.find_by_name!("Withdrawn or Postponed")
-            query = "concept_paper_date < :year_ago AND study_stage_id NOT " \
-              "IN (:completed_stage_ids)"
+            query = "concept_paper_date < :year_ago AND " \
+                    "study_stage NOT IN (:completed_stages)"
             Study.where(
               query,
               year_ago: Time.zone.today - 1.year,
-              completed_stage_ids: [completion.id, withdrawn.id]
+              completed_stages: %w(completion withdrawn_postponed)
             ).limit(5).map do |study|
               li link_to(study.title, admin_study_path(study))
             end

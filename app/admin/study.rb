@@ -1,5 +1,5 @@
 ActiveAdmin.register Study do
-  permit_params :study_stage_id, :title, :reference_number, :study_type_id,
+  permit_params :study_stage, :title, :reference_number, :study_type_id,
                 :study_setting_id, :research_team, :concept_paper_date,
                 :protocol_needed, :pre_approved_protocol, :erb_status_id,
                 :erb_reference, :erb_approval_expiry, :local_erb_submitted,
@@ -20,28 +20,16 @@ ActiveAdmin.register Study do
   filter :concept_paper_date
 
   scope :all, default: true
-  scope("Concept") do |scope|
-    scope.where(study_stage: StudyStage.find_by_name!("Concept"))
-  end
-  scope("Protocol & ERB") do |scope|
-    scope.where(study_stage: StudyStage.find_by_name!("Protocol & ERB"))
-  end
-  scope("Delivery") do |scope|
-    scope.where(study_stage: StudyStage.find_by_name!("Delivery"))
-  end
-  scope("Output") do |scope|
-    scope.where(study_stage: StudyStage.find_by_name!("Output"))
-  end
-  scope("Withdrawn or Postponed") do |scope|
-    stage = StudyStage.find_by_name!("Withdrawn or Postponed")
-    scope.where(study_stage: stage)
+  Study::STUDY_STAGE_LABELS.each do |stage, label|
+    scope label, stage
   end
 
   form do |f|
     f.inputs "Details" do
       f.input :title, as: :string
       f.input :reference_number, as: :string
-      f.input :study_stage
+      f.input :study_stage, as: :select,
+                            collection: Study::STUDY_STAGE_OPTIONS
       f.input :study_topic
       f.input :study_type
       f.input :other_study_type, as: :string

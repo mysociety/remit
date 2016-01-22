@@ -2,13 +2,6 @@ require "rails_helper"
 require "support/user_account_feature_helper"
 
 RSpec.describe "StudyAdmin" do
-  # We need all the stages just for the studies dashboard to work
-  let!(:concept_stage) { FactoryGirl.create(:concept_stage) }
-  let!(:protocol_stage) { FactoryGirl.create(:protocol_stage) }
-  let!(:output_stage) { FactoryGirl.create(:output_stage) }
-  let!(:delivery_stage) { FactoryGirl.create(:delivery_stage) }
-  let!(:completion_stage) { FactoryGirl.create(:completion_stage) }
-  let!(:withdrawn_stage) { FactoryGirl.create(:withdrawn_postponed_stage) }
   let!(:amr_topic) { FactoryGirl.create(:amr_topic) }
   let!(:randomised_type) { FactoryGirl.create(:randomised_type) }
   let!(:stable_setting) { FactoryGirl.create(:stable_setting) }
@@ -23,7 +16,7 @@ RSpec.describe "StudyAdmin" do
     click_link "New Study"
     fill_in "Title", with: "Test study title"
     fill_in "Reference number", with: "OCA123-45"
-    select concept_stage.name, from: "Study stage"
+    select Study::STUDY_STAGE_LABELS[:concept], from: "Study stage"
     select amr_topic.name, from: "Study topic"
     select randomised_type.name, from: "Study type"
     select stable_setting.name, from: "Study setting"
@@ -38,7 +31,7 @@ RSpec.describe "StudyAdmin" do
     expect(page).to have_text "Study was successfully created"
     study = Study.find_by_title("Test study title")
     expect(study).not_to be nil
-    expect(study.study_stage).to eq concept_stage
+    expect(study.study_stage).to eq "concept"
     expect(study.study_topic).to eq amr_topic
     expect(study.study_type).to eq randomised_type
     expect(study.study_setting).to eq stable_setting
@@ -56,10 +49,10 @@ RSpec.describe "StudyAdmin" do
 
     it "allows you to edit the study" do
       click_link "Edit", href: edit_admin_study_path(study)
-      select protocol_stage.name, from: "Study stage"
+      select Study::STUDY_STAGE_LABELS[:protocol_erb], from: "Study stage"
       click_button "Update Study"
       expect(page).to have_text "Study was successfully updated"
-      expect(study.reload.study_stage).to eq protocol_stage
+      expect(study.reload.study_stage).to eq "protocol_erb"
     end
 
     it "allows you to delete the study" do

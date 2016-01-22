@@ -42,7 +42,7 @@
                 <div class="list-of-things__list">
                   <% @studies.each do |study| %>
                     <div class="list-of-things__list__item list-of-things__list__item--study">
-                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage.name %></p>
+                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage_label %></p>
                     <h2 class="list-of-things__list__item__title">
                         <a href="<%= study_path study %>"><%= study.title %></a>
                     </h2>

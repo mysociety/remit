@@ -61,9 +61,6 @@ RSpec.describe "User accounts" do
     end
 
     it "Redirects admin users to the dashboard" do
-      # The dashboard lists studies in two states, so we need them in the db
-      FactoryGirl.create(:completion_stage)
-      FactoryGirl.create(:withdrawn_postponed_stage)
       visit destroy_user_session_path
       sign_in_account(admin_user.email)
       expect(current_path).to eq admin_dashboard_path

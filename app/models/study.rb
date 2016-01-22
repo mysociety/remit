@@ -3,7 +3,6 @@
 # Table name: studies
 #
 #  id                          :integer          not null, primary key
-#  study_stage_id              :integer          not null
 #  title                       :text             not null
 #  reference_number            :text             not null
 #  study_type_id               :integer          not null
@@ -28,6 +27,7 @@
 #  country_code                :text
 #  feedback_and_suggestions    :text
 #  study_topic_id              :integer          not null
+#  study_stage                 :enum             default("concept"), not null
 #
 # Indexes
 #
@@ -35,7 +35,6 @@
 #  index_studies_on_principal_investigator_id  (principal_investigator_id)
 #  index_studies_on_research_manager_id        (research_manager_id)
 #  index_studies_on_study_setting_id           (study_setting_id)
-#  index_studies_on_study_stage_id             (study_stage_id)
 #  index_studies_on_study_topic_id             (study_topic_id)
 #  index_studies_on_study_type_id              (study_type_id)
 #
@@ -44,13 +43,33 @@ class Study < ActiveRecord::Base
   # Include the base class for PublicActivity because we don't want to track
   # everything about this, just some specific things
   include PublicActivity::Common
-  ACTIVITY_TRACKED_ATTRS = %w(study_stage_id erb_status_id title
+  ACTIVITY_TRACKED_ATTRS = %w(study_stage erb_status_id title
                               principal_investigator_id research_manager_id
                               local_erb_submitted local_erb_approved
                               completed).freeze
+
+  STUDY_STAGE_LABELS = {
+    concept: "Concept",
+    protocol_erb: "Protocol & ERB",
+    delivery: "Delivery",
+    output: "Output",
+    completion: "Completion",
+    withdrawn_postponed: "Withdrawn or Postponed",
+  }.freeze
+  # Options for dropdowns have to be label => value
+  STUDY_STAGE_OPTIONS = STUDY_STAGE_LABELS.invert.freeze
+
   after_save :log_changes
 
-  belongs_to :study_stage, inverse_of: :studies
+  enum study_stage: {
+    concept: "concept",
+    protocol_erb: "protocol_erb",
+    delivery: "delivery",
+    output: "output",
+    completion: "completion",
+    withdrawn_postponed: "withdrawn_postponed",
+  }
+
   belongs_to :study_type, inverse_of: :studies
   belongs_to :study_topic, inverse_of: :studies
   belongs_to :study_setting, inverse_of: :studies
@@ -111,5 +130,9 @@ class Study < ActiveRecord::Base
         create_activity key, parameters: params, owner: owner
       end
     end
+  end
+
+  def study_stage_label
+    STUDY_STAGE_LABELS[study_stage.to_sym]
   end
 end

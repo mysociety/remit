@@ -8,18 +8,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# Study Stages
-StudyStage.create(
-  [
-    { name: "Concept" },
-    { name: "Protocol & ERB" },
-    { name: "Delivery" },
-    { name: "Output" },
-    { name: "Completion" },
-    { name: "Withdrawn or Postponed" },
-  ]
-)
-
 # Study Types
 StudyType.create(
   [

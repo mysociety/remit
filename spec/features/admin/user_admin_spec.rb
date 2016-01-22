@@ -2,9 +2,6 @@ require "rails_helper"
 require "support/user_account_feature_helper"
 
 RSpec.describe "UserAdmin" do
-  # We need these two stages just for the admin dashboard to work
-  let!(:completion_stage) { FactoryGirl.create(:completion_stage) }
-  let!(:withdrawn_stage) { FactoryGirl.create(:withdrawn_postponed_stage) }
   let(:admin_user) { FactoryGirl.create(:admin_user) }
 
   before do
