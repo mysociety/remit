@@ -14,6 +14,8 @@
 #
 
 class StudyNote < ActiveRecord::Base
+  include StudyActivityTrackable
+
   belongs_to :study, inverse_of: :study_notes
 
   validates :study, presence: true
