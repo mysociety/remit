@@ -17,9 +17,8 @@ RSpec.shared_examples_for "study_activity_trackable" do
     resource = FactoryGirl.create(model, study: study)
     study.reload
     expect(study.activities.length).to eq 2
-    expect(study).to have_latest_activity("study.#{model}_added",
-                                          type: described_class.to_s,
-                                          id: resource.id)
+    expect(study).to have_latest_activity("study.#{model}_added", {})
+    expect(study.activities.first.related_content).to eq resource
   end
 
   it "logs an activity on the study if created via the study's association" do
@@ -37,8 +36,7 @@ RSpec.shared_examples_for "study_activity_trackable" do
     resource = association.create!(attrs)
     study.reload
     expect(study.activities.length).to eq 2
-    expect(study).to have_latest_activity("study.#{model}_added",
-                                          type: described_class.to_s,
-                                          id: resource.id)
+    expect(study).to have_latest_activity("study.#{model}_added", {})
+    expect(study.activities.first.related_content).to eq resource
   end
 end
