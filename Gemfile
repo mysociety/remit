@@ -42,6 +42,9 @@ gem 'activeadmin', '~> 1.0.0.pre2'
 # For the list of "activity" on studies
 gem 'public_activity'
 
+# For file uploads
+gem "paperclip", "~> 4.3"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
