@@ -172,4 +172,68 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#study_stage_transition" do
+    let(:non_final_stages) do
+      Study.study_stages.select do |s|
+        s != "withdrawn_postponed" && s != "completed"
+      end
+    end
+
+    context "when the after stage is withdrawn" do
+      it "returns 'Study was withdrawn or postponed'" do
+        non_final_stages.each do |stage|
+          expected_text = "Study was withdrawn or postponed"
+          actual_text = study_stage_transition(stage, "withdrawn_postponed")
+          expect(actual_text).to eq expected_text
+        end
+      end
+    end
+
+    context "when the after stage is completed" do
+      it "returns 'Study completed'" do
+        non_final_stages.each do |stage|
+          expected_text = "Study completed"
+          actual_text = study_stage_transition(stage, "completion")
+          expect(actual_text).to eq expected_text
+        end
+      end
+    end
+
+    context "when the before stage is concept" do
+      it "returns 'Concept note approved'" do
+        non_final_stages.each do |stage|
+          expected_text = "Concept note approved"
+          actual_text = study_stage_transition("concept", stage)
+          expect(actual_text).to eq expected_text
+        end
+      end
+    end
+
+    context "when the before stage is protocol" do
+      it "returns 'Protocol passed ERB'" do
+        non_final_stages.each do |stage|
+          expected_text = "Protocol passed ERB"
+          actual_text = study_stage_transition("protocol_erb", stage)
+          expect(actual_text).to eq expected_text
+        end
+      end
+    end
+
+    context "when the before stage is delivery" do
+      it "returns 'Delivery ended'" do
+        non_final_stages.each do |stage|
+          expected_text = "Study delivery ended"
+          actual_text = study_stage_transition("delivery", stage)
+          expect(actual_text).to eq expected_text
+        end
+      end
+    end
+
+    context "when the stages are nil" do
+      it "returns nil" do
+        expect(study_stage_transition).to be nil
+      end
+    end
+  end
 end
