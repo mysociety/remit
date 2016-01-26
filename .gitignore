@@ -44,3 +44,6 @@
 .ruby-version
 .rbenv-version
 .rvmrc
+
+# Ignore user uploaded files
+public/system
