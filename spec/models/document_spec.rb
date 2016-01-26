@@ -12,6 +12,8 @@ RSpec.describe Document, type: :model do
       with_options(null: false)
   end
 
+  it { should have_attached_file(:document) }
+
   # Associations
   it { is_expected.to belong_to(:document_type).inverse_of(:documents) }
   it { is_expected.to belong_to(:study).inverse_of(:documents) }
@@ -19,6 +21,11 @@ RSpec.describe Document, type: :model do
   # Validation
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:document_type) }
+
+  it do
+    is_expected.to validate_attachment_content_type(:document).
+      allowing(*Document::ALLOWED_CONTENT_TYPES)
+  end
 
   it_behaves_like "study_activity_trackable"
 end
