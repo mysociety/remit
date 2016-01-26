@@ -237,7 +237,11 @@ CREATE TABLE documents (
     document_type_id integer NOT NULL,
     study_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    document_file_name character varying,
+    document_content_type character varying,
+    document_file_size integer,
+    document_updated_at timestamp without time zone
 );
 
 
@@ -1426,4 +1430,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160121123326');
 INSERT INTO schema_migrations (version) VALUES ('20160122111240');
 
 INSERT INTO schema_migrations (version) VALUES ('20160125143207');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126174841');
 
