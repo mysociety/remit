@@ -3,9 +3,11 @@ require "support/devise.rb"
 
 RSpec.describe "studies/show.html.erb", type: :view do
   let(:study) { FactoryGirl.create(:study) }
+  let(:document) { FactoryGirl.build(:document) }
 
   before do
     assign(:study, study)
+    assign(:document, document)
     render
   end
 

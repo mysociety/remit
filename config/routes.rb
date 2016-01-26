@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   get "home/index"
   root "home#index"
 
-  resources :studies, only: :show
+  resources :studies, only: :show do
+    resources :documents, only: :create
+  end
 end
