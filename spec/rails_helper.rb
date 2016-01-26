@@ -8,6 +8,7 @@ end
 require "spec_helper"
 require "rspec/rails"
 require "shoulda/matchers"
+require "paperclip/matchers"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -69,4 +70,7 @@ RSpec.configure do |config|
     other_external = DisseminationCategory.find_by_name("Other external")
     FactoryGirl.create(:other_external) unless other_external
   end
+
+  # Include Paperclip's matchers
+  config.include Paperclip::Shoulda::Matchers
 end
