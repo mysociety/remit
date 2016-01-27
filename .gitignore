@@ -47,3 +47,5 @@
 
 # Ignore user uploaded files
 public/system
+# And the files that get created during tests
+spec/test_files
