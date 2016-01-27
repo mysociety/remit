@@ -22,6 +22,7 @@ RSpec.describe Document, type: :model do
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:document_type) }
 
+  it { is_expected.to validate_attachment_presence(:document) }
   it do
     is_expected.to validate_attachment_content_type(:document).
       allowing(*Document::ALLOWED_CONTENT_TYPES)
