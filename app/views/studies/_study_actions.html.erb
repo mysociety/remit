@@ -1,3 +1,5 @@
+<% @document ||= Document.new %>
+<% @study_note ||= StudyNote.new %>
 <ul>
     <li>
         <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
@@ -10,22 +12,15 @@
     </li>
 </ul>
 
-<input class="houdini-input" type="radio" name="action-sheet-accordion" <%= "checked" if @document.errors.any? %> id="add-document">
+<input class="houdini-input"
+       type="radio"
+       name="action-sheet-accordion"
+       <%= "checked" if @document.errors.any? %>
+       id="add-document">
 
 <%= form_for [@study, @document], html: { class: "action-sheet houdini-target" } do |f| %>
+    <%= render partial: "shared/form_errors", locals: { resource: @document } %>
     <div class="action-sheet__section">
-        <div class="row alert alert-danger">
-          <% if @document.errors.any? %>
-            <p>
-                <%= pluralize(@document.errors.count, "error") %> prevented the form from being saved:
-            </p>
-            <ul>
-            <% @document.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-            </ul>
-          <% end %>
-        </div>
         <div class="row">
             <div class="col-sm-7">
                 <%= f.label :document, "Choose document" %>
@@ -39,7 +34,6 @@
                                         :name,
                                         html: { class: "form-control" } %>
             </div>
-            <%= f.hidden_field :study_id, value: @study.id %>
         </div>
     </div>
     <div class="action-sheet__section action-sheet__section--last">
@@ -57,15 +51,20 @@
     </div>
 <% end %>
 
-<input class="houdini-input" type="radio" name="action-sheet-accordion" id="add-note">
+<input class="houdini-input"
+       type="radio"
+       name="action-sheet-accordion"
+       <%= "checked" if @study_note.errors.any? %>
+       id="add-note">
 
-<form class="action-sheet houdini-target">
+<%= form_for [@study, @study_note], html: { class: "action-sheet houdini-target" } do |f| %>
+    <%= render partial: "shared/form_errors", locals: { resource: @study_note } %>
     <div class="action-sheet__section">
         <div class="row">
-            <p class="col-sm-12">
-                <label for="note-content">Note:</label>
-                <textarea id="note-content" class="form-control"></textarea>
-            </p>
+            <div class="col-sm-12">
+                <%= f.label :notes %>
+                <%= f.text_area :notes, html: { class: "form-control" }%>
+            </div>
         </div>
     </div>
     <div class="action-sheet__section action-sheet__section--last">
@@ -75,11 +74,11 @@
                 This note will be publicly accessible
             </p>
             <p class="col-sm-5 action-sheet__submit">
-                <button class="btn btn-success">Add note</button>
+                <button type="submit" class="btn btn-success">Add note</button>
             </p>
         </div>
     </div>
-</form>
+<% end %>
 
 <input class="houdini-input" type="radio" name="action-sheet-accordion" id="record-output">
 
