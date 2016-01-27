@@ -1,6 +1,6 @@
 <ul>
     <li>
-        <label class="btn btn-default houdini-label<%= " active" unless @document.errors.empty? %>" for="add-document">Add a document</label>
+        <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
     </li>
     <li>
         <label class="btn btn-default houdini-label" for="add-note">Add a note</label>
@@ -10,11 +10,11 @@
     </li>
 </ul>
 
-<input class="houdini-input" type="radio" name="action-sheet-accordion<%= " active" unless @document.errors.empty? %>" id="add-document">
+<input class="houdini-input" type="radio" name="action-sheet-accordion" <%= "checked" if @document.errors.any? %> id="add-document">
 
 <%= form_for [@study, @document], html: { class: "action-sheet houdini-target" } do |f| %>
     <div class="action-sheet__section">
-        <div class="row">
+        <div class="row alert alert-danger">
           <% if @document.errors.any? %>
             <p>
                 <%= pluralize(@document.errors.count, "error") %> prevented the form from being saved:
@@ -27,18 +27,18 @@
           <% end %>
         </div>
         <div class="row">
-            <p class="col-sm-7">
+            <div class="col-sm-7">
                 <%= f.label :document, "Choose document" %>
                 <%= f.file_field :document %>
-            </p>
-            <p class="col-sm-5">
+            </div>
+            <div class="col-sm-5">
                 <%= f.label :document_type %>
                 <%= f.collection_select :document_type_id,
                                         DocumentType.all,
                                         :id,
                                         :name,
                                         html: { class: "form-control" } %>
-            </p>
+            </div>
             <%= f.hidden_field :study_id, value: @study.id %>
         </div>
     </div>

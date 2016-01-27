@@ -104,3 +104,9 @@
     margin-top: 0.5em;
   }
 }
+
+.field_with_errors {
+  display: inline;
+  color: $color-alert-red;
+  border-color: $color-alert-red;
+}
