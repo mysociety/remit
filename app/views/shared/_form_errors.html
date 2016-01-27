@@ -1,5 +1,4 @@
-<% if resource.errors.any? %>
-<div class="action-sheet__section">
+<% if resource && resource.errors.any? %>
     <div class="row">
         <div class="alert alert-danger">
             <p>
@@ -13,5 +12,4 @@
             </ul>
         </div>
     </div>
-</div>
 <% end %>

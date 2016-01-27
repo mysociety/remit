@@ -1,5 +1,8 @@
 <% @document ||= Document.new %>
 <% @study_note ||= StudyNote.new %>
+<% @publication ||= Publication.new %>
+<% @dissemination ||= Dissemination.new %>
+<% @study_impacts = {} if @study_impacts.nil? %>
 <ul>
     <li>
         <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
@@ -19,15 +22,15 @@
        id="add-document">
 
 <%= form_for [@study, @document], html: { class: "action-sheet houdini-target" } do |f| %>
-    <%= render partial: "shared/form_errors", locals: { resource: @document } %>
     <div class="action-sheet__section">
+        <%= render partial: "shared/form_errors", locals: { resource: @document } %>
         <div class="row">
             <div class="col-sm-7">
                 <%= f.label :document, "Choose document" %>
                 <%= f.file_field :document %>
             </div>
             <div class="col-sm-5">
-                <%= f.label :document_type %>
+                <%= f.label :document_type_id %>
                 <%= f.collection_select :document_type_id,
                                         DocumentType.all,
                                         :id,
@@ -58,8 +61,8 @@
        id="add-note">
 
 <%= form_for [@study, @study_note], html: { class: "action-sheet houdini-target" } do |f| %>
-    <%= render partial: "shared/form_errors", locals: { resource: @study_note } %>
     <div class="action-sheet__section">
+        <%= render partial: "shared/form_errors", locals: { resource: @study_note } %>
         <div class="row">
             <div class="col-sm-12">
                 <%= f.label :notes %>
@@ -80,99 +83,121 @@
     </div>
 <% end %>
 
-<input class="houdini-input" type="radio" name="action-sheet-accordion" id="record-output">
+<input class="houdini-input"
+       type="radio"
+       name="action-sheet-accordion"
+       <%= "checked" if @publication.errors.any? || @dissemination.errors.any? || @study_impacts_errors %>
+       id="record-output">
 
-<form class="action-sheet houdini-target">
+<%= form_tag study_outputs_create_path(@study),
+             class: "action-sheet houdini-target" do %>
     <div class="output-type-accordion">
 
-        <input type="radio" name="output-type" id="output-type-publication" class="output-type-input houdini-input houdini-input--visible">
+        <input type="radio" name="output_type" id="output-type-publication" class="output-type-input houdini-input houdini-input--visible" value="publication" <%= "checked" if @publication.errors.any?%>>
         <label for="output-type-publication" class="output-type-label houdini-label">
             Publication
         </label>
 
         <div class="action-sheet__section action-sheet__section--child houdini-target">
+            <%= render partial: "shared/form_errors", locals: { resource: @publication } %>
             <div class="row">
-                <p class="col-sm-6">
-                    <label for="publication-doi">DOI:</label>
-                    <input type="text" class="form-control" id="publication-doi">
-                    <label for="manual-publication-details" class="manual-publication-details-link houdini-label">Or enter details manually&hellip;</label>
-                </p>
+                <div class="col-sm-6">
+                    <%= label :publication, :doi_number, "DOI" %>
+                    <%= text_field :publication, :doi_number, { class: "form-control" } %>
+                    <%= label :publication,
+                              :details,
+                              raw("Or enter details manually&hellip;"),
+                              { class: "houdini-label manual-publication-details-link" } %>
+                </div>
             </div>
 
-            <input type="checkbox" class="houdini-input" id="manual-publication-details">
+            <input type="checkbox" class="houdini-input" id="publication_details">
             <div class="houdini-target">
                 <div class="row">
-                    <p class="col-sm-6">
-                        <label for="article_title">Article title:</label>
-                        <input type="text" class="form-control" id="article_title">
-                    </p>
-                    <p class="col-sm-6">
-                        <label for="lead_author">Lead author:</label>
-                        <input type="text" class="form-control" id="lead_author">
-                    </p>
+                    <div class="col-sm-6">
+                        <%= label :publication, :article_title %>
+                        <%= text_field :publication,
+                                       :article_title,
+                                       { class: "form-control" } %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :publication, :lead_author %>
+                        <%= text_field :publication,
+                                       :lead_author,
+                                       { class: "form-control" } %>
+                    </div>
                 </div>
                 <div class="row">
-                    <p class="col-sm-6">
-                        <label for="book_or_journal_title">Publication title:</label>
-                        <input type="text" class="form-control" id="book_or_journal_title">
-                    </p>
-                    <p class="col-sm-6">
-                        <label for="publication_year">Publication year:</label>
-                        <input type="text" class="form-control" id="publication_year">
-                    </p>
+                    <div class="col-sm-6">
+                        <%= label :publication, :book_or_journal_title, "Publication title" %>
+                        <%= text_field :publication,
+                                       :book_or_journal_title,
+                                       { class: "form-control" } %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= label :publication, :publication_year %>
+                        <%= text_field :publication,
+                                       :publication_year,
+                                       { class: "form-control" } %>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <input type="radio" name="output-type" id="output-type-dissemination" class="output-type-input houdini-input houdini-input--visible">
+        <input type="radio" name="output_type" id="output-type-dissemination" class="output-type-input houdini-input houdini-input--visible" value="dissemination" <%= "checked" if @dissemination.errors.any? %>>
         <label for="output-type-dissemination" class="output-type-label houdini-label">
             Dissemination
         </label>
 
         <div class="action-sheet__section action-sheet__section--child houdini-target">
+            <%= render partial: "shared/form_errors", locals: { resource: @dissemination } %>
             <p>
-                <label for="dissemination_category">Category:</label>
-                <select class="form-control" id="dissemination_category">
-                    <optgroup label="Internal">
-                        <option>Working group</option>
-                        <option>Internal MSF publication</option>
-                        <option>MSF conference</option>
-                        <option>Email group</option>
-                    </optgroup>
-                    <optgroup label="External">
-                        <option>Field</option>
-                        <option>Scientific meeting</option>
-                        <option>Press release or press conference</option>
-                        <option>Talk or presentation</option>
-                        <option>Policy briefing paper</option>
-                        <option>Formal working group, expert panel, advisory body</option>
-                        <option>Magazine, newsletter or online publication</option>
-                        <option>Bilateral meeting</option>
-                        <option>Community involved with research</option>
-                    </optgroup>
-                    <option>Other</option>
-                </select>
+                <%= label :dissemination, :dissemination_category_id %>
+                <%= select :dissemination, :dissemination_category_id,
+                    grouped_options_for_select(DisseminationCategory.grouped_options_for_select),
+                    {},
+                    { class: "form-control" } %>
             </p>
             <p>
-                <label for="dissemination_details">Details</label>
-                <textarea id="dissemination_details" class="form-control"></textarea>
+                <%= label :dissemination, :details %>
+                <%= text_area :dissemination, :details, { class: "form-control" } %>
             </p>
             <p>
-                <label class="checkbox-inline"><input type="checkbox"> This has been fed back to the field</label>
+                <label class="checkbox-inline">
+                      <input type="hidden"
+                              name="dissemination[fed_back_to_field]"
+                              value="0">
+                      <input type="checkbox"
+                             name="dissemination[fed_back_to_field]"
+                             <%= "checked" if @dissemination.fed_back_to_field %>>
+                      This has been fed back to the field
+                </label>
             </p>
         </div>
 
-        <input type="radio" name="output-type" id="output-type-other" class="output-type-input houdini-input houdini-input--visible">
+        <input type="radio" name="output_type" id="output-type-other" class="output-type-input houdini-input houdini-input--visible" value="study_impact" <%= "checked" if @study_impacts_errors %>>
         <label for="output-type-other" class="output-type-label houdini-label">
             Other impact
         </label>
 
         <div class="action-sheet__section action-sheet__section--child houdini-target">
-          <% ['Programmes', 'Patients', 'MSF policy', 'External policy', 'Other'].each do |x| %>
+          <% ImpactType.order(:name).each do |impact_type| %>
+            <%= render partial: "shared/form_errors",
+                       locals: { resource: @study_impacts[impact_type.id] } %>
             <p class="other-impact-type">
-                <input type="checkbox" class="houdini-input houdini-input--visible" id="impact_type_<%= x.parameterize %>">
-                <label class="houdini-label" for="impact_type_<%= x.parameterize %>"><%= x %></label>
-                <textarea class="form-control houdini-target" placeholder="Description&hellip;"></textarea>
+                <input type="checkbox"
+                       class="houdini-input houdini-input--visible"
+                       id="impact_type_<%= impact_type.name.parameterize %>"
+                       name="study_impact[impact_type_ids][<%= impact_type.id %>]"
+                       value="<%= impact_type.id %>"
+                       <%= "checked" if @study_impacts[impact_type.id].present? %>>
+                <label class="houdini-label"
+                       for="impact_type_<%= impact_type.name.parameterize %>">
+                       <%= impact_type.name %>
+                </label>
+                <textarea class="form-control houdini-target"
+                          placeholder="Description&hellip;"
+                          name="study_impact[descriptions][<%= impact_type.id %>]"><%= @study_impacts[impact_type.id].description if @study_impacts[impact_type.id].present? %></textarea>
             </p>
           <% end %>
         </div>
@@ -190,4 +215,4 @@
             </p>
         </div>
     </div>
-</form>
+<% end %>
