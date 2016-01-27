@@ -1,3 +1,9 @@
+<% @document ||= Document.new %>
+<% @study_note ||= StudyNote.new %>
+<% @publication ||= Publication.new %>
+<% @dissemination ||= Dissemination.new %>
+<% @study_impacts = {} if @study_impacts.nil? %>
+
 <header class="site-header">
     <div class="container">
         <div class="study-header">
