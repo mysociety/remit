@@ -4,10 +4,12 @@ require "support/devise.rb"
 RSpec.describe "studies/show.html.erb", type: :view do
   let(:study) { FactoryGirl.create(:study) }
   let(:document) { FactoryGirl.build(:document) }
+  let(:study_note) { FactoryGirl.build(:study_note) }
 
   before do
     assign(:study, study)
     assign(:document, document)
+    assign(:study_note, study_note)
     render
   end
 

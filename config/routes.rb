@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   resources :studies, only: :show do
     resources :documents, only: :create
+    resources :study_notes, only: :create
   end
 end

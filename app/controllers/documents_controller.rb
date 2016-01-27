@@ -2,6 +2,7 @@ class DocumentsController < ApplicationController
   def create
     @study = Study.find(params[:study_id])
     @document = Document.new(document_params)
+    @document.study = @study
     if @document.save
       redirect_to @study, notice: "Document created successfully"
     else
@@ -13,6 +14,6 @@ class DocumentsController < ApplicationController
   private
 
   def document_params
-    params.require(:document).permit(:document_type_id, :document, :study_id)
+    params.require(:document).permit(:document_type_id, :document)
   end
 end
