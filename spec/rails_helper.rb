@@ -73,4 +73,7 @@ RSpec.configure do |config|
 
   # Include Paperclip's matchers
   config.include Paperclip::Shoulda::Matchers
+
+  # Turn TestAfterCommit off by default
+  TestAfterCommit.enabled = false
 end

@@ -45,6 +45,9 @@ gem 'public_activity'
 # For file uploads
 gem "paperclip", "~> 4.3"
 
+# To test activity tracking properly
+gem "test_after_commit"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

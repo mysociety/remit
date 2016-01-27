@@ -7,8 +7,13 @@ module StudyActivityTrackable
 
   included do
     has_many :activities, as: :related_content,
-                          class_name: "PublicActivity::Activity"
-    after_create :log_activity
+                          class_name: "PublicActivity::Activity",
+                          dependent: :destroy
+    # Not using after_create because we create some things in a bigger
+    # wrapping transaction, (e.g. multiple study impacts at the same time)
+    # so after_create might fire and create an activity but then need to be
+    # rolled back
+    after_commit :log_activity, on: :create
   end
 
   def log_activity
