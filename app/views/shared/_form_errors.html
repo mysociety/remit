@@ -1,0 +1,17 @@
+<% if resource.errors.any? %>
+<div class="action-sheet__section">
+    <div class="row">
+        <div class="alert alert-danger">
+            <p>
+                <%= pluralize(resource.errors.count, "error") %>
+                prevented the form from being saved:
+            </p>
+            <ul>
+            <% resource.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
+</div>
+<% end %>
