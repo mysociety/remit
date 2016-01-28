@@ -4,7 +4,12 @@
     <%= " by #{a.owner.name}" unless a.owner.blank? %>
 <% end %>
 <% content_for :description, flush: true do %>
-    <p class="timeline__item__details">
-        Read <%= a.related_content.document_type.name.downcase %> &raquo;
-    </p>
+    <a href="<%= a.related_content.document.url %>" class="file file--<%= a.related_content.nice_content_type[:generic_type].parameterize %>">
+        <span class="file__name">
+            <%= a.related_content.document_file_name %>
+        </span>
+        <span class="file__details">
+            <%= number_to_human_size(a.related_content.document_file_size) %>
+        </span>
+    </a>
 <% end %>
