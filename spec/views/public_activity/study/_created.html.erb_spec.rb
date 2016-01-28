@@ -21,4 +21,19 @@ RSpec.describe "public_activity/study/_created.html.erb", type: :view do
   end
 
   it_behaves_like "an activity view"
+
+  context "when the title has changed" do
+    before do
+      study.title = "Some new title"
+      study.save!
+      render partial: partial,
+             locals: { a: activity_with_owner,
+                       p: activity_with_owner.parameters }
+    end
+
+    it "shows the original title in the description" do
+      expected_text = "Originally titled “#{study.original_title}”"
+      expect(view.content_for(:description)).to have_text expected_text
+    end
+  end
 end

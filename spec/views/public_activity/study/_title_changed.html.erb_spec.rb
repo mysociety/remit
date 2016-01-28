@@ -18,7 +18,7 @@ RSpec.describe "public_activity/study/_title_changed.html.erb", type: :view do
   end
   let(:expected_class) { nil }
   let(:expected_title) { "Title changed" }
-  let(:expected_description) { "Changed from “Before” to “After”" }
+  let(:expected_description) { "Changed to “After”" }
   let(:expected_description_class) { ".timeline__item__details" }
 
   before do

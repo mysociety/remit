@@ -332,4 +332,66 @@ RSpec.describe Study, type: :model do
       expect(study.study_stage_since).to eq latest_change.created_at
     end
   end
+
+  describe "#title_changed?" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    context "when the title has changed" do
+      before do
+        study.title = "Some new title"
+        study.save!
+      end
+
+      it "returns true" do
+        expect(study.title_changed?).to be true
+      end
+    end
+
+    context "when the title hasn't changed" do
+      it "returns false" do
+        expect(study.title_changed?).to be false
+      end
+    end
+  end
+
+  describe "#original_title?" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    context "when the title has changed" do
+      let!(:original_title) { study.title }
+
+      before do
+        study.title = "Some new title"
+        study.save!
+      end
+
+      it "returns the original title" do
+        expect(study.original_title).to eq original_title
+      end
+    end
+
+    context "when the title hasn't changed" do
+      let!(:original_title) { study.title }
+
+      it "returns the current title" do
+        expect(study.original_title).to eq original_title
+      end
+    end
+  end
 end

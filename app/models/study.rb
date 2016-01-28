@@ -153,4 +153,17 @@ class Study < ActiveRecord::Base
       order(created_at: :desc).
       take
   end
+
+  # Has the title ever changed for this study?
+  def title_changed?
+    activities.where(key: "study.title_changed").exists?
+  end
+
+  # What was the original title (if the title hasn't changed, this just
+  # returns the current title)
+  def original_title
+    change = activities.where(key: "study.title_changed").first
+    return change.parameters[:before] if change.present?
+    title
+  end
 end
