@@ -1,4 +1,4 @@
-<li class="<%= "step--#{state}" unless state.blank? %>">
+<li class="<%= if state.blank? then "step--todo" else "step--#{state}" end %>">
   <% if state == "done" %>
     <img src="<%= image_path('tick.png') %>"
          srcset="<%= image_path('tick.svg') %>"

@@ -42,7 +42,7 @@
         </div>
     </div>
 </header>
-<div class="site-subnav study-subnav">
+<div class="site-subnav study-subnav study-subnav--<%= @study.study_stage %>">
     <div class="container">
         <%= render partial: 'studies/stage_progress_bar',
                    locals: { timeline: study_timeline(@study) } %>
