@@ -4,7 +4,7 @@
     <%= " by #{a.owner.name}" unless a.owner.blank? %>
 <% end %>
 <% content_for :description, flush: true do %>
-    <p class="timeline__item__details">
-        See details in full &raquo;
-    </p>
+    <div class="timeline__item__impact">
+        <%= simple_format(a.related_content.description) %>
+    </div>
 <% end %>
