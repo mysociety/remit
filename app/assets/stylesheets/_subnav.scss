@@ -64,35 +64,60 @@
 
   li {
     float: left;
-    padding: 1em 2em 1em 1.5em;
+    padding: 1em 1em 1em 2.5em; // leave space for background-image on left side
 
     color: $color-light-grey;
     background-color: $color-off-white;
 
-    // Bootstrap mixin handles the @1x and @2x PNGs
-    @include img-retina("stage-todo.png", "stage-todo@2x.png", 16px, 100px);
-
-    // Upgrade to SVG for modern browsers
-    background-image: url("stage-todo.svg"), none;
-
+    // Shared styling, ready for the triangle background images.
+    // Note how we attach the image to the left edge of the element,
+    // so that we can use the next-sibling selector (+) to easily
+    // change the background image based on the combination of this
+    // element's style and the previous sibling's style.
     background-repeat: no-repeat;
-    background-position: 100% 50%;
+    background-position: 0% 50%;
 
     &:first-child {
       padding-left: 0;
-    }
-
-    &:last-child {
       background-image: none;
     }
   }
 
-  .step--done {
-    background-color: $color-pale-green;
-    color: $color-dark-green;
+  .step--doing {
+    color: $color-dark-toffee;
+    background-color: $color-pale-toffee;
+  }
 
-    @include img-retina("stage-done.png", "stage-done@2x.png", 16px, 100px);
-    background-image: url("stage-done.svg"), none;
+  .step--done {
+    color: $color-dark-green;
+    background-color: $color-pale-green;
+  }
+
+  // Here's the cleverness that shows the correct colour-to-colour
+  // triangle background images, based on the current stage and the
+  // previous stage.
+  // We use Bootstrap's built-in img-retina() mixin to sort out
+  // retina bitmap images and sizes, and then override with an SVG
+  // if the browser supports it.
+
+  .step--todo + .step--todo {
+    @include img-retina("stage-white-to-white.png", "stage-white-to-white@2x.png", 16px, 100px);
+    background-image: url("stage-white-to-white.svg"), none;
+  }
+
+  .step--doing + .step--todo {
+    @include img-retina("stage-toffee-to-white.png", "stage-toffee-to-white@2x.png", 16px, 100px);
+    background-image: url("stage-toffee-to-white.svg"), none;
+  }
+
+  .step--done + .step--doing {
+    @include img-retina("stage-green-to-toffee.png", "stage-green-to-toffee@2x.png", 16px, 100px);
+    background-image: url("stage-green-to-toffee.svg"), none;
+  }
+
+  .step--done + .step--done {
+    @include img-retina("stage-green-to-green.png", "stage-green-to-green@2x.png", 16px, 100px);
+    background-image: url("stage-green-to-green.svg"), none;
 
     // The tick!
     img {
@@ -100,12 +125,28 @@
       margin-right: 0.2em;
     }
   }
+}
 
-  .step--doing {
-    background-color: $color-pale-toffee;
-    color: $color-dark-toffee;
+// When the first stage is in progress (ie: toffee, not green)
+// the left half of the subnav needs to be toffee too.
+.study-subnav--concept {
+  background-color: $color-pale-toffee;
+  @include gradient-horizontal(
+    $start-color: $color-pale-toffee,
+    $end-color: $color-off-white,
+    $start-percent: 50%,
+    $end-percent: 50%
+  );
+}
 
-    @include img-retina("stage-doing.png", "stage-doing@2x.png", 16px, 100px);
-    background-image: url("stage-doing.svg"), none;
-  }
+// When the final stage is in process (ie: toffee, not off-white)
+// the right half of the subnav needs to be toffee too.
+.study-subnav--completion {
+  background-color: $color-pale-green;
+  @include gradient-horizontal(
+    $start-color: $color-pale-green,
+    $end-color: $color-pale-toffee,
+    $start-percent: 50%,
+    $end-percent: 50%
+  );
 }
