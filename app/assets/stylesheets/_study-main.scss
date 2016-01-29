@@ -205,10 +205,6 @@
     margin: 0 0 0.8em 0;
   }
 
-  p {
-    font-size: 0.875em; // 14px
-  }
-
   & > :last-child {
     margin-bottom: 0;
   }
@@ -221,23 +217,4 @@
 
 .study-main__secondary__section__blank {
   color: $color-mid-grey-alternate;
-}
-
-.document-list {
-  @extend .list-unstyled;
-  margin: 0;
-
-  li {
-    margin-top: 1em;
-  }
-
-  h4 {
-    font-size: 0.875em; // 14px
-    margin: 0 0 0.3em 0;
-  }
-
-  p {
-    font-size: 0.75em; // 12px
-    margin: 0;
-  }
 }
