@@ -45,9 +45,6 @@ gem 'public_activity'
 # For file uploads
 gem "paperclip", "~> 4.3"
 
-# To test activity tracking properly
-gem "test_after_commit"
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -67,6 +64,9 @@ group :development, :test do
   # Used for nice ActiveRecord/Model matchers in specs
   # Version 3+ don't support Ruby 1.9, hence sticking to 2.x
   gem 'shoulda-matchers', '< 3.0.0'
+  # For better headless browser testing
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 group :development do

@@ -9,7 +9,11 @@ require "spec_helper"
 require "rspec/rails"
 require "shoulda/matchers"
 require "paperclip/matchers"
+require "capybara/poltergeist"
+require "database_cleaner"
 # Add additional requires below this line. Rails is not loaded until this point!
+
+Capybara.javascript_driver = :poltergeist
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -34,10 +38,46 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
+  # See https://github.com/DatabaseCleaner/database_cleaner
+  # We want to use transactional stuff most of the time, but we can't for
+  # feature specs, because the browser we use runs in a different thread, and
+  # hence doesn't share a db connection so we use truncation instead.
+  config.use_transactional_fixtures = false
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+
+    # These DB records are needed by so many tests it makes sense to make them
+    # here.
+    external = MsfLocation.find_by_name("External")
+    FactoryGirl.create(:external_location) unless external
+    FactoryGirl.create(:other_type) unless StudyType.find_by_name("Other")
+    other_internal = DisseminationCategory.find_by_name("Other internal")
+    FactoryGirl.create(:other_internal) unless other_internal
+    other_external = DisseminationCategory.find_by_name("Other external")
+    FactoryGirl.create(:other_external) unless other_external
+  end
+
+  config.before(:each, type: :feature) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  # This allows specific tests to say they want truncation instead
+  config.before(:each, truncation: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.append_after(:each) do
+    DatabaseCleaner.clean
+  end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -59,21 +99,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  config.before(:all) do
-    # These DB records are needed by so many tests it makes sense to make them
-    # here.
-    external = MsfLocation.find_by_name("External")
-    FactoryGirl.create(:external_location) unless external
-    FactoryGirl.create(:other_type) unless StudyType.find_by_name("Other")
-    other_internal = DisseminationCategory.find_by_name("Other internal")
-    FactoryGirl.create(:other_internal) unless other_internal
-    other_external = DisseminationCategory.find_by_name("Other external")
-    FactoryGirl.create(:other_external) unless other_external
-  end
-
   # Include Paperclip's matchers
   config.include Paperclip::Shoulda::Matchers
-
-  # Turn TestAfterCommit off by default
-  TestAfterCommit.enabled = false
 end
