@@ -4,6 +4,7 @@
 
 .study-main__primary {
   @extend .col-sm-8;
+  margin-bottom: 4em;
 }
 
 .study-main__secondary {
@@ -19,12 +20,13 @@
   }
 
   .action-sheet {
-    max-width: (40em * 0.875) + 2; // Line up right edge with blockquotes in timeline
+    max-width: 37em; // same as .timeline
   }
 }
 
 .timeline {
   position: relative;
+  max-width: 37em; // same as .action-sheet
 
   ol {
     @extend .list-unstyled;
@@ -50,8 +52,8 @@
 .timeline__item {
   position: relative;
   z-index: 1; // position the dots above the parent's fake "border"
-  margin-top: 1.5em;
-  padding-left: 2em;
+  margin-top: 2em;
+  padding-left: 2.5em;
 
   &:last-child {
     background-color: $color-white; // hide the fake border, even if this item wraps onto multiple lines
@@ -92,7 +94,7 @@
 
 .timeline__item__title {
   font-size: 1.125em; // 18px
-  margin: 0;
+  margin: 0 0 0.75em 0;
 
   .timeline__item__date {
     font-size: (14em / 18); // 14px
@@ -104,17 +106,89 @@
   font-size: 0.875em; // 14px
 }
 
-.timeline__item__note {
+.timeline__item__note,
+.timeline__item__dissemination,
+.timeline__item__impact {
   border-left: 0;
   font-size: 0.875em; // 14px
-  max-width: 40em;
   padding: 1em 1.3em;
-  background-color: $color-lighter-blue;
+  background-color: $color-off-white;
   border-radius: 0.3em;
 
   & > :last-child {
     margin-bottom: 0;
   }
+}
+
+.timeline__item__note {
+  background-color: $color-lighter-blue;
+}
+
+.file {
+  display: block;
+  position: relative;
+  padding-left: 3.25em;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  // This will be the file icon
+  &:before {
+    content: "";
+    display: block;
+    height: 2.5em;
+    width: 2.5em;
+    position: absolute;
+    top: 0.1em; // visually line up with the tops of the letters of the file name
+    left: 0;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+  }
+}
+
+.file--publication {
+  &:before {
+    @include img-retina("file-publication.png", "file-publication@2x.png", 20px, 20px);
+    background-image: url("file-publication.svg"), none;
+  }
+}
+
+.file--document {
+  &:before {
+    @include img-retina("file-document.png", "file-document@2x.png", 20px, 20px);
+    background-image: url("file-document.svg"), none;
+  }
+}
+
+.file--spreadsheet {
+  &:before {
+    @include img-retina("file-spreadsheet.png", "file-spreadsheet@2x.png", 20px, 20px);
+    background-image: url("file-spreadsheet.svg"), none;
+  }
+}
+
+.file--presentation {
+  &:before {
+    @include img-retina("file-presentation.png", "file-presentation@2x.png", 20px, 20px);
+    background-image: url("file-presentation.svg"), none;
+  }
+}
+
+.file__name {
+  display: block;
+
+  a:hover &,
+  a:focus & {
+    text-decoration: underline;
+  }
+}
+
+.file__details {
+  display: block;
+  font-size: 0.875em;
+  color: $color-dark-grey;
 }
 
 .study-main__secondary__section {
@@ -130,10 +204,6 @@
     margin: 0 0 0.8em 0;
   }
 
-  p {
-    font-size: 0.875em; // 14px
-  }
-
   & > :last-child {
     margin-bottom: 0;
   }
@@ -146,23 +216,4 @@
 
 .study-main__secondary__section__blank {
   color: $color-mid-grey-alternate;
-}
-
-.document-list {
-  @extend .list-unstyled;
-  margin: 0;
-
-  li {
-    margin-top: 1em;
-  }
-
-  h4 {
-    font-size: 0.875em; // 14px
-    margin: 0 0 0.3em 0;
-  }
-
-  p {
-    font-size: 0.75em; // 12px
-    margin: 0;
-  }
 }

@@ -71,30 +71,35 @@
             <div class="study-main__secondary">
                 <div class="study-main__secondary__section">
                     <h3>Documents:</h3>
-                    <ul class="document-list">
-                        <li>
-                            <h4>
-                                <a href="#">ERB feedback document</a>
-                            </h4>
-                            <p>Uploaded 10th November by <a href="#">Kim West (Administrator)</a></p>
-                        </li>
-                        <li>
-                            <h4>
-                                <a href="#">Protocol review form</a>
-                            </h4>
-                            <p>Uploaded 28th October by <a href="#">Janet Bloggs</a></p>
-                        </li>
-                        <li>
-                            <h4>
-                                <a href="#">Concept note</a>
-                            </h4>
-                            <p>Uploaded 4th October by <a href="#">Kim West (Administrator)</a></p>
-                        </li>
-                    </ul>
+                  <% if @study.documents.each do |document| %>
+                    <a href="<%= document.document.url %>" class="file file--<%= document.nice_content_type[:generic_type].parameterize %>">
+                        <span class="file__name">
+                            <%= document.document_file_name %>
+                        </span>
+                        <span class="file__details">
+                            <%= number_to_human_size(document.document_file_size) %>
+                        </span>
+                    </a>
+                  <% end.empty? %>
+                    <p class="study-main__secondary__section__blank">No documents uploaded.</p>
+                  <% end %>
                 </div>
                 <div class="study-main__secondary__section">
-                    <h3>Publications &amp; Impact:</h3>
+                    <h3>Publications:</h3>
+                  <% if @study.publications.each do |publication| %>
+                    <p class="file file--publication">
+                        <span class="file__name">
+                            <%= publication.article_title %>
+                        </span>
+                        <span class="file__details">
+                            <%= publication.lead_author %> –
+                            <%= publication.book_or_journal_title %>
+                            (<%= publication.publication_year %>)
+                        </span>
+                    </p>
+                  <% end.empty? %>
                     <p class="study-main__secondary__section__blank">No publications recorded.</p>
+                  <% end %>
                 </div>
                 <div class="study-main__secondary__section">
                     <h3>Follow this study:</h3>

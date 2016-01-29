@@ -30,6 +30,44 @@ class Document < ActiveRecord::Base
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ]
 
+  CONTENT_TYPE_LABELS = {
+    "application/pdf" => {
+      name: "PDF",
+      extension: "pdf",
+      generic_type: "PDF"
+    },
+    "application/msword" => {
+      name: "Word",
+      extension: "doc",
+      generic_type: "document"
+    },
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => {
+      name: "Word",
+      extension: "docx",
+      generic_type: "document"
+    },
+    "application/vnd.ms-excel" => {
+      name: "Excel",
+      extension: "xls",
+      generic_type: "spreadsheet"
+    },
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" => {
+      name: "Excel",
+      extension: "xlsx",
+      generic_type: "spreadsheet"
+    },
+    "application/vnd.ms-powerpoint" => {
+      name: "PowerPoint",
+      extension: "ppt",
+      generic_type: "presentation"
+    },
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation" => {
+      name: "PowerPoint",
+      extension: "pptx",
+      generic_type: "presentation"
+    }
+  }
+
   belongs_to :document_type, inverse_of: :documents
   belongs_to :study, inverse_of: :documents
   validates :document_type, presence: true
@@ -39,4 +77,8 @@ class Document < ActiveRecord::Base
   validates_attachment :document,
                        presence: true,
                        content_type: { content_type: ALLOWED_CONTENT_TYPES }
+
+  def nice_content_type
+    CONTENT_TYPE_LABELS[document_content_type]
+  end
 end
