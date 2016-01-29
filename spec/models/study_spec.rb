@@ -1,5 +1,6 @@
 require "rails_helper"
 require "support/matchers/have_latest_activity"
+require "support/matchers/match_activity"
 
 RSpec.describe Study, type: :model do
   # Columns
@@ -153,7 +154,7 @@ RSpec.describe Study, type: :model do
 
     context "when a study is created" do
       it "creates a 'created' log entry" do
-        expect(study.reload.activities.first.key).to eq "study.created"
+        expect(study).to have_latest_activity(key: "study.created")
       end
 
       it "only creates one log entry" do
@@ -177,10 +178,12 @@ RSpec.describe Study, type: :model do
         study.save!
         study.reload
         expect(study.activities.length).to eq 2
-        expect(study).to have_latest_activity("study.title_changed",
-                                              attribute: "title",
-                                              before: old_title,
-                                              after: study.title)
+        expect(study).to have_latest_activity(key: "study.title_changed",
+                                              parameters: {
+                                                attribute: "title",
+                                                before: old_title,
+                                                after: study.title
+                                              })
       end
 
       it "logs changes to the study stage" do
@@ -188,20 +191,25 @@ RSpec.describe Study, type: :model do
         study.study_stage = :protocol_erb
         study.save!
         expect(study.reload.activities.length).to eq 2
-        expect(study).to have_latest_activity("study.study_stage_changed",
-                                              attribute: "study_stage",
-                                              before: old_stage,
-                                              after: "protocol_erb")
+        expect(study).to have_latest_activity(key: "study.study_stage_changed",
+                                              parameters: {
+                                                attribute: "study_stage",
+                                                before: old_stage,
+                                                after: "protocol_erb"
+                                              })
       end
 
       it "logs changes to the erb status" do
         study.erb_status = accept_status
         study.save!
         expect(study.reload.activities.length).to eq 2
-        expect(study).to have_latest_activity("study.erb_status_id_changed",
-                                              attribute: "erb_status_id",
-                                              before: nil,
-                                              after: accept_status.id)
+        expect(study).to have_latest_activity(
+          key: "study.erb_status_id_changed",
+          parameters: {
+            attribute: "erb_status_id",
+            before: nil,
+            after: accept_status.id
+          })
       end
 
       it "logs changes to the principal investigator" do
@@ -209,10 +217,12 @@ RSpec.describe Study, type: :model do
         study.save!
         expect(study.reload.activities.length).to eq 2
         expect(study).to have_latest_activity(
-          "study.principal_investigator_id_changed",
-          attribute: "principal_investigator_id",
-          before: nil,
-          after: pi.id)
+          key: "study.principal_investigator_id_changed",
+          parameters: {
+            attribute: "principal_investigator_id",
+            before: nil,
+            after: pi.id
+          })
       end
 
       it "logs changes to the research manager" do
@@ -220,10 +230,12 @@ RSpec.describe Study, type: :model do
         study.save!
         expect(study.reload.activities.length).to eq 2
         expect(study).to have_latest_activity(
-          "study.research_manager_id_changed",
-          attribute: "research_manager_id",
-          before: nil,
-          after: rm.id)
+          key: "study.research_manager_id_changed",
+          parameters: {
+            attribute: "research_manager_id",
+            before: nil,
+            after: rm.id
+          })
       end
 
       it "logs changes to the local erb approved date" do
@@ -231,10 +243,12 @@ RSpec.describe Study, type: :model do
         study.save!
         expect(study.reload.activities.length).to eq 2
         expect(study).to have_latest_activity(
-          "study.local_erb_approved_changed",
-          attribute: "local_erb_approved",
-          before: nil,
-          after: Date.new(2015, 1, 1))
+          key: "study.local_erb_approved_changed",
+          parameters: {
+            attribute: "local_erb_approved",
+            before: nil,
+            after: Date.new(2015, 1, 1)
+          })
       end
 
       it "logs changes to the local erb submitted date" do
@@ -242,20 +256,24 @@ RSpec.describe Study, type: :model do
         study.save!
         expect(study.reload.activities.length).to eq 2
         expect(study).to have_latest_activity(
-          "study.local_erb_submitted_changed",
-          attribute: "local_erb_submitted",
-          before: nil,
-          after: Date.new(2015, 1, 1))
+          key: "study.local_erb_submitted_changed",
+          parameters: {
+            attribute: "local_erb_submitted",
+            before: nil,
+            after: Date.new(2015, 1, 1)
+          })
       end
 
       it "logs changes to the completed date" do
         study.completed = Date.new(2015, 1, 1)
         study.save!
         expect(study.reload.activities.length).to eq 2
-        expect(study).to have_latest_activity("study.completed_changed",
-                                              attribute: "completed",
-                                              before: nil,
-                                              after: Date.new(2015, 1, 1))
+        expect(study).to have_latest_activity(key: "study.completed_changed",
+                                              parameters: {
+                                                attribute: "completed",
+                                                before: nil,
+                                                after: Date.new(2015, 1, 1)
+                                              })
       end
 
       it "creates separate log entries for multiple changes at once" do
@@ -266,15 +284,20 @@ RSpec.describe Study, type: :model do
         expect(study.reload.activities.length).to eq 3
         activities = study.reload.activities.last(2)
 
-        expect(activities[0].key).to eq "study.title_changed"
-        expect(activities[0].parameters[:attribute]).to eq "title"
-        expect(activities[0].parameters[:before]).to eq old_title
-        expect(activities[0].parameters[:after]).to eq study.title
+        expect(activities[0]).to match_activity(key: "study.title_changed",
+                                                parameters: {
+                                                  attribute: "title",
+                                                  before: old_title,
+                                                  after: study.title
+                                                })
 
-        expect(activities[1].key).to eq "study.erb_status_id_changed"
-        expect(activities[1].parameters[:attribute]).to eq "erb_status_id"
-        expect(activities[1].parameters[:before]).to eq nil
-        expect(activities[1].parameters[:after]).to eq accept_status.id
+        expect(activities[1]).to match_activity(
+          key: "study.erb_status_id_changed",
+          parameters: {
+            attribute: "erb_status_id",
+            before: nil,
+            after: accept_status.id
+          })
       end
     end
   end
@@ -301,9 +324,12 @@ RSpec.describe Study, type: :model do
       study.save!
 
       change = study.latest_stage_change
-      expect(change.key).to eq "study.study_stage_changed"
-      expect(change.parameters[:before]).to eq "protocol_erb"
-      expect(change.parameters[:after]).to eq "delivery"
+      expect(change).to match_activity(key: "study.study_stage_changed",
+                                       parameters: {
+                                         attribute: "study_stage",
+                                         before: "protocol_erb",
+                                         after: "delivery",
+                                       })
     end
   end
 

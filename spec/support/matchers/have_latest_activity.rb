@@ -1,11 +1,11 @@
-RSpec::Matchers.define :have_latest_activity do |key, params|
+require "support/matchers/match_activity"
+
+RSpec::Matchers.define :have_latest_activity do |activity_values|
   match do |actual|
-    activity = actual.activities.order(:created_at).last
-    activity.key == key && activity.parameters == params
+    expect(actual.activities.first).to match_activity(activity_values)
   end
   failure_message do |actual|
-    activity = actual.activities.order(:created_at).last
-    "expected that #{activity.inspect}\nwould have key #{key} and "\
-    "parameters: #{params}"
+    activity = actual.activities.first
+    "expected that #{activity.inspect}\nwould have #{activity_values.inspect}"
   end
 end

@@ -1,4 +1,5 @@
 require "support/matchers/have_latest_activity"
+require "support/matchers/match_activity"
 
 RSpec.shared_examples_for "study_activity_trackable" do
   # the class that includes the concern
@@ -17,11 +18,13 @@ RSpec.shared_examples_for "study_activity_trackable" do
     resource = FactoryGirl.create(model, study: study)
     study.reload
     expect(study.activities.length).to eq 2
-    expect(study).to have_latest_activity("study.#{model}_added", {})
-    expect(study.activities.first.related_content).to eq resource
+    expect(study).to have_latest_activity(key: "study.#{model}_added",
+                                          parameters: {},
+                                          related_content: resource)
   end
 
-  it "logs an activity on the study if created via the study's association", :truncation do
+  it "logs an activity on the study if created via the study's association",
+     :truncation do
     study = FactoryGirl.create(:study)
     association = study.send model.to_s.pluralize.to_sym
     # See https://github.com/thoughtbot/factory_girl/issues/359
@@ -36,7 +39,8 @@ RSpec.shared_examples_for "study_activity_trackable" do
     resource = association.create!(attrs)
     study.reload
     expect(study.activities.length).to eq 2
-    expect(study).to have_latest_activity("study.#{model}_added", {})
-    expect(study.activities.first.related_content).to eq resource
+    expect(study).to have_latest_activity(key: "study.#{model}_added",
+                                          parameters: {},
+                                          related_content: resource)
   end
 end
