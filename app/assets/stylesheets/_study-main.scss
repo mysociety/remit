@@ -13,14 +13,14 @@
 .study-main__actions {
   margin-bottom: 2em;
 
-  ul {
-    @extend .list-inline;
-    margin: 0 -5px; // compensate for 5px padding on children
-  }
-
   .action-sheet {
     max-width: (40em * 0.875) + 2; // Line up right edge with blockquotes in timeline
   }
+}
+
+.study-main__actions__tabs {
+  @extend .list-inline;
+  margin: 0 -5px; // compensate for 5px padding on children
 }
 
 .timeline {

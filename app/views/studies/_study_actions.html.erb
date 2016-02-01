@@ -3,7 +3,8 @@
 <% @publication ||= Publication.new %>
 <% @dissemination ||= Dissemination.new %>
 <% @study_impacts = {} if @study_impacts.nil? %>
-<ul>
+
+<ul class="study-main__actions__tabs">
     <li>
         <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
     </li>
@@ -154,9 +155,22 @@
             <p>
                 <%= label :dissemination, :dissemination_category_id %>
                 <%= select :dissemination, :dissemination_category_id,
-                    grouped_options_for_select(DisseminationCategory.grouped_options_for_select),
                     {},
-                    { class: "form-control" } %>
+                    { class: "form-control" } do %>
+                        <% DisseminationCategory.grouped_options_for_select.each do |group_label, options| %>
+                            <optgroup label="<%= group_label %>">
+                            <% options.each do |name, id, description| %>
+                                <option
+                                    value="<%= id %>"
+                                    data-subtext="<%= description %>"
+                                    <%= "selected" if @dissemination.dissemination_category_id == id %>
+                                >
+                                    <%= name %>
+                                </option>
+                            <% end %>
+                        </optgroup>
+                        <% end %>
+                <% end %>
             </p>
             <p>
                 <%= label :dissemination, :details, "Description" %>
