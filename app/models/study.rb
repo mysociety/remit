@@ -162,7 +162,7 @@ class Study < ActiveRecord::Base
   # What was the original title (if the title hasn't changed, this just
   # returns the current title)
   def original_title
-    change = activities.where(key: "study.title_changed").first
+    change = activities.find_by(key: "study.title_changed")
     return change.parameters[:before] if change.present?
     title
   end
