@@ -155,10 +155,11 @@
                     { class: "form-control" } do %>
                         <% DisseminationCategory.grouped_options_for_select.each do |group_label, options| %>
                             <optgroup label="<%= group_label %>">
-                            <% options.each do |name, id, description| %>
+                            <% options.each do |name, id, description, is_other_category| %>
                                 <option
                                     value="<%= id %>"
                                     data-subtext="<%= description %>"
+                                    <%= "data-other-category" if is_other_category %>
                                     <%= "selected" if @dissemination.dissemination_category_id == id %>
                                 >
                                     <%= name %>
@@ -168,8 +169,12 @@
                         <% end %>
                 <% end %>
             </p>
+            <p class="dissemination_other_category">
+                <%= label :dissemination, :other_dissemination_category, "If 'Other', describe the category in a couple of words" %>
+                <%= text_field :dissemination, :other_dissemination_category, { class: "form-control" } %>
+            </p>
             <p>
-                <%= label :dissemination, :details, "Description" %>
+                <%= label :dissemination, :details, "Describe the dissemination" %>
                 <%= text_area :dissemination, :details, { class: "form-control" } %>
             </p>
             <p>
