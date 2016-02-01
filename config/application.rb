@@ -28,6 +28,9 @@ module Remit
     # Use structure.sql instead of schema.rb, because we use some postgresql
     # stuff (ENUMS) that schema.rb can't handle
     config.active_record.schema_format = :sql
+    # This format means that schema dumping is inconsistent between hosts, so
+    # don't do it automatically on a migration
+    config.active_record.dump_schema_after_migration = false
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
