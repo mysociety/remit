@@ -13,6 +13,23 @@
 .study-main__actions {
   margin-bottom: 2em;
 
+  ul {
+
+    li {
+      vertical-align: middle;
+    }
+
+    i {
+      font-size: 0.875em;
+      vertical-align: baseline;
+      margin-right: 0.3em;
+
+      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        display: none;
+      }
+    }
+  }
+
   .action-sheet {
     max-width: (40em * 0.875) + 2; // Line up right edge with blockquotes in timeline
   }
