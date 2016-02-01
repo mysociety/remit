@@ -10,6 +10,10 @@
     width: 100%;
   }
 
+  textarea {
+    height: 10em;
+  }
+
   @media (min-width: $screen-sm-min) {
     p {
       margin-bottom: 0;
