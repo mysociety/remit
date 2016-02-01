@@ -19,6 +19,10 @@
 
 .action-sheet__section {
   padding: 1.5em;
+
+  .row + .row {
+    margin-top: 1em;
+  }
 }
 
 .action-sheet__section--child {

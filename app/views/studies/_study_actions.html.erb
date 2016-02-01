@@ -5,13 +5,31 @@
 <% @study_impacts = {} if @study_impacts.nil? %>
 <ul>
     <li>
-        <label class="btn btn-default houdini-label" for="add-document">Add a document</label>
+        Add:
     </li>
     <li>
-        <label class="btn btn-default houdini-label" for="add-note">Add a note</label>
+        <label class="btn btn-default houdini-label" for="add-document">
+            <i class="glyphicon glyphicon-file"></i>
+            Document
+        </label>
     </li>
     <li>
-        <label class="btn btn-default houdini-label" for="record-output">Record an output</label>
+        <label class="btn btn-default houdini-label" for="add-note">
+            <i class="glyphicon glyphicon-comment"></i>
+            Note
+        </label>
+    </li>
+    <li>
+        <label class="btn btn-default houdini-label" for="add-output">
+            <i class="glyphicon glyphicon-bullhorn"></i>
+            Output
+        </label>
+    </li>
+    <li>
+        <label class="btn btn-default houdini-label" for="add-enabler-barrier">
+            <i class="glyphicon glyphicon-exclamation-sign"></i>
+            Enabler/Barrier
+        </label>
     </li>
 </ul>
 
@@ -87,7 +105,7 @@
        type="radio"
        name="action-sheet-accordion"
        <%= "checked" if @publication.errors.any? || @dissemination.errors.any? || @study_impacts_errors %>
-       id="record-output">
+       id="add-output">
 
 <%= form_tag study_outputs_create_path(@study),
              class: "action-sheet houdini-target" do %>
@@ -216,3 +234,42 @@
         </div>
     </div>
 <% end %>
+
+<input class="houdini-input"
+       type="radio"
+       name="action-sheet-accordion"
+       id="add-enabler-barrier">
+
+<form class="action-sheet houdini-target">
+    <div class="action-sheet__section">
+        <div class="row">
+            <div class="col-sm-12">
+                <label>Enablers/Barriers to foo</label>
+                <textarea class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label>Enablers/Barriers to bar</label>
+                <textarea class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label>Enablers/Barriers to baz</label>
+                <textarea class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="action-sheet__section action-sheet__section--last">
+        <div class="row">
+            <p class="col-sm-7 action-sheet__warning">
+                <strong>Remember:</strong><br>
+                This information will be publicly accessible
+            </p>
+            <p class="col-sm-5 action-sheet__submit">
+                <button type="submit" class="btn btn-success">Add enablers/barriers</button>
+            </p>
+        </div>
+    </div>
+</form>
