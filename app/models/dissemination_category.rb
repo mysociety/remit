@@ -69,8 +69,17 @@ class DisseminationCategory < ActiveRecord::Base
     external = DisseminationCategory.where(
       dissemination_category_type: "external")
     {
-      "Internal" => internal.map { |dc| [dc.name, dc.id, dc.description] },
-      "External" => external.map { |dc| [dc.name, dc.id, dc.description] },
+      "Internal" => internal.map do |dc|
+        [dc.name, dc.id, dc.description, dc.other_category?]
+      end,
+      "External" => external.map do |dc|
+        [dc.name, dc.id, dc.description, dc.other_category?]
+      end
     }
+  end
+
+  def other_category?
+    self == DisseminationCategory.other_internal_category || \
+      self == DisseminationCategory.other_external_category
   end
 end
