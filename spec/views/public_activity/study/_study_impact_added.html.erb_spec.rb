@@ -21,8 +21,8 @@ RSpec.describe "public_activity/study/_study_impact_added.html.erb",
 
   let(:expected_class) { "timeline__item--affirmative" }
   let(:expected_title) { "#{impact.impact_type.name} impact added" }
-  let(:expected_description) { "See details in full »" }
-  let(:expected_description_class) { ".timeline__item__details" }
+  let(:expected_description) { impact.description }
+  let(:expected_description_class) { ".timeline__item__impact" }
 
   before do
     PublicActivity.enabled = true

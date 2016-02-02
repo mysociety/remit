@@ -7,7 +7,9 @@ RSpec.describe "public_activity/study/_study_enabler_barrier_added.html.erb",
   let(:partial) { "public_activity/study/study_enabler_barrier_added" }
   let(:study) { FactoryGirl.create(:study) }
   let(:enabler_barrier) do
-    FactoryGirl.create(:study_enabler_barrier, study: study)
+    FactoryGirl.create(:study_enabler_barrier,
+                       study: study,
+                       description: "Test enabler barrier")
   end
   let(:user) { FactoryGirl.create(:user) }
   let(:activity_without_owner) do
@@ -23,8 +25,8 @@ RSpec.describe "public_activity/study/_study_enabler_barrier_added.html.erb",
 
   let(:expected_class) { "timeline__item--affirmative" }
   let(:expected_title) { "#{enabler_barrier.enabler_barrier.name} added" }
-  let(:expected_description) { "See details in full »" }
-  let(:expected_description_class) { ".timeline__item__details" }
+  let(:expected_description) { enabler_barrier.description }
+  let(:expected_description_class) { ".timeline__item__enabler-barrier" }
 
   before do
     PublicActivity.enabled = true

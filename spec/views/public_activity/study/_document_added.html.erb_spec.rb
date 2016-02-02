@@ -21,9 +21,10 @@ RSpec.describe "public_activity/study/_document_added.html.erb", type: :view do
   let(:expected_class) { "timeline__item--affirmative" }
   let(:expected_title) { "#{document.document_type.name} added" }
   let(:expected_description) do
-    "Read #{document.document_type.name.downcase} »"
+    "#{document.document_file_name} " \
+    "#{number_to_human_size(document.document_file_size)}"
   end
-  let(:expected_description_class) { ".timeline__item__details" }
+  let(:expected_description_class) { ".file--pdf" }
 
   before do
     PublicActivity.enabled = true
