@@ -1,4 +1,6 @@
 class OutputsController < ApplicationController
+  include CreatingMultipleStudyResources
+
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
   def create
@@ -18,45 +20,30 @@ class OutputsController < ApplicationController
   private
 
   def create_study_impact
-    # The study impact form allows you to create multiple impacts via a
-    # multiple select checkbox, so we take an all-or-nothing approach to
-    # creating them
-    @study_impacts = {}
-    StudyImpact.transaction do
-      impact_type_ids = study_impact_params[:impact_type_ids]
-      descriptions = study_impact_params[:descriptions]
-      impact_type_ids.values.each do |impact_type_id|
-        study_impact = StudyImpact.new(
-          impact_type_id: impact_type_id,
-          description: descriptions[impact_type_id])
-        study_impact.study = @study
-        @study_impacts[impact_type_id.to_i] = study_impact
-        # We call this and ignore the output for now, so that we can get
-        # errors for each impact in one go and then decide whether to rollback
-        # and show the errors, or continue
-        study_impact.save
-      end
-      if @study_impacts.empty?
-        # Empty form submitted
-        flash[:alert] = "Sorry, you to select at least one type of impact"
-        return redirect_to @study
-      elsif @study_impacts.values.any?(&:invalid?)
-        # One of the impacts (at least) had an error, rollback and show it
-        raise ActiveRecord::Rollback
-      else
-        # All good!
-        message = "#{@study_impacts.count} " \
-                  "#{'Impact'.pluralize(@study_impacts.count)} created " \
-                  "successfully"
-        return redirect_to @study, notice: message
-      end
+    @study_impacts = create_multiple_resources(
+      @study,
+      StudyImpact,
+      study_impact_params,
+      :impact_type_id,
+      :description)
+
+    if @study_impacts.empty?
+      # Empty form submitted
+      @study_impacts_errors = true
+      flash[:alert] = "Sorry, you have to select at least one type of impact"
+      return render "studies/show"
+    elsif @study_impacts.values.any?(&:invalid?)
+      @study_impacts_errors = true
+      flash[:alert] = "Sorry, looks like we're missing something, can you " \
+                      "double check?"
+      return render "studies/show"
     end
-    # We only get here if the transaction rolled back, so everything wasn't
-    # saved
-    @study_impacts_errors = true
-    flash[:alert] = "Sorry, looks like we're missing something, can you " \
-                    "double check?"
-    render "studies/show"
+
+    # All good!
+    message = "#{@study_impacts.count} " \
+              "#{'Impact'.pluralize(@study_impacts.count)} created " \
+              "successfully"
+    redirect_to @study, notice: message
   end
 
   def study_impact_params
