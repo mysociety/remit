@@ -11,5 +11,8 @@ Rails.application.routes.draw do
     # A generic create controller action that allows us to create a
     # publication, dissemination or study_impact
     post "outputs/create"
+    resources :study_enabler_barriers do
+      post :create_multiple, on: :collection
+    end
   end
 end

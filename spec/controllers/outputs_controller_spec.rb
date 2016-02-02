@@ -1,5 +1,6 @@
 require "rails_helper"
 require "support/study_contribution_controller_shared_examples"
+require "support/study_multiple_resources_controller_shared_examples"
 
 RSpec.describe OutputsController, type: :controller do
   describe "POST #create" do
@@ -51,6 +52,7 @@ RSpec.describe OutputsController, type: :controller do
       let(:association) { study.publications }
       let(:resource_name) { :publication }
       let(:expected_success_message) { "Publication created successfully" }
+      let(:action) { :create }
 
       it_behaves_like "study contribution controller"
     end
@@ -118,53 +120,26 @@ RSpec.describe OutputsController, type: :controller do
             }
           }
         end
+        let(:empty_attributes) do
+          {
+            study_id: study.id,
+            output_type: "study_impact",
+            study_impact: {
+              impact_type_ids: {},
+              descriptions: {}
+            }
+          }
+        end
         let(:association) { study.study_impacts }
         let(:resource_name) { :study_impacts }
         let(:expected_success_message) { "1 Impact created successfully" }
-
-        context "when given valid data" do
-          it "creates a resource" do
-            expect do
-              post :create, valid_attributes
-            end.to change { association.count }.by(1)
-          end
-
-          it "redirects to the study page" do
-            post :create, valid_attributes
-            expect(response).to redirect_to(study_path(study))
-          end
-
-          it "sets a flash notice" do
-            post :create, valid_attributes
-            expect(flash[:notice]).to eq expected_success_message
-          end
+        let(:expected_empty_alert) do
+          "Sorry, you have to select at least one type of impact"
         end
+        let(:action) { :create }
 
-        context "when given invalid data" do
-          before do
-            post :create, invalid_attributes
-          end
-
-          it "renders studies/show" do
-            expect(response).to render_template("studies/show")
-          end
-
-          it "sets a flash alert" do
-            expected_alert = "Sorry, looks like we're missing something, " \
-                             "can you double check?"
-            expect(flash[:alert]).to eq expected_alert
-          end
-
-          it "sets @study" do
-            expect(assigns[:study]).to eq study
-          end
-
-          it "sets resource variable with errors" do
-            expect(assigns[resource_name]).not_to be nil
-            resource = assigns[resource_name][programme_impact.id]
-            expect(resource.errors).not_to be_empty
-          end
-        end
+        it_behaves_like(
+          "multiple resources controller when creating one resource")
       end
 
       context "when multiple impact types are submitted" do
@@ -205,60 +180,12 @@ RSpec.describe OutputsController, type: :controller do
         let(:association) { study.study_impacts }
         let(:resource_name) { :study_impacts }
         let(:expected_success_message) { "2 Impacts created successfully" }
+        let(:valid_id) { programme_impact.id }
+        let(:invalid_id) { msf_policy_impact.id }
+        let(:action) { :create }
 
-        context "when given valid data" do
-          it "creates two resources" do
-            expect do
-              post :create, valid_attributes
-            end.to change { association.count }.by(2)
-          end
-
-          it "redirects to the study page" do
-            post :create, valid_attributes
-            expect(response).to redirect_to(study_path(study))
-          end
-
-          it "sets a flash notice" do
-            post :create, valid_attributes
-            expect(flash[:notice]).to eq expected_success_message
-          end
-        end
-
-        context "when given invalid data" do
-          before do
-            post :create, invalid_attributes
-          end
-
-          it "renders studies/show" do
-            expect(response).to render_template("studies/show")
-          end
-
-          it "sets a flash alert" do
-            expected_alert = "Sorry, looks like we're missing something, " \
-                             "can you double check?"
-            expect(flash[:alert]).to eq expected_alert
-          end
-
-          it "sets @study" do
-            expect(assigns[:study]).to eq study
-          end
-
-          it "sets resource variable with errors" do
-            expect(assigns[resource_name]).not_to be nil
-            resource = assigns[resource_name][msf_policy_impact.id]
-            expect(resource.errors).not_to be_empty
-            resource = assigns[resource_name][programme_impact.id]
-            expect(resource.errors).to be_empty
-          end
-
-          it "doesn't create any resources" do
-            # One of the impacts is valid, but we should do everything in a
-            # transaction and not create any if one fails
-            expect do
-              post :create, invalid_attributes
-            end.not_to change { association.count }
-          end
-        end
+        it_behaves_like(
+          "multiple resources controller when creating two resources")
       end
     end
   end
