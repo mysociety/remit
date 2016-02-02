@@ -12,7 +12,8 @@ RSpec.describe StudyEnablerBarrier, type: :model do
       with_options(null: false)
   end
   it do
-    is_expected.to have_db_column(:description).of_type(:text)
+    is_expected.to have_db_column(:description).of_type(:text).
+      with_options(null: false)
   end
 
   # Associations
@@ -22,6 +23,7 @@ RSpec.describe StudyEnablerBarrier, type: :model do
   # Validation
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:enabler_barrier) }
+  it { is_expected.to validate_presence_of(:description) }
 
   it_behaves_like "study_activity_trackable"
 end
