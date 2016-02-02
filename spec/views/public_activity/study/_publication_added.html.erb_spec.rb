@@ -20,8 +20,11 @@ RSpec.describe "public_activity/study/_publication_added.html.erb",
   end
   let(:expected_class) { "timeline__item--affirmative" }
   let(:expected_title) { "Publication added" }
-  let(:expected_description) { "Read publication »" }
-  let(:expected_description_class) { ".timeline__item__details" }
+  let(:expected_description) do
+    "#{publication.article_title} #{publication.lead_author} – " \
+    "#{publication.book_or_journal_title} (#{publication.publication_year})"
+  end
+  let(:expected_description_class) { ".file--publication" }
 
   before do
     PublicActivity.enabled = true
