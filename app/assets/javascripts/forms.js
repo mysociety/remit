@@ -28,6 +28,11 @@ $(function(){
         }
     };
 
+    // Hide the other_category input, and give it a better label
+    // now that it only ever gets shown by JavaScript.
+    $('.dissemination_other_category').hide()
+        .find('label').text('Describe the category in a couple of words');
+
     // Trigger the check on pageload, just in case.
     showOrHideOtherCategoryInput();
 
@@ -35,9 +40,4 @@ $(function(){
     $('#dissemination_dissemination_category_id').on('change', function(e){
         showOrHideOtherCategoryInput();
     });
-
-    // Hide the other_category input, and give it a better label
-    // now that it only ever gets shown by JavaScript.
-    $('.dissemination_other_category').hide()
-        .find('label').text('Describe the category in a couple of words');
 });

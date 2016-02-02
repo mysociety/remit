@@ -14,8 +14,15 @@
     height: 10em;
   }
 
+  // We'd like to wrap everything in paragraphs, but Rails puts fields with
+  // an error inside a div, so we need to do the same sometimes and style them
+  // both the same.
+  .field-wrapper {
+    margin-bottom: 1em;
+  }
+
   @media (min-width: $screen-sm-min) {
-    p {
+    .field-wrapper {
       margin-bottom: 0;
     }
   }
@@ -31,13 +38,13 @@
   margin: 0.5em 0;
 
   // Vertical space between rows in this section
-  p + p,
-  .row p {
+  .field-wrapper + .field-wrapper,
+  .row .field-wrapper {
     margin-top: 1em;
   }
 
   // No space above first row in this section
-  & > .row:first-child p {
+  & > .row:first-child .field-wrapper {
     margin-top: 0;
   }
 }
