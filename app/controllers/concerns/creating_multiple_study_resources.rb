@@ -1,10 +1,12 @@
 module CreatingMultipleStudyResources
   extend ActiveSupport::Concern
 
-  def create_multiple_resources(study, resource_class, params, id_param, description_param)
+  def create_multiple_resources(study, resource_class, params, id_param,
+                                description_param)
     resources = {}
     resource_class.transaction do
       ids = params[id_param.to_s.pluralize.to_sym]
+      raise ActiveRecord::Rollback if ids.blank?
       descriptions = params[description_param.to_s.pluralize.to_sym]
       ids.values.each do |id|
         resource = resource_class.new(

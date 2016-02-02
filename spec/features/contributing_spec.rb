@@ -14,6 +14,8 @@ RSpec.describe "Contributing to a study" do
   let!(:dissemination_category) { FactoryGirl.create(:field) }
   let!(:msf_policy_impact_type) { FactoryGirl.create(:msf_policy_impact) }
   let!(:programme_impact_type) { FactoryGirl.create(:programme_impact) }
+  let!(:delivery_barrier) { FactoryGirl.create(:delivery_barrier) }
+  let!(:patient_barrier) { FactoryGirl.create(:patient_barrier) }
   let!(:user) { FactoryGirl.create(:normal_user) }
 
   before do
@@ -182,5 +184,69 @@ RSpec.describe "Contributing to a study" do
     expect(activities[1]).to match_activity(key: "study.study_impact_added",
                                             owner: user,
                                             related_content: program_impact)
+  end
+
+  it "allows you to contribute a single enabler/barrier" do
+    description = "Test delivery barrier"
+
+    click_label("Enabler/Barrier")
+    check delivery_barrier.name
+    fill_in "study_enabler_barrier[descriptions][#{delivery_barrier.id}]",
+            with: description
+    click_button "Add enablers/barriers"
+
+    enabler_barrier = StudyEnablerBarrier.find_by_description(description)
+
+    expect(page).to have_text "1 Enabler/Barrier created successfully"
+    expect(page).to have_text "#{delivery_barrier.name} added"
+
+    expect(enabler_barrier).not_to be nil
+    expect(enabler_barrier.study).to eq study
+    expect(enabler_barrier.enabler_barrier).to eq delivery_barrier
+
+    expect(study).to have_latest_activity(
+      key: "study.study_enabler_barrier_added",
+      owner: user,
+      related_content: enabler_barrier)
+  end
+
+  it "allows you to contribute multiple enabler/barriers" do
+    description_1 = "Test delivery barrier"
+    description_2 = "Test patient barrier"
+
+    click_label("Enabler/Barrier")
+    check delivery_barrier.name
+    fill_in "study_enabler_barrier[descriptions][#{delivery_barrier.id}]",
+            with: description_1
+    check patient_barrier.name
+    fill_in "study_enabler_barrier[descriptions][#{patient_barrier.id}]",
+            with: description_2
+    click_button "Add enablers/barriers"
+
+    delivery = StudyEnablerBarrier.find_by_description(description_1)
+    patient = StudyEnablerBarrier.find_by_description(description_2)
+
+    expect(page).to have_text "2 Enabler/Barriers created successfully"
+    expect(page).to have_text "#{delivery_barrier.name} added"
+    expect(page).to have_text "#{patient_barrier.name} added"
+
+    expect(delivery).not_to be nil
+    expect(delivery.study).to eq study
+    expect(delivery.enabler_barrier).to eq delivery_barrier
+
+    expect(patient).not_to be nil
+    expect(patient.study).to eq study
+    expect(patient.enabler_barrier).to eq patient_barrier
+
+    activities = study.activities.first(2)
+
+    expect(activities[0]).to match_activity(
+      key: "study.study_enabler_barrier_added",
+      owner: user,
+      related_content: delivery)
+    expect(activities[1]).to match_activity(
+      key: "study.study_enabler_barrier_added",
+      owner: user,
+      related_content: patient)
   end
 end
