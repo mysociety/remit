@@ -497,7 +497,7 @@ CREATE TABLE study_enabler_barriers (
     id integer NOT NULL,
     study_id integer NOT NULL,
     enabler_barrier_id integer NOT NULL,
-    description text,
+    description text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1432,4 +1432,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160122111240');
 INSERT INTO schema_migrations (version) VALUES ('20160125143207');
 
 INSERT INTO schema_migrations (version) VALUES ('20160126174841');
+
+INSERT INTO schema_migrations (version) VALUES ('20160202165749');
 
