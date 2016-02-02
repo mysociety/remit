@@ -46,7 +46,7 @@ RSpec.describe "studies/_study_actions.html.erb", type: :view do
       FactoryGirl.build(:publication, study: study, article_title: nil)
     end
     let(:expected_error) { "Article title can't be blank" }
-    let(:form_field) { "record-output" }
+    let(:form_field) { "add-output" }
 
     it_behaves_like "content form view"
 
@@ -65,7 +65,7 @@ RSpec.describe "studies/_study_actions.html.erb", type: :view do
       FactoryGirl.build(:dissemination, study: study, details: nil)
     end
     let(:expected_error) { "Details can't be blank" }
-    let(:form_field) { "record-output" }
+    let(:form_field) { "add-output" }
 
     it_behaves_like "content form view"
 
@@ -100,7 +100,7 @@ RSpec.describe "studies/_study_actions.html.erb", type: :view do
       end
 
       it "opens the output form" do
-        expect(rendered).to have_checked_field("record-output")
+        expect(rendered).to have_checked_field("add-output")
       end
 
       it "opens the impact subform" do
@@ -140,7 +140,7 @@ RSpec.describe "studies/_study_actions.html.erb", type: :view do
       end
 
       it "opens the output form" do
-        expect(rendered).to have_checked_field("record-output")
+        expect(rendered).to have_checked_field("add-output")
       end
 
       it "opens the impact subform" do

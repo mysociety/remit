@@ -27,7 +27,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute a document" do
-    click_label("Add a document")
+    choose("add-document")
     select document_type.name, from: "Document type"
     attach_file "Choose document", "spec/fixtures/test.pdf"
     click_button "Add document"
@@ -49,7 +49,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute a note" do
-    click_label("Add a note")
+    choose("add-note")
     fill_in "Notes", with: "A test note"
     click_button "Add note"
     note = StudyNote.find_by_notes("A test note")
@@ -66,7 +66,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute a publication manually" do
-    click_label("Record an output")
+    click_label("Output")
     choose("output-type-publication")
     click_label("Or enter details manually…")
     fill_in "Article title", with: "A test article"
@@ -87,7 +87,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute a dissemination that hasn't been fed back" do
-    click_label("Record an output")
+    click_label("Output")
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"
     fill_in "Details", with: "A test dissemination"
@@ -108,7 +108,7 @@ RSpec.describe "Contributing to a study" do
   it "allows you to contribute a dissemination that has been fed back" do
     details = "A test fed back dissemination"
 
-    click_label("Record an output")
+    click_label("Output")
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"
     fill_in "Details", with: details
@@ -128,7 +128,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute a single impact" do
-    click_label("Record an output")
+    click_label("Output")
     choose("output-type-other")
     check "MSF Policy"
     fill_in "study_impact[descriptions][#{msf_policy_impact_type.id}]",
@@ -149,7 +149,7 @@ RSpec.describe "Contributing to a study" do
   end
 
   it "allows you to contribute multiple impacts" do
-    click_label("Record an output")
+    click_label("Output")
     choose("output-type-other")
     check "MSF Policy"
     fill_in "study_impact[descriptions][#{msf_policy_impact_type.id}]",
