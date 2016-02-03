@@ -64,6 +64,16 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       study_topics = topics unless topics.empty?
     end
 
+    if row[:erb_reference].blank?
+      erb_reference = nil
+      erb_status = ErbStatus.find_by_name("Exempt")
+    else
+      erb_reference = row[:erb_reference]
+      status = row[:erb_status]
+      status = "Submitted" if status == "In submission"
+      erb_status = ErbStatus.find_by_name(status)
+    end
+
     Study.create!(
       reference_number: row[:study_reference_],
       title: row[:study_title],
@@ -76,7 +86,9 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       protocol_needed: true,
       # This isn't specified either
       study_setting: default_setting,
-      country_codes: country_codes
+      country_codes: country_codes,
+      erb_reference: erb_reference,
+      erb_status: erb_status
     )
   end
 end
