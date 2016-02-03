@@ -1,4 +1,5 @@
 require "csv"
+require "securerandom"
 
 desc "Load MSF's Interim spreadsheet into the DB"
 task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
@@ -76,6 +77,8 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       protocol_needed = true
     end
 
+    pi = get_or_create_user(row)
+
     Study.create!(
       reference_number: row[:study_reference_],
       title: row[:study_title],
@@ -90,7 +93,48 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       study_setting: default_setting,
       country_codes: country_codes,
       erb_reference: erb_reference,
-      erb_status: erb_status
+      erb_status: erb_status,
+      principal_investigator: pi
     )
   end
+end
+
+def get_or_create_user(row)
+  pi = nil
+  unless row[:pi_email].blank?
+    # See if we've already created a user before - some have multiple
+    # studies
+    pi = User.find_by_email(row[:pi_email].downcase)
+    if pi.blank?
+      pi = create_user(row)
+    end
+  end
+  pi
+end
+
+def create_user(row)
+  # Create an new confirmed user account but don't send them an email
+  # about it.
+  name = "#{row[:pi_firstname]} #{row[:pi_surname]}"
+  password = SecureRandom.urlsafe_base64(16)
+  location = MsfLocation.find_by_name(row[:pi_section])
+  external_location = nil
+  if location && location.name == "External"
+    external_location = row[:pi_section_text]
+    unless external_location
+      location = nil
+      external_location = "External location text is required but was " \
+                          "not given"
+    end
+  end
+  pi = User.new(
+    name: name,
+    email: row[:pi_email].downcase,
+    password: password,
+    password_confirmation: password,
+    msf_location: location,
+    external_location: external_location)
+  pi.skip_confirmation!
+  pi.save!
+  pi
 end
