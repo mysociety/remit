@@ -14,6 +14,9 @@ FactoryGirl.define do
     factory :study_report_doc_type do
       name "Study report"
     end
+    factory :interim_results_doc_type do
+      name "Interim results"
+    end
     factory :other_doc_type do
       name "Other"
     end
