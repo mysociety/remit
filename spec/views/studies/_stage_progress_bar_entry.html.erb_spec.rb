@@ -1,13 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "studies/_stage_progress_bar_entry.html.erb", type: :view do
-  it "renders a blank entry when the state is empty" do
+  it "renders a todo entry when the state is todo" do
     render partial: "studies/stage_progress_bar_entry",
-           locals: { label: "Test", state: "" }
+           locals: { label: "Test", state: "todo" }
     expect(rendered).to have_css "li"
     expect(rendered).to have_text "Test"
-    expect(rendered).not_to have_css "li.step--doing"
-    expect(rendered).not_to have_css "li.step--done"
+    expect(rendered).to have_css "li.step--todo"
     expect(rendered).not_to have_css "img"
   end
 
