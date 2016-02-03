@@ -4,11 +4,11 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe "#study_timeline" do
     let(:base_timeline) do
       {
-        concept: { label: "Concept", state: "" },
-        protocol_erb: { label: "Protocol & ERB", state: "" },
-        delivery: { label: "Delivery", state: "" },
-        output: { label: "Output", state: "" },
-        completion: { label: "Completion", state: "" },
+        concept: { label: "Concept", state: "todo" },
+        protocol_erb: { label: "Protocol & ERB", state: "todo" },
+        delivery: { label: "Delivery", state: "todo" },
+        output: { label: "Output", state: "todo" },
+        completion: { label: "Completion", state: "todo" },
       }
     end
 
@@ -53,14 +53,19 @@ RSpec.describe ApplicationHelper, type: :helper do
           FactoryGirl.create(:study, study_stage: "withdrawn_postponed")
         end
 
-        it "returns a timeline with one entry" do
+        it "returns a timeline with two entries" do
           expect(study.withdrawn_postponed?).to be true
-          expected_timeline = base_timeline
-          expected_timeline[:withdrawn_postponed] = {
-            label: "Withdrawn or Postponed",
-            state: "doing"
+          expected_withdrawn_timeline = {
+            concept: {
+              label: "Concept",
+              state: "done"
+            },
+            withdrawn_postponed: {
+              label: "Withdrawn or Postponed",
+              state: "doing"
+            }
           }
-          expect(study_timeline(study)).to eq expected_timeline
+          expect(study_timeline(study)).to eq expected_withdrawn_timeline
         end
       end
     end
@@ -160,9 +165,35 @@ RSpec.describe ApplicationHelper, type: :helper do
           expected_timeline[:concept][:state] = "done"
           expected_timeline[:protocol_erb][:state] = "done"
           expected_timeline[:delivery][:state] = "done"
-          # We expect the helper to leave these two alone
-          expected_timeline[:output][:state] = ""
-          expected_timeline[:completion][:state] = ""
+          # We expect the helper to delete these next two
+          expected_timeline.delete(:output)
+          expected_timeline.delete(:completion)
+          expected_timeline[:withdrawn_postponed] = {
+            label: "Withdrawn or Postponed",
+            state: "doing"
+          }
+          expect(study_timeline(study)).to eq expected_timeline
+        end
+      end
+
+      context "when a study has skipped a stage and then been withdrawn" do
+        let(:study) { FactoryGirl.create(:study) }
+
+        it "returns a timeline with multiple entries" do
+          study.study_stage = "delivery"
+          study.save!
+          study.study_stage = "withdrawn_postponed"
+          study.save!
+
+          expected_timeline = base_timeline
+          # The helper should complete these
+          expected_timeline[:concept][:state] = "done"
+          expected_timeline[:protocol_erb][:state] = "done"
+          expected_timeline[:delivery][:state] = "done"
+          # We expect the helper to delete these
+          expected_timeline.delete(:output)
+          expected_timeline.delete(:completion)
+          # This should be the final state
           expected_timeline[:withdrawn_postponed] = {
             label: "Withdrawn or Postponed",
             state: "doing"

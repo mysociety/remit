@@ -23,17 +23,18 @@ module ApplicationHelper
     # Ensure that stages before the current one are completed, even if the
     # history shows the study jumped straight to it (e.g. because we
     # imported it when it was already in progress, or completed).
-    # Only for non-withdrawn studies, because we can't tell what other
-    # stages a withdrawn study would have been through otherwise.
+    # Withdrawn studies are different because we want them to end directly
+    # in withdrawn from whatever state they were in before.
     current_stage_index = stages.index(study.study_stage.to_sym)
-    unless study.withdrawn_postponed?
+    if study.withdrawn_postponed?
+      timeline = ensure_withdrawn_timeline_is_complete timeline,
+                                                       stages,
+                                                       stage_changes
+    else
       timeline = ensure_timeline_is_complete timeline,
                                              stages,
                                              current_stage_index
     end
-
-    # Finally, ensure that the current stage is marked as "doing"
-    timeline[stages[current_stage_index]][:state] = "doing"
 
     timeline
   end
@@ -60,7 +61,7 @@ module ApplicationHelper
     stages.each do |stage|
       timeline[stage] = {
         label: Study::STUDY_STAGE_LABELS[stage],
-        state: ""
+        state: "todo"
       }
     end
     timeline
@@ -85,6 +86,43 @@ module ApplicationHelper
         timeline[stage][:state] = "done"
       end
     end
+    # Finally, ensure that the current stage is marked as "doing"
+    timeline[stages[current_stage_index]][:state] = "doing"
+    timeline
+  end
+
+  def ensure_withdrawn_timeline_is_complete(timeline, stages, stage_changes)
+    if stage_changes.present?
+      # There's at least one stage that happened before we withdrew this study
+      # so we can show that and the stages up to it as having been completed
+      # then show it as having been withdrawn directly afterwards.
+      stage_before_withdrawn = stage_changes.last.parameters[:before].to_sym
+      stage_before_withdrawn_index = stages.index(stage_before_withdrawn)
+      stages_before = stages.slice(0..stage_before_withdrawn_index - 1)
+      stages_after = stages.slice(stage_before_withdrawn_index + 1..-2)
+      if stages_before.present?
+        stages_before.each do |stage|
+          timeline[stage][:state] = "done"
+        end
+      end
+      if stages_after.present?
+        stages_after.each do |stage|
+          timeline.delete(stage)
+        end
+      end
+    else
+      # The study has no history of other stages, so we can only show the
+      # current withdrawn state - delete all the others.
+      # We assume that the concept stage is always done before
+      # something is withdrawn though, otherwise the timeline looks weird
+      timeline[:concept][:state] = "done"
+      other_stages = stages.slice(1..-2)
+      other_stages.each do |stage|
+        timeline.delete(stage)
+      end
+    end
+    # Finally, ensure that the current stage is marked as "doing"
+    timeline[:withdrawn_postponed][:state] = "doing"
     timeline
   end
 
