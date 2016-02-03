@@ -15,14 +15,16 @@ RSpec.describe "DocumentAdmin" do
     click_link "New Document"
     select document_type.name, from: "Document type"
     select study.title, from: "Study"
+    attach_file "Document", "spec/fixtures/test.pdf"
     click_button "Create Document"
     expect(page).to have_text "Document was successfully created"
     document = Document.where(
       "study_id = :study_id AND document_type_id = :document_type_id",
       study_id: study.id,
       document_type_id: document_type.id,
-    )
+    ).first
     expect(document).not_to be nil
+    expect(document.document).not_to be nil
   end
 
   context "with an existing document" do

@@ -117,6 +117,7 @@ DocumentType.create(
     { name: "Data sharing agreements" },
     { name: "Dataset" },
     { name: "Study report" },
+    { name: "Interim results" },
     { name: "Other" },
   ]
 )

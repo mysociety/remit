@@ -24,9 +24,8 @@
 #  other_study_type            :text
 #  principal_investigator_id   :integer
 #  research_manager_id         :integer
-#  country_code                :text
+#  country_codes               :text
 #  feedback_and_suggestions    :text
-#  study_topic_id              :integer          not null
 #  study_stage                 :enum             default("concept"), not null
 #
 # Indexes
@@ -35,7 +34,6 @@
 #  index_studies_on_principal_investigator_id  (principal_investigator_id)
 #  index_studies_on_research_manager_id        (research_manager_id)
 #  index_studies_on_study_setting_id           (study_setting_id)
-#  index_studies_on_study_topic_id             (study_topic_id)
 #  index_studies_on_study_type_id              (study_type_id)
 #
 
@@ -71,7 +69,6 @@ class Study < ActiveRecord::Base
   }
 
   belongs_to :study_type, inverse_of: :studies
-  belongs_to :study_topic, inverse_of: :studies
   belongs_to :study_setting, inverse_of: :studies
   belongs_to :erb_status, inverse_of: :studies
   belongs_to :principal_investigator,
@@ -80,6 +77,7 @@ class Study < ActiveRecord::Base
   belongs_to :research_manager,
              class_name: :User,
              inverse_of: :research_manager_studies
+  has_and_belongs_to_many :study_topics, inverse_of: :studies
   has_many :study_enabler_barriers, inverse_of: :study
   has_many :study_impacts, inverse_of: :study
   has_many :disseminations, inverse_of: :study
@@ -93,7 +91,7 @@ class Study < ActiveRecord::Base
   validates :study_type, presence: true
   validates :study_setting, presence: true
   validates :concept_paper_date, presence: true
-  validates :study_topic, presence: true
+  validates :study_topics, presence: true
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
 
@@ -105,10 +103,40 @@ class Study < ActiveRecord::Base
     end
   end
 
-  def country
-    return if country_code.blank?
-    country = ISO3166::Country.new(country_code)
-    country.name unless country.nil?
+  # Override the country_codes setter to store an array of codes as a
+  # comma-separated string in the db.
+  def country_codes=(codes)
+    self[:country_codes] = codes.reject(&:empty?).join(",")
+  end
+
+  # Override the country_codes getter to expand the comma-separated country
+  # codes string from the db into an array.
+  def country_codes
+    if self[:country_codes].present?
+      self[:country_codes].split(",")
+    else
+      []
+    end
+  end
+
+  # Helper method to return a list of ISO3166::Country objects for this
+  # study's country codes.
+  def countries
+    return if country_codes.empty?
+    countries = []
+    country_codes.each do |code|
+      country = ISO3166::Country.new(code)
+      unless country.nil?
+        countries << country
+      end
+    end
+    return countries unless countries.empty?
+  end
+
+  # Helper method to return a nice sentence with all of the countries names in
+  def country_names
+    return if countries.blank?
+    countries.to_sentence
   end
 
   # Create a new PublicActivity record for any changes to attributes we care
@@ -162,8 +190,14 @@ class Study < ActiveRecord::Base
   # What was the original title (if the title hasn't changed, this just
   # returns the current title)
   def original_title
-    change = activities.where(key: "study.title_changed").first
+    change = activities.find_by(key: "study.title_changed")
     return change.parameters[:before] if change.present?
     title
+  end
+
+  def study_topic_names
+    unless study_topics.empty?
+      study_topics.map(&:name).to_sentence
+    end
   end
 end

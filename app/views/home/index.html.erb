@@ -50,9 +50,9 @@
                         <dt>Study details</dt>
                         <dd>
                             <a href="/search?methodology=cohort%20study"><%= study.study_type.name %></a>
-                          <% unless study.country.blank? %>
+                          <% unless study.country_names.blank? %>
                             in
-                            <a href="/search?location=ethiopia"><%= study.country %></a>
+                            <a href="/search?location=ethiopia"><%= study.country_names %></a>
                           <% end %>
                         </dd>
                       <% unless study.principal_investigator.blank? %>

@@ -60,4 +60,17 @@ class DisseminationCategory < ActiveRecord::Base
       "you changed its name, or haven't loaded in seeds.rb?"
     raise ActiveRecord::RecordNotFound, message
   end
+
+  # Return a hash of categories for use in a select field, grouped by whether
+  # they are internal or external
+  def self.grouped_options_for_select
+    internal = DisseminationCategory.where(
+      dissemination_category_type: "internal")
+    external = DisseminationCategory.where(
+      dissemination_category_type: "external")
+    {
+      "Internal" => internal.map { |dc| [dc.name, dc.id] },
+      "External" => external.map { |dc| [dc.name, dc.id] },
+    }
+  end
 end

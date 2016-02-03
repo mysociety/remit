@@ -11,8 +11,15 @@ wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add 
 echo "deb http://packages.elastic.co/elasticsearch/0.90/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-0.90.list
 
 sudo apt-get update
-sudo apt-get install -y curl git openjdk-6-jre libpq-dev postgresql
+sudo apt-get install -y curl git openjdk-6-jre libpq-dev postgresql imagemagick
 sudo apt-get install elasticsearch=0.90.3
+
+# Install PhantomJS for browser testing
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+tar -xjf phantomjs-1.9.8-linux-x86_64.tar.bz2
+sudo ln -s /home/vagrant/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+# Just for debugging purposes
+phantomjs -v
 
 # Make elastic search run at startup
 sudo update-rc.d elasticsearch defaults

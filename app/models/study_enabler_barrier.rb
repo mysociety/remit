@@ -5,7 +5,7 @@
 #  id                 :integer          not null, primary key
 #  study_id           :integer          not null
 #  enabler_barrier_id :integer          not null
-#  description        :text
+#  description        :text             not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
@@ -23,4 +23,5 @@ class StudyEnablerBarrier < ActiveRecord::Base
 
   validates :study, presence: true
   validates :enabler_barrier, presence: true
+  validates :description, presence: true
 end

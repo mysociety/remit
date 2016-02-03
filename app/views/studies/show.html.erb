@@ -11,17 +11,29 @@
                         <p class="study-header__details__value"><a href="/search?methodology=mixed%20methods%20study"><%= @study.study_type.name %></a></p>
                     </div>
                     <div>
-                        <h3 class="study-header__details__key">Topic</h3>
-                        <p class="study-header__details__value"><a href="/search?topic=tuberculosis"><%= @study.study_topic.name %></a></p>
+                        <h3 class="study-header__details__key">
+                            <%= "Topic".pluralize(@study.study_topics.count) %>
+                        </h3>
+                        <p class="study-header__details__value">
+                            <a href="/search?topic=tuberculosis">
+                                <%= @study.study_topic_names %>
+                            </a>
+                        </p>
                     </div>
                     <div>
                         <h3 class="study-header__details__key">Principal investigator</h3>
                         <p class="study-header__details__value"><a href="/search?pi=janet%20bloggs">Janet Bloggs</a></p>
                     </div>
-                  <% unless @study.country.blank? %>
+                  <% unless @study.country_names.blank? %>
                     <div>
-                        <h3 class="study-header__details__key">Location</h3>
-                        <p class="study-header__details__value"><a href="/search?location=south%20sudan"><%= @study.country %></a></p>
+                        <h3 class="study-header__details__key">
+                            <%= "Location".pluralize(@study.countries.count) %>
+                        </h3>
+                        <p class="study-header__details__value">
+                            <a href="/search?location=south%20sudan">
+                                <%= @study.country_names %>
+                            </a>
+                        </p>
                     </div>
                   <% end %>
                 </div>
@@ -53,7 +65,7 @@
         <div class="study-main">
             <div class="study-main__primary">
                 <div class="study-main__actions">
-                    <%= render "study_actions" %>
+                    <%= render partial: "studies/study_actions" %>
                 </div>
                 <div class="study-main__timeline timeline">
                     <ol reversed>
