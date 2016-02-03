@@ -31,9 +31,16 @@ RSpec.describe "home/index.html.erb", type: :view do
   end
 
   it "shows the country when there is one" do
-    @studies.first.country_code = "GB"
+    @studies.first.country_codes = ["GB"]
     @studies.first.save!
     render
     expect(rendered).to match(/United Kingdom/)
+  end
+
+  it "shows multiple countries when there are many" do
+    @studies.first.country_codes = %w(GB BD)
+    @studies.first.save!
+    render
+    expect(rendered).to match(/United Kingdom and Bangladesh/)
   end
 end

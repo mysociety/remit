@@ -51,7 +51,7 @@ RSpec.describe Study, type: :model do
     is_expected.to have_db_column(:principal_investigator_id).of_type(:integer)
   end
   it { is_expected.to have_db_column(:research_manager_id).of_type(:integer) }
-  it { is_expected.to have_db_column(:country_code).of_type(:text) }
+  it { is_expected.to have_db_column(:country_codes).of_type(:text) }
   it { is_expected.to have_db_column(:feedback_and_suggestions).of_type(:text) }
 
   # Associations
@@ -114,26 +114,68 @@ RSpec.describe Study, type: :model do
     end
   end
 
-  describe "country field" do
+  describe "#country_codes=" do
     let(:study) { FactoryGirl.build(:study) }
 
-    it "returns an ISO3166 country name" do
-      study.country_code = "GB"
-      expect(study.country).to eq "United Kingdom"
+    it "lets you set a list of country codes" do
+      study.country_codes = %w(GB BD)
+      expect(study[:country_codes]).to eq "GB,BD"
+    end
+  end
+
+  describe "#country_codes" do
+    let(:study) { FactoryGirl.build(:study) }
+
+    it "returns a list of country codes" do
+      study[:country_codes] = "GB,BD"
+      expect(study.country_codes).to eq %w(GB BD)
+    end
+  end
+
+  describe "#countries" do
+    let(:study) { FactoryGirl.build(:study) }
+
+    it "returns a list of ISO3166 countries" do
+      study.country_codes = %w(GB BD)
+      expect(study.countries).to eq [ISO3166::Country.new("GB"),
+                                     ISO3166::Country.new("BD")]
     end
 
     it "returns nil for an unknown ISO3166 country name" do
-      study.country_code = "XX"
-      expect(study.country).to eq nil
+      study.country_codes = %w(XX)
+      expect(study.countries).to eq nil
     end
 
-    it "returns nil when country_code is nil" do
-      expect(study.country).to eq nil
+    it "returns nil when country_codes is nil" do
+      expect(study.countries).to eq nil
     end
 
-    it "returns nil when country_code is empty" do
-      study.country_code = ""
-      expect(study.country).to eq nil
+    it "returns nil when country_codes is empty" do
+      study.country_codes = []
+      expect(study.countries).to eq nil
+    end
+  end
+
+  describe "#country_names" do
+    let(:study) { FactoryGirl.build(:study) }
+
+    it "returns a sentence of ISO3166 country names" do
+      study.country_codes = %w(GB BD)
+      expect(study.country_names).to eq "United Kingdom and Bangladesh"
+    end
+
+    it "returns nil for an unknown ISO3166 country name" do
+      study.country_codes = %w(XX)
+      expect(study.country_names).to eq nil
+    end
+
+    it "returns nil when country_codes is nil" do
+      expect(study.country_names).to eq nil
+    end
+
+    it "returns nil when country_codes is empty" do
+      study.country_codes = []
+      expect(study.country_names).to eq nil
     end
   end
 

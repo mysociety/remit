@@ -463,7 +463,7 @@ CREATE TABLE studies (
     other_study_type text,
     principal_investigator_id integer,
     research_manager_id integer,
-    country_code text,
+    country_codes text,
     feedback_and_suggestions text,
     study_stage study_stage DEFAULT 'concept'::study_stage NOT NULL
 );
@@ -1460,4 +1460,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160126174841');
 INSERT INTO schema_migrations (version) VALUES ('20160202165749');
 
 INSERT INTO schema_migrations (version) VALUES ('20160203150222');
+
+INSERT INTO schema_migrations (version) VALUES ('20160203164358');
 

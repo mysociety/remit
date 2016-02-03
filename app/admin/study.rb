@@ -6,7 +6,8 @@ ActiveAdmin.register Study do
                 :local_erb_approved, :completed, :local_collaborators,
                 :international_collaborators, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
-                :country_code, :feedback_and_suggestions,
+                :feedback_and_suggestions,
+                country_codes: [],
                 study_topic_ids: []
 
   menu priority: 1
@@ -35,11 +36,12 @@ ActiveAdmin.register Study do
       f.input :other_study_type, as: :string
       f.input :study_setting
       f.input(
-        :country_code,
-        label: "Country",
+        :country_codes,
+        label: "Countries",
         as: :country,
         include_blank: true,
-        priority_countries: %w(BD CD ET HT NG SS UZ ZW))
+        priority_countries: %w(BD CD ET HT NG SS UZ ZW),
+        input_html: { multiple: true, size: 10 })
       f.input :principal_investigator
       f.input :research_manager
       f.input :research_team
