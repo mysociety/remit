@@ -141,7 +141,8 @@
 
 // When the final stage is in process (ie: toffee, not off-white)
 // the right half of the subnav needs to be toffee too.
-.study-subnav--completion {
+.study-subnav--completion,
+.study-subnav--withdrawn_postponed {
   background-color: $color-pale-green;
   @include gradient-horizontal(
     $start-color: $color-pale-green,
