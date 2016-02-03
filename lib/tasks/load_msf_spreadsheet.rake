@@ -67,11 +67,13 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
     if row[:erb_reference].blank?
       erb_reference = nil
       erb_status = ErbStatus.find_by_name("Exempt")
+      protocol_needed = false
     else
       erb_reference = row[:erb_reference]
       status = row[:erb_status]
       status = "Submitted" if status == "In submission"
       erb_status = ErbStatus.find_by_name(status)
+      protocol_needed = true
     end
 
     Study.create!(
@@ -83,7 +85,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       concept_paper_date: date,
       study_topics: study_topics,
       # This isn't specified in the CSV at all, so just assume a value
-      protocol_needed: true,
+      protocol_needed: protocol_needed,
       # This isn't specified either
       study_setting: default_setting,
       country_codes: country_codes,
