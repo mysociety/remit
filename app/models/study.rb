@@ -24,7 +24,7 @@
 #  other_study_type            :text
 #  principal_investigator_id   :integer
 #  research_manager_id         :integer
-#  country_code                :text
+#  country_codes               :text
 #  feedback_and_suggestions    :text
 #  study_stage                 :enum             default("concept"), not null
 #
@@ -103,10 +103,40 @@ class Study < ActiveRecord::Base
     end
   end
 
-  def country
-    return if country_code.blank?
-    country = ISO3166::Country.new(country_code)
-    country.name unless country.nil?
+  # Override the country_codes setter to store an array of codes as a
+  # comma-separated string in the db.
+  def country_codes=(codes)
+    self[:country_codes] = codes.reject(&:empty?).join(",")
+  end
+
+  # Override the country_codes getter to expand the comma-separated country
+  # codes string from the db into an array.
+  def country_codes
+    if self[:country_codes].present?
+      self[:country_codes].split(",")
+    else
+      []
+    end
+  end
+
+  # Helper method to return a list of ISO3166::Country objects for this
+  # study's country codes.
+  def countries
+    return if country_codes.empty?
+    countries = []
+    country_codes.each do |code|
+      country = ISO3166::Country.new(code)
+      unless country.nil?
+        countries << country
+      end
+    end
+    return countries unless countries.empty?
+  end
+
+  # Helper method to return a nice sentence with all of the countries names in
+  def country_names
+    return if countries.blank?
+    countries.to_sentence
   end
 
   # Create a new PublicActivity record for any changes to attributes we care
