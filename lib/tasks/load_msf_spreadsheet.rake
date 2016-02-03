@@ -7,7 +7,6 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
                                    converters: :all)
   default_topic = StudyTopic.find_by_name!("Other")
   study_topics = [default_topic]
-  default_concept_paper_date = Time.zone.today
   default_stage = "concept"
   default_setting = StudySetting.find_by_name!("Stable")
   rows.each do |row|
@@ -32,7 +31,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
     end
 
     if row[:concept_paper_date].blank?
-      date = default_concept_paper_date
+      date = nil
     else
       date = Date.strptime(row[:concept_paper_date], "%d/%m/%Y")
     end
