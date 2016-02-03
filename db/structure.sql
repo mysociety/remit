@@ -465,7 +465,6 @@ CREATE TABLE studies (
     research_manager_id integer,
     country_code text,
     feedback_and_suggestions text,
-    study_topic_id integer NOT NULL,
     study_stage study_stage DEFAULT 'concept'::study_stage NOT NULL
 );
 
@@ -487,6 +486,16 @@ CREATE SEQUENCE studies_id_seq
 --
 
 ALTER SEQUENCE studies_id_seq OWNED BY studies.id;
+
+
+--
+-- Name: studies_study_topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE studies_study_topics (
+    study_topic_id integer NOT NULL,
+    study_id integer NOT NULL
+);
 
 
 --
@@ -1171,17 +1180,24 @@ CREATE INDEX index_studies_on_study_setting_id ON studies USING btree (study_set
 
 
 --
--- Name: index_studies_on_study_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_studies_on_study_topic_id ON studies USING btree (study_topic_id);
-
-
---
 -- Name: index_studies_on_study_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_studies_on_study_type_id ON studies USING btree (study_type_id);
+
+
+--
+-- Name: index_studies_study_topics_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_studies_study_topics_on_study_id ON studies_study_topics USING btree (study_id);
+
+
+--
+-- Name: index_studies_study_topics_on_study_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_studies_study_topics_on_study_topic_id ON studies_study_topics USING btree (study_topic_id);
 
 
 --
@@ -1324,19 +1340,19 @@ ALTER TABLE ONLY study_impacts
 
 
 --
--- Name: fk_rails_7c525ebb16; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY studies
-    ADD CONSTRAINT fk_rails_7c525ebb16 FOREIGN KEY (study_topic_id) REFERENCES study_topics(id);
-
-
---
 -- Name: fk_rails_81b054efe8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY study_enabler_barriers
     ADD CONSTRAINT fk_rails_81b054efe8 FOREIGN KEY (enabler_barrier_id) REFERENCES enabler_barriers(id);
+
+
+--
+-- Name: fk_rails_8220afb15f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY studies_study_topics
+    ADD CONSTRAINT fk_rails_8220afb15f FOREIGN KEY (study_id) REFERENCES studies(id);
 
 
 --
@@ -1361,6 +1377,14 @@ ALTER TABLE ONLY studies
 
 ALTER TABLE ONLY disseminations
     ADD CONSTRAINT fk_rails_b2c97bc5e8 FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
+-- Name: fk_rails_bf79167e3d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY studies_study_topics
+    ADD CONSTRAINT fk_rails_bf79167e3d FOREIGN KEY (study_topic_id) REFERENCES study_topics(id);
 
 
 --
@@ -1434,4 +1458,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160125143207');
 INSERT INTO schema_migrations (version) VALUES ('20160126174841');
 
 INSERT INTO schema_migrations (version) VALUES ('20160202165749');
+
+INSERT INTO schema_migrations (version) VALUES ('20160203150222');
 

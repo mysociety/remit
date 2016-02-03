@@ -26,7 +26,6 @@
 #  research_manager_id         :integer
 #  country_code                :text
 #  feedback_and_suggestions    :text
-#  study_topic_id              :integer          not null
 #  study_stage                 :enum             default("concept"), not null
 #
 # Indexes
@@ -35,7 +34,6 @@
 #  index_studies_on_principal_investigator_id  (principal_investigator_id)
 #  index_studies_on_research_manager_id        (research_manager_id)
 #  index_studies_on_study_setting_id           (study_setting_id)
-#  index_studies_on_study_topic_id             (study_topic_id)
 #  index_studies_on_study_type_id              (study_type_id)
 #
 
@@ -71,7 +69,6 @@ class Study < ActiveRecord::Base
   }
 
   belongs_to :study_type, inverse_of: :studies
-  belongs_to :study_topic, inverse_of: :studies
   belongs_to :study_setting, inverse_of: :studies
   belongs_to :erb_status, inverse_of: :studies
   belongs_to :principal_investigator,
@@ -80,6 +77,7 @@ class Study < ActiveRecord::Base
   belongs_to :research_manager,
              class_name: :User,
              inverse_of: :research_manager_studies
+  has_and_belongs_to_many :study_topics, inverse_of: :studies
   has_many :study_enabler_barriers, inverse_of: :study
   has_many :study_impacts, inverse_of: :study
   has_many :disseminations, inverse_of: :study
@@ -93,7 +91,7 @@ class Study < ActiveRecord::Base
   validates :study_type, presence: true
   validates :study_setting, presence: true
   validates :concept_paper_date, presence: true
-  validates :study_topic, presence: true
+  validates :study_topics, presence: true
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
 
@@ -165,5 +163,11 @@ class Study < ActiveRecord::Base
     change = activities.find_by(key: "study.title_changed")
     return change.parameters[:before] if change.present?
     title
+  end
+
+  def study_topic_names
+    unless study_topics.empty?
+      study_topics.map(&:name).to_sentence
+    end
   end
 end

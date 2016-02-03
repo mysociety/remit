@@ -53,18 +53,14 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:research_manager_id).of_type(:integer) }
   it { is_expected.to have_db_column(:country_code).of_type(:text) }
   it { is_expected.to have_db_column(:feedback_and_suggestions).of_type(:text) }
-  it do
-    is_expected.to have_db_column(:study_topic_id).of_type(:integer).
-      with_options(null: false)
-  end
 
   # Associations
   it { is_expected.to belong_to(:study_type) }
-  it { is_expected.to belong_to(:study_topic) }
   it { is_expected.to belong_to(:study_setting) }
   it { is_expected.to belong_to(:erb_status) }
   it { is_expected.to belong_to(:principal_investigator).class_name(:User) }
   it { is_expected.to belong_to(:research_manager).class_name(:User) }
+  it { is_expected.to have_and_belong_to_many(:study_topics) }
   it { is_expected.to have_many(:study_enabler_barriers) }
   it { is_expected.to have_many(:study_impacts) }
   it { is_expected.to have_many(:disseminations) }
@@ -75,7 +71,7 @@ RSpec.describe Study, type: :model do
   it { is_expected.to validate_presence_of(:study_stage) }
   it { is_expected.to validate_presence_of(:study_setting) }
   it { is_expected.to validate_presence_of(:study_type) }
-  it { is_expected.to validate_presence_of(:study_topic) }
+  it { is_expected.to validate_presence_of(:study_topics) }
   it { is_expected.to validate_presence_of(:title) }
   it { is_expected.to validate_presence_of(:reference_number) }
   it { is_expected.to validate_presence_of(:concept_paper_date) }

@@ -14,7 +14,7 @@
 #
 
 class StudyTopic < ActiveRecord::Base
-  has_many :studies, inverse_of: :study_topic
+  has_and_belongs_to_many :studies, inverse_of: :study_topics
 
   validates :name, presence: true, uniqueness: true
 end
