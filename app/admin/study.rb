@@ -6,13 +6,13 @@ ActiveAdmin.register Study do
                 :local_erb_approved, :completed, :local_collaborators,
                 :international_collaborators, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
-                :country_code, :feedback_and_suggestions, :study_topic_id,
-                enabler_barriers: []
+                :country_code, :feedback_and_suggestions,
+                study_topic_ids: []
 
   menu priority: 1
 
   filter :study_stage
-  filter :study_topic
+  filter :study_topics
   filter :study_type
   filter :erb_status
   filter :principal_investigator
@@ -30,7 +30,7 @@ ActiveAdmin.register Study do
       f.input :reference_number, as: :string
       f.input :study_stage, as: :select,
                             collection: Study::STUDY_STAGE_OPTIONS
-      f.input :study_topic
+      f.input :study_topics, input_html: { size: 10 }
       f.input :study_type
       f.input :other_study_type, as: :string
       f.input :study_setting
@@ -64,7 +64,7 @@ ActiveAdmin.register Study do
     column "Reference", :reference_number, link: true
     column :title
     column "Stage", :study_stage
-    column "Topic", :study_topic
+    column "Topics", :study_topic_names
     column "Type", :study_type
     column "PI", :principal_investigator
     column :concept_paper_date

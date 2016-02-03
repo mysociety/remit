@@ -15,7 +15,11 @@ FactoryGirl.define do
       stable_setting = StudySetting.find_by_name("Stable")
       study.study_setting = stable_setting || create(:stable_setting)
 
-      study.study_topic = StudyTopic.find_by_name("AMR") || create(:amr_topic)
+      if StudyTopic.find_by_name("AMR")
+        study.study_topics << StudyTopic.find_by_name("AMR")
+      else
+        study.study_topics << create(:amr_topic)
+      end
     end
   end
 end

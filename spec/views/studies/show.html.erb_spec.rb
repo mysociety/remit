@@ -27,7 +27,8 @@ RSpec.describe "studies/show.html.erb", type: :view do
   end
 
   it "shows the study topic" do
-    expect(rendered).to match(/#{Regexp.escape(study.study_topic.name)}/)
+    topic = @study.study_topics.first.name
+    expect(rendered).to match(/#{Regexp.escape(topic)}/)
   end
 
   it "shows the study type" do

@@ -6,6 +6,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
                                    header_converters: :symbol,
                                    converters: :all)
   default_topic = StudyTopic.find_by_name!("Other")
+  study_topics = [default_topic]
   default_concept_paper_date = Time.zone.today
   default_stage = "concept"
   default_setting = StudySetting.find_by_name!("Stable")
@@ -49,6 +50,17 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       country_code = country.alpha2 unless country.nil?
     end
 
+    unless row[:disease].blank?
+      topics = []
+      diseases = row[:disease].split(",")
+      diseases.each do |disease|
+        if StudyTopic.find_by_name(disease)
+          topics << StudyTopic.find_by_name(disease)
+        end
+      end
+      study_topics = topics unless topics.empty?
+    end
+
     Study.create!(
       reference_number: row[:study_reference_],
       title: row[:study_title],
@@ -56,7 +68,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       other_study_type: other_study_type,
       study_stage: Study.study_stages[stage] || default_stage,
       concept_paper_date: date,
-      study_topic: StudyTopic.find_by_name(row[:disease]) || default_topic,
+      study_topics: study_topics,
       # This isn't specified in the CSV at all, so just assume a value
       protocol_needed: true,
       # This isn't specified either
