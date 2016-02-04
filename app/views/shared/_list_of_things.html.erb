@@ -1,0 +1,36 @@
+<div class="list-of-things__primary">
+    <p class="list-of-things__sorting">
+        Showing 1–10 of 231 studies by
+        <select>
+            <option selected>most recently updated</option>
+            <option>most recently created</option>
+        </select>
+    </p>
+    <div class="list-of-things__list">
+      <% @studies.each do |study| %>
+        <div class="list-of-things__list__item list-of-things__list__item--study">
+            <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage_label %></p>
+        <h2 class="list-of-things__list__item__title">
+            <a href="<%= study_path study %>"><%= study.title %></a>
+        </h2>
+        <dl class="dl-horizontal">
+            <dt>Study details</dt>
+            <dd>
+                <a href="/search?methodology=cohort%20study"><%= study.study_type.name %></a>
+              <% unless study.country_names.blank? %>
+                in
+                <a href="/search?location=ethiopia"><%= study.country_names %></a>
+              <% end %>
+            </dd>
+          <% unless study.principal_investigator.blank? %>
+            <dt>Principal investigator:</dt>
+            <dd>
+                <a href="/search?pi=irwan%20pirou"><%= study.principal_investigator.name %></a>
+            </dd>
+          <% end %>
+        </dl>
+        </div>
+      <% end %>
+    </div>
+    <%= paginate @studies %>
+</div>

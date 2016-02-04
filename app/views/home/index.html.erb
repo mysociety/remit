@@ -1,118 +1,12 @@
 <% content_for :page_title, "All Studies" %>
-<header class="site-header">
-    <div class="container">
-        <div class="site-header__title">
-            <h1>231 active studies, in 78 locations</h1>
-            <h2>174 studies with recorded impact</h2>
-        </div>
-        <form class="site-header__search" action="/search" method="get">
-            <label for="header-search">Search by topic, researcher, or location</label>
-            <div class="site-header__search__wrapper">
-                <input id="header-search" class="form-control">
-                <button type="submit">Search</button>
-            </div>
-        </form>
-    </div>
-</header>
-<div class="site-subnav">
-    <div class="container">
-        <ul class="site-subnav__tabs">
-            <li>
-                <a href="/" class="active">All studies</a>
-            </li>
-            <li>
-                <a href="/my-studies">Your studies</a>
-            </li>
-            <li>
-                <a href="/following">Studies you&rsquo;re following</a>
-            </li>
-        </ul>
-    </div>
-</div>
+<%= render partial: "shared/header" %>
+<%= render partial: "shared/subnav" %>
+
 <div class="site-main">
     <div class="container">
         <div class="list-of-things">
-            <div class="list-of-things__primary">
-                <p class="list-of-things__sorting">
-                    Showing 1–10 of 231 studies by
-                    <select>
-                        <option selected>most recently updated</option>
-                        <option>most recently created</option>
-                    </select>
-                </p>
-                <div class="list-of-things__list">
-                  <% @studies.each do |study| %>
-                    <div class="list-of-things__list__item list-of-things__list__item--study">
-                        <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage_label %></p>
-                    <h2 class="list-of-things__list__item__title">
-                        <a href="<%= study_path study %>"><%= study.title %></a>
-                    </h2>
-                    <dl class="dl-horizontal">
-                        <dt>Study details</dt>
-                        <dd>
-                            <a href="/search?methodology=cohort%20study"><%= study.study_type.name %></a>
-                          <% unless study.country_names.blank? %>
-                            in
-                            <a href="/search?location=ethiopia"><%= study.country_names %></a>
-                          <% end %>
-                        </dd>
-                      <% unless study.principal_investigator.blank? %>
-                        <dt>Principal investigator:</dt>
-                        <dd>
-                            <a href="/search?pi=irwan%20pirou"><%= study.principal_investigator.name %></a>
-                        </dd>
-                      <% end %>
-                    </dl>
-                    </div>
-                  <% end %>
-                </div>
-                <%= paginate @studies %>
-            </div>
-            <div class="list-of-things__secondary">
-                <div class="list-of-things__secondary-action list-of-things__secondary-action--quick-filters">
-                    <h2>Quick filters</h2>
-                    <div class="quick-filters">
-                        <a href="/search?impacts=true" class="quick-filters__filter quick-filters__filter--impact">
-                            Studies with publications or registered impacts
-                        </a>
-                        <a href="/search?erb=pending" class="quick-filters__filter quick-filters__filter--pending">
-                            Studies with ERB approval pending
-                        </a>
-                        <a href="/search?erb=expiring" class="quick-filters__filter quick-filters__filter--expiring">
-                            Studies with ERB approval expiring
-                        </a>
-                    </div>
-                </div>
-                <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
-                    <p>
-                        <label>Stage:</label>
-                        <select>
-                            <option>All stages</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label>Location:</label>
-                        <select>
-                            <option>All locations</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label>Topic:</label>
-                        <select>
-                            <option>All topics</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label>Methodology:</label>
-                        <select>
-                            <option>All methodologies</option>
-                        </select>
-                    </p>
-                </div>
-                <a href="/export" class="list-of-things__secondary-action list-of-things__secondary-action--download">
-                    Download this page as a CSV for Excel
-                </a>
-            </div>
+            <%= render partial: "shared/list_of_things" %>
+            <%= render partial: "shared/list_of_things_sidebar" %>
         </div>
     </div>
 </div>
