@@ -1,11 +1,5 @@
 <div class="list-of-things__primary">
-    <p class="list-of-things__sorting">
-        Showing 1–10 of 231 studies by
-        <select>
-            <option selected>most recently updated</option>
-            <option>most recently created</option>
-        </select>
-    </p>
+    <%= render partial: "shared/list_of_things_sorting" %>
     <div class="list-of-things__list">
       <% @studies.each do |study| %>
         <div class="list-of-things__list__item list-of-things__list__item--study">
