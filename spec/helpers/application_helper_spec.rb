@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe "#study_timeline" do
+    let(:accept_status) { FactoryGirl.create(:accept) }
     let(:base_timeline) do
       {
         concept: { label: "Concept", state: "" },
@@ -24,7 +25,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
 
       context "when the study is in the protocol_erb stage" do
-        let(:study) { FactoryGirl.create(:study, study_stage: "protocol_erb") }
+        let(:study) do
+          FactoryGirl.create(:study, study_stage: "protocol_erb",
+                                     erb_status: accept_status)
+        end
 
         it "returns a timeline with multiple entries" do
           expected_timeline = base_timeline
@@ -35,7 +39,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
 
       context "when the study is in the completion stage" do
-        let(:study) { FactoryGirl.create(:study, study_stage: "completion") }
+        let(:study) do
+          FactoryGirl.create(:study, study_stage: "completion",
+                                     erb_status: accept_status)
+        end
 
         it "returns a timeline with multiple entries" do
           expected_timeline = base_timeline
@@ -91,6 +98,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
         it "returns a timeline with multiple entries" do
           study.study_stage = "protocol_erb"
+          study.erb_status = accept_status
           study.save!
 
           expected_timeline = base_timeline
@@ -105,6 +113,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
         it "returns a timeline with multiple entries" do
           study.study_stage = "protocol_erb"
+          study.erb_status = accept_status
           study.save!
           study.study_stage = "delivery"
           study.save!
@@ -128,6 +137,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
         it "returns a timeline with multiple entries" do
           study.study_stage = "protocol_erb"
+          study.erb_status = accept_status
           study.save!
           study.study_stage = "delivery"
           study.save!
@@ -150,6 +160,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
         it "returns a timeline with entries only for completed stages" do
           study.study_stage = "protocol_erb"
+          study.erb_status = accept_status
           study.save!
           study.study_stage = "delivery"
           study.save!

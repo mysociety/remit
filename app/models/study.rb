@@ -91,6 +91,7 @@ class Study < ActiveRecord::Base
   validates :study_type, presence: true
   validates :study_setting, presence: true
   validates :study_topics, presence: true
+  validates :erb_status, presence: true, if: :erb_status_needed?
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
 
@@ -198,5 +199,10 @@ class Study < ActiveRecord::Base
     unless study_topics.empty?
       study_topics.map(&:name).to_sentence
     end
+  end
+
+  # Is the study at a stage where we need to have an erb_status selected?
+  def erb_status_needed?
+    protocol_needed && !(concept? || withdrawn_postponed?)
   end
 end
