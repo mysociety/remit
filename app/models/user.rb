@@ -76,4 +76,9 @@ class User < ActiveRecord::Base
       errors.add(:external_location, message)
     end
   end
+
+  def studies
+    query = "principal_investigator_id = ? OR research_manager_id = ?"
+    Study.where(query, id, id)
+  end
 end
