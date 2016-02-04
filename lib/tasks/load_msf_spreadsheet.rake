@@ -74,6 +74,9 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       status = row[:erb_status]
       status = "Submitted" if status == "In submission"
       erb_status = ErbStatus.find_by_name(status)
+      if erb_status.blank?
+        erb_status = ErbStatus.find_by_name("In draft")
+      end
       protocol_needed = true
     end
 
