@@ -1,8 +1,8 @@
 <header class="site-header">
     <div class="container">
         <div class="site-header__title">
-            <h1>231 active studies, in 78 locations</h1>
-            <h2>174 studies with recorded impact</h2>
+            <h1><%= total_active_studies %> active studies, in <%= total_locations %> locations</h1>
+            <h2><%= total_impactful_studies %> studies with recorded impact</h2>
         </div>
         <form class="site-header__search" action="/search" method="get">
             <label for="header-search">Search by topic, researcher, or location</label>

@@ -535,4 +535,56 @@ RSpec.describe Study, type: :model do
       end
     end
   end
+
+  describe "#active" do
+    let(:active_studies) do
+      [
+        FactoryGirl.create(:study, study_stage: :delivery,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :output,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today - 1.year)
+      ]
+    end
+
+    let(:inactive_studies) do
+      [
+        FactoryGirl.create(:study),
+        FactoryGirl.create(:study, study_stage: protocol_needed,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today - 366.days),
+        FactoryGirl.create(:study, study_stage: :withdrawn_postponed)
+      ]
+    end
+
+    it "returns active studies" do
+      expect(Study.active).to match_array(active_studies)
+    end
+  end
+
+  describe "#impactful_count" do
+    before do
+      # Make some studies active
+      studies = FactoryGirl.create_list(:study, 5)
+
+      # Create some impact
+      FactoryGirl.create(:publication, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.first)
+      FactoryGirl.create(:study_impact, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.second)
+      FactoryGirl.create(:publication, study: studies.second)
+      FactoryGirl.create(:study_impact, study: studies.third)
+    end
+
+    it "returns the count of impactful studies" do
+      expect(Study.impactful_count).to eq 3
+    end
+  end
 end

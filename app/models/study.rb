@@ -95,6 +95,24 @@ class Study < ActiveRecord::Base
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
 
+  def self.active
+    query = "study_stage = 'delivery' " \
+            "OR study_stage = 'output' " \
+            "OR (study_stage = 'completion' and completed >= ?)"
+    where(query, Time.zone.today - 1.year)
+  end
+
+  # Return the count of studies with some kind of recorded impact
+  # XXX - this should probably come from some kind of counter-cache on the
+  # studies table, not from three separate queries to the DB
+  def self.impactful_count
+    with_publications = joins(:publications).select(:id)
+    with_impacts = joins(:study_impacts).select(:id)
+    with_disseminations = joins(:disseminations).select(:id)
+    impactful = with_disseminations + with_impacts + with_publications
+    impactful.uniq.count
+  end
+
   def other_study_type_is_set_when_study_type_is_other
     if study_type == StudyType.other_study_type && other_study_type.blank?
       message = "You must describe the study type if you choose " \
