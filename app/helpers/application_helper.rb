@@ -53,6 +53,21 @@ module ApplicationHelper
     end
   end
 
+  def total_active_studies
+    Study.active.count
+  end
+
+  def total_locations
+    # Note: this is slightly wrong, in that it counts studies in multiple
+    # countries as a new unique study location, but there aren't that many of
+    # those and the alternative is really slow, so I'm ignoring it for now.
+    Study.select(:country_codes).distinct.count
+  end
+
+  def total_impactful_studies
+    Study.impactful_count
+  end
+
   protected
 
   def initial_study_timeline(stages)
