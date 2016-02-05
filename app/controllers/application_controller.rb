@@ -27,6 +27,8 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) ||
       if resource.is_a?(User) && resource.is_admin
         admin_dashboard_path
+      elsif resource.is_a?(User) && resource.studies.count > 0
+        user_studies_path(resource)
       else
         root_path
       end
