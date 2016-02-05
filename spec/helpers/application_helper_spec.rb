@@ -247,4 +247,35 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#total_active_studies" do
+    it "returns the total number of active studies" do
+      FactoryGirl.create_list(:study, 5, study_stage: :delivery,
+                                         protocol_needed: false)
+      FactoryGirl.create_list(:study, 5)
+      expect(total_active_studies).to eq 5
+    end
+  end
+
+  describe "#total_locations" do
+    it "returns the total number of distinct locations" do
+      FactoryGirl.create(:study, country_codes: %w(GB))
+      FactoryGirl.create(:study, country_codes: %w(GB))
+      FactoryGirl.create(:study, country_codes: %w(SM))
+      FactoryGirl.create(:study, country_codes: %w(BD))
+      expect(total_locations).to eq 3
+    end
+  end
+
+  describe "#total_impactful_studies" do
+    it "returns the total number of impactful studies" do
+      studies = FactoryGirl.create_list(:study, 4)
+      FactoryGirl.create(:publication, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.first)
+      FactoryGirl.create(:study_impact, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.second)
+      FactoryGirl.create(:study_impact, study: studies.third)
+      expect(total_impactful_studies).to eq 3
+    end
+  end
 end
