@@ -18,8 +18,7 @@ class ApplicationController < ActionController::Base
     if !current_user
       redirect_to new_user_session_path
     elsif !current_user.is_admin
-      render status: :forbidden,
-             text: "Sorry, you don't have access to this page"
+      forbidden
     end
   end
 
@@ -34,6 +33,14 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  # Helper to return and render a 403
+  def forbidden
+    render(file: File.join(Rails.root, "public/403"),
+           status: 403,
+           formats: [:html],
+           layout: false)
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
