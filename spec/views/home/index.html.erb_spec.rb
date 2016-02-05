@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/devise.rb"
+require "support/devise"
 
 RSpec.describe "home/index.html.erb", type: :view do
   before do
@@ -42,5 +42,42 @@ RSpec.describe "home/index.html.erb", type: :view do
     @studies.first.save!
     render
     expect(rendered).to match(/United Kingdom and Bangladesh/)
+  end
+
+  context "when the user is logged in" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      render
+    end
+
+    it "shows 'Your studies' tab" do
+      expected_path = user_studies_path(user)
+      expect(rendered).to have_link("Your studies", href: expected_path)
+    end
+
+    it "shows 'Studies you're following' tab" do
+      expected_path = user_studies_path(user)
+      expect(rendered).to have_link("Your studies", href: expected_path)
+    end
+  end
+
+  context "when the user isn't logged in" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      sign_out :user
+      render
+    end
+
+    it "doesn't show 'Your studies' tab" do
+      expected_path = user_studies_path(user)
+      expect(rendered).not_to have_link("Your studies", href: expected_path)
+    end
+
+    it "doesn't show 'Studies you're following' tab" do
+      expected_path = user_studies_path(user)
+      expect(rendered).not_to have_link("Your studies", href: expected_path)
+    end
   end
 end
