@@ -1,5 +1,6 @@
 require "rails_helper"
 require "support/user_account_feature_helper"
+require "support/study_listing_page_shared_examples"
 
 RSpec.describe "User studies page" do
   let(:user) { FactoryGirl.create(:user) }
@@ -12,12 +13,22 @@ RSpec.describe "User studies page" do
     FactoryGirl.create_list(:study, 20, principal_investigator: other_user)
   end
 
-  it "lists the user's studies" do
-    sign_in_account(user.email)
-    visit user_studies_path(user)
-    user_studies.last(10).each do |study|
-      expect(page).to have_link(study.title, href: study_path(study))
+  context "when a user is signed in" do
+    let(:expected_studies) { user_studies } # For the shared examples
+    let(:path) { user_studies_path(user) }
+
+    before do
+      sign_in_account(user.email)
     end
+
+    it "lists the user's studies" do
+      visit(path)
+      user_studies.last(10).each do |study|
+        expect(page).to have_link(study.title, href: study_path(study))
+      end
+    end
+
+    it_behaves_like "study listing page"
   end
 
   it "returns a forbidden page when you try to access another user's page" do
