@@ -98,4 +98,22 @@ RSpec.describe User, type: :model do
       expect { user.destroy }.to change(study.activities, :count).by(-1)
     end
   end
+
+  describe "#studies" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:pi_studies) do
+      FactoryGirl.create_list(:study, 5, principal_investigator: user)
+    end
+    let(:rm_studies) do
+      FactoryGirl.create_list(:study, 5, research_manager: user)
+    end
+    let(:other_studies) do
+      FactoryGirl.create_list(:study, 5)
+    end
+    let(:expected_studies) { pi_studies + rm_studies }
+
+    it "lists all of the user's studies" do
+      expect(user.studies).to match_array(expected_studies)
+    end
+  end
 end
