@@ -90,6 +90,31 @@ RSpec.describe Study, type: :model do
     is_expected.to define_enum_for(:study_stage).with(enum_options)
   end
 
+  context "when erb_status_needed? is true" do
+    let(:study) do
+      FactoryGirl.build(:study, protocol_needed: true,
+                                study_stage: :protocol_erb)
+    end
+
+    it "validates the presence of erb_status" do
+      study.erb_status = nil
+      expect(study).to be_invalid
+    end
+  end
+
+  context "when erb_status_needed? is false" do
+    let(:erb_status) { FactoryGirl.create(:submitted) }
+    let(:study) do
+      FactoryGirl.build(:study, protocol_needed: false,
+                                study_stage: :protocol_erb)
+    end
+
+    it "doesn't validate the presence of erb_status" do
+      study.erb_status = erb_status
+      expect(study).to be_valid
+    end
+  end
+
   context "when the when study_type field is 'Other'" do
     let(:study) { FactoryGirl.build(:study) }
     let(:other_study_type) { StudyType.find_by_name("Other") }
@@ -225,9 +250,12 @@ RSpec.describe Study, type: :model do
 
       it "logs changes to the study stage" do
         old_stage = study.study_stage
+        # erb_status is required in this stage too
+        study.erb_status = accept_status
+        study.save!
         study.study_stage = :protocol_erb
         study.save!
-        expect(study.reload.activities.length).to eq 2
+        expect(study.reload.activities.length).to eq 3 # create, stage and erb
         expect(study).to have_latest_activity(key: "study.study_stage_changed",
                                               parameters: {
                                                 attribute: "study_stage",
@@ -340,6 +368,7 @@ RSpec.describe Study, type: :model do
   end
 
   describe "#latest_stage_change" do
+    let(:accept_status) { FactoryGirl.create(:accept) }
     let(:study) { FactoryGirl.create(:study) }
 
     before do
@@ -356,6 +385,7 @@ RSpec.describe Study, type: :model do
 
     it "returns the latest stage change" do
       study.study_stage = "protocol_erb"
+      study.erb_status = accept_status
       study.save!
       study.study_stage = "delivery"
       study.save!
@@ -371,6 +401,7 @@ RSpec.describe Study, type: :model do
   end
 
   describe "#study_stage_since" do
+    let(:accept_status) { FactoryGirl.create(:accept) }
     let(:study) { FactoryGirl.create(:study) }
 
     before do
@@ -387,6 +418,7 @@ RSpec.describe Study, type: :model do
 
     it "returns the time of the latest study change" do
       study.study_stage = "protocol_erb"
+      study.erb_status = accept_status
       study.save!
       study.study_stage = "delivery"
       study.save!
@@ -455,6 +487,103 @@ RSpec.describe Study, type: :model do
       it "returns the current title" do
         expect(study.original_title).to eq original_title
       end
+    end
+  end
+
+  describe "#erb_status_needed?" do
+    context "when protocol_needed is true" do
+      let(:study) { FactoryGirl.build(:study, protocol_needed: true) }
+
+      context "and study_stage is concept" do
+        it "returns false" do
+          study.study_stage = :concept
+          expect(study.erb_status_needed?).to be false
+        end
+      end
+
+      context "and study_stage is withdrawn_postponed" do
+        it "returns false" do
+          study.study_stage = :withdrawn_postponed
+          expect(study.erb_status_needed?).to be false
+        end
+      end
+
+      context "and study_stage is anything else" do
+        it "returns true" do
+          stages = Study.study_stages.keys
+          stages = stages.delete_if do |stage|
+            stage == "concept" || stage == "withdrawn_postponed"
+          end
+          puts stages
+          stages.each do |stage|
+            study.study_stage = stage
+            expect(study.erb_status_needed?).to be true
+          end
+        end
+      end
+    end
+
+    context "when protocol_needed is false" do
+      let(:study) { FactoryGirl.build(:study, protocol_needed: false) }
+
+      it "returns false for every stage" do
+        Study.study_stages.keys.each do |stage|
+          study.study_stage = stage
+          expect(study.erb_status_needed?).to be false
+        end
+      end
+    end
+  end
+
+  describe "#active" do
+    let(:active_studies) do
+      [
+        FactoryGirl.create(:study, study_stage: :delivery,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :output,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today - 1.year)
+      ]
+    end
+
+    let(:inactive_studies) do
+      [
+        FactoryGirl.create(:study),
+        FactoryGirl.create(:study, study_stage: protocol_needed,
+                                   protocol_needed: false),
+        FactoryGirl.create(:study, study_stage: :completion,
+                                   protocol_needed: false,
+                                   completed: Time.zone.today - 366.days),
+        FactoryGirl.create(:study, study_stage: :withdrawn_postponed)
+      ]
+    end
+
+    it "returns active studies" do
+      expect(Study.active).to match_array(active_studies)
+    end
+  end
+
+  describe "#impactful_count" do
+    before do
+      # Make some studies active
+      studies = FactoryGirl.create_list(:study, 5)
+
+      # Create some impact
+      FactoryGirl.create(:publication, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.first)
+      FactoryGirl.create(:study_impact, study: studies.first)
+      FactoryGirl.create(:dissemination, study: studies.second)
+      FactoryGirl.create(:publication, study: studies.second)
+      FactoryGirl.create(:study_impact, study: studies.third)
+    end
+
+    it "returns the count of impactful studies" do
+      expect(Study.impactful_count).to eq 3
     end
   end
 end

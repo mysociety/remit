@@ -1,0 +1,23 @@
+<header class="site-header">
+    <div class="container">
+        <div class="site-header__title">
+            <h1>
+                <%= pluralize total_active_studies, "active study" %>,
+                in <%= pluralize total_locations, "location" %>
+            </h1>
+            <h2>
+                <%= pluralize total_impactful_studies, "study" %>
+                with recorded impact
+            </h2>
+        </div>
+        <form class="site-header__search" action="/search" method="get">
+            <label for="header-search">
+                Search by topic, researcher, or location
+            </label>
+            <div class="site-header__search__wrapper">
+                <input id="header-search" class="form-control">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</header>

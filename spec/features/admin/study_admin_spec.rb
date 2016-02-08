@@ -98,6 +98,7 @@ RSpec.describe "StudyAdmin" do
   end
 
   context "with an existing study" do
+    let!(:accept_status) { FactoryGirl.create(:accept) }
     let!(:study) { FactoryGirl.create(:study) }
 
     before do
@@ -108,9 +109,11 @@ RSpec.describe "StudyAdmin" do
     it "allows you to edit the study" do
       click_link "Edit", href: edit_admin_study_path(study)
       select Study::STUDY_STAGE_LABELS[:protocol_erb], from: "Study stage"
+      select accept_status.name, from: "Erb status"
       click_button "Update Study"
       expect(page).to have_text "Study was successfully updated"
       expect(study.reload.study_stage).to eq "protocol_erb"
+      expect(study.reload.erb_status).to eq accept_status
     end
 
     it "allows you to delete the study" do

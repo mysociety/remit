@@ -54,10 +54,10 @@ RSpec.describe "User accounts" do
       expect(page).to have_text("Signed in successfully")
     end
 
-    it "Redirects normal users to the homepage" do
+    it "Redirects normal users to their study page" do
       visit destroy_user_session_path
       sign_in_account(user.email)
-      expect(current_path).to eq root_path
+      expect(current_path).to eq user_studies_path(user)
     end
 
     it "Redirects admin users to the dashboard" do

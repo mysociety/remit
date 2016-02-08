@@ -9,11 +9,15 @@ FactoryGirl.define do
     # Associations are to things that must have unique names, so we create
     # them in these hooks and look up any existing ones first
     after(:build) do |study|
-      rct_type = StudyType.find_by_name("Randomised controlled trial (RCT)")
-      study.study_type = rct_type || create(:randomised_type)
+      if study.study_type.nil?
+        rct_type = StudyType.find_by_name("Randomised controlled trial (RCT)")
+        study.study_type = rct_type || create(:randomised_type)
+      end
 
-      stable_setting = StudySetting.find_by_name("Stable")
-      study.study_setting = stable_setting || create(:stable_setting)
+      if study.study_setting.nil?
+        stable_setting = StudySetting.find_by_name("Stable")
+        study.study_setting = stable_setting || create(:stable_setting)
+      end
 
       if topic = StudyTopic.find_by_name("AMR")
         study.study_topics << topic

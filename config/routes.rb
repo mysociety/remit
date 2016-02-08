@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users
 
-  get "home/index"
   root "home#index"
 
   resources :studies, only: :show do
@@ -14,5 +13,11 @@ Rails.application.routes.draw do
     resources :study_enabler_barriers do
       post :create_multiple, on: :collection
     end
+  end
+
+  # Users only have a list of studies at the moment, devise takes care of the
+  # rest
+  resources :users, only: []  do
+    resources :studies, only: :index
   end
 end

@@ -102,6 +102,7 @@ StudySetting.create(
 ErbStatus.create(
   [
     { name: "Exempt" },
+    { name: "In draft" },
     { name: "Submitted" },
     { name: "Reject" },
     { name: "Re-review" },
