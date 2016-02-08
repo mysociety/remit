@@ -6,6 +6,7 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
                                    header_converters: :symbol,
                                    converters: :all)
   default_topic = StudyTopic.find_by_name!("Other")
+  study_topics = [default_topic]
   default_concept_paper_date = Time.zone.today
   default_stage = "concept"
   default_setting = StudySetting.find_by_name!("Stable")
@@ -36,17 +37,32 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       date = Date.strptime(row[:concept_paper_date], "%d/%m/%Y")
     end
 
-    country_code = nil
+    country_codes = []
     unless row[:study_location].blank?
-      study_location = row[:study_location]
-      # The countries gem is very particular about some names
-      if study_location == "Democratic Republic of the Congo"
-        study_location = "Congo, The Democratic Republic Of The"
-      elsif study_location == "Burma"
-        study_location = "Myanmar"
+      study_locations = row[:study_location].split(",")
+      study_locations.each do |study_location|
+        # The countries gem is very particular about some names
+        if study_location == "Democratic Republic of the Congo"
+          study_location = "Congo, The Democratic Republic Of The"
+        elsif study_location == "Burma"
+          study_location = "Myanmar"
+        end
+        country = ISO3166::Country.find_country_by_name(study_location)
+        unless country.nil?
+          country_codes << country.alpha2
+        end
       end
-      country = ISO3166::Country.find_country_by_name(study_location)
-      country_code = country.alpha2 unless country.nil?
+    end
+
+    unless row[:disease].blank?
+      topics = []
+      diseases = row[:disease].split(",")
+      diseases.each do |disease|
+        if StudyTopic.find_by_name(disease)
+          topics << StudyTopic.find_by_name(disease)
+        end
+      end
+      study_topics = topics unless topics.empty?
     end
 
     Study.create!(
@@ -56,12 +72,12 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       other_study_type: other_study_type,
       study_stage: Study.study_stages[stage] || default_stage,
       concept_paper_date: date,
-      study_topic: StudyTopic.find_by_name(row[:disease]) || default_topic,
+      study_topics: study_topics,
       # This isn't specified in the CSV at all, so just assume a value
       protocol_needed: true,
       # This isn't specified either
       study_setting: default_setting,
-      country_code: country_code
+      country_codes: country_codes
     )
   end
 end

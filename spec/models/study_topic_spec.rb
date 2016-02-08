@@ -12,7 +12,9 @@ RSpec.describe StudyTopic, type: :model do
   it { is_expected.to have_db_index(:name).unique(true) }
 
   # Associations
-  it { is_expected.to have_many(:studies).inverse_of(:study_topic) }
+  it do
+    is_expected.to have_and_belong_to_many(:studies).inverse_of(:study_topics)
+  end
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }
