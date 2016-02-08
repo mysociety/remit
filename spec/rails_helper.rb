@@ -60,6 +60,8 @@ RSpec.configure do |config|
     FactoryGirl.create(:other_internal) unless other_internal
     other_external = DisseminationCategory.find_by_name("Other external")
     FactoryGirl.create(:other_external) unless other_external
+    in_draft = ErbStatus.find_by_name("In draft")
+    FactoryGirl.create(:in_draft) unless in_draft
   end
 
   config.before(:each, type: :feature) do
