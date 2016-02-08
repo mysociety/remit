@@ -41,7 +41,9 @@ class Document < ActiveRecord::Base
       extension: "doc",
       generic_type: "document"
     },
+    # rubocop:disable Metrics/LineLength
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => {
+      # rubocop:enable Metrics/LineLength
       name: "Word",
       extension: "docx",
       generic_type: "document"
@@ -61,7 +63,9 @@ class Document < ActiveRecord::Base
       extension: "ppt",
       generic_type: "presentation"
     },
+    # rubocop:disable Metrics/LineLength
     "application/vnd.openxmlformats-officedocument.presentationml.presentation" => {
+      # rubocop:enable Metrics/LineLength
       name: "PowerPoint",
       extension: "pptx",
       generic_type: "presentation"
