@@ -27,7 +27,7 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:research_team).of_type(:text) }
   it do
     is_expected.to have_db_column(:concept_paper_date).of_type(:date).
-      with_options(null: false)
+      with_options(null: true)
   end
   it do
     is_expected.to have_db_column(:protocol_needed).of_type(:boolean).
@@ -74,7 +74,6 @@ RSpec.describe Study, type: :model do
   it { is_expected.to validate_presence_of(:study_topics) }
   it { is_expected.to validate_presence_of(:title) }
   it { is_expected.to validate_presence_of(:reference_number) }
-  it { is_expected.to validate_presence_of(:concept_paper_date) }
   it do
     is_expected.to validate_inclusion_of(:protocol_needed).
       in_array([true, false])

@@ -8,7 +8,7 @@
 #  study_type_id               :integer          not null
 #  study_setting_id            :integer          not null
 #  research_team               :text
-#  concept_paper_date          :date             not null
+#  concept_paper_date          :date
 #  protocol_needed             :boolean          not null
 #  pre_approved_protocol       :boolean
 #  erb_status_id               :integer
@@ -90,7 +90,6 @@ class Study < ActiveRecord::Base
   validates :study_stage, presence: true
   validates :study_type, presence: true
   validates :study_setting, presence: true
-  validates :concept_paper_date, presence: true
   validates :study_topics, presence: true
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other

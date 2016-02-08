@@ -44,6 +44,14 @@ RSpec.describe "studies/show.html.erb", type: :view do
     expect(rendered).to match(/United Kingdom and Bangladesh/)
   end
 
+  it "shows the pi when there is one" do
+    pi = FactoryGirl.create(:user)
+    pi_study = FactoryGirl.create(:study, principal_investigator: pi)
+    assign(:study, pi_study)
+    render
+    expect(rendered).to match(/#{Regexp.escape(pi.name)}/)
+  end
+
   describe "admin edit link" do
     let(:admin_user) { FactoryGirl.create(:admin_user) }
     let(:normal_user) { FactoryGirl.create(:user) }

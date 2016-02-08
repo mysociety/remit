@@ -447,7 +447,7 @@ CREATE TABLE studies (
     study_type_id integer NOT NULL,
     study_setting_id integer NOT NULL,
     research_team text,
-    concept_paper_date date NOT NULL,
+    concept_paper_date date,
     protocol_needed boolean NOT NULL,
     pre_approved_protocol boolean,
     erb_status_id integer,
@@ -1462,4 +1462,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160202165749');
 INSERT INTO schema_migrations (version) VALUES ('20160203150222');
 
 INSERT INTO schema_migrations (version) VALUES ('20160203164358');
+
+INSERT INTO schema_migrations (version) VALUES ('20160203182723');
 
