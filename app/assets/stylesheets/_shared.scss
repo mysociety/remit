@@ -30,3 +30,29 @@ body {
 .btn-success {
   text-shadow: 0 1px 1px $color-semi-transparent-shadow-darker;
 }
+
+.dropdown-menu > li > a {
+  padding: 5px 20px;
+
+  &:focus {
+    outline: none;
+    background-color: $component-active-bg;
+    color: $component-active-color;
+  }
+}
+
+.bootstrap-select {
+  & > .btn {
+    border-color: $input-border;
+    color: $input-color;
+    background-color: $input-bg;
+  }
+
+  small.text-muted {
+    display: block;
+    color: inherit;
+    opacity: 0.5;
+    white-space: normal;
+    padding-left: 0 !important; // Override ridiculously long selector in bootstrap-select.scss
+  }
+}

@@ -90,7 +90,7 @@ RSpec.describe "Contributing to a study" do
     click_label("Record an output")
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"
-    fill_in "Details", with: "A test dissemination"
+    fill_in "Describe the dissemination", with: "A test dissemination"
     click_button "Add output"
 
     dissemination = Dissemination.find_by_details("A test dissemination")
@@ -111,7 +111,7 @@ RSpec.describe "Contributing to a study" do
     click_label("Record an output")
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"
-    fill_in "Details", with: details
+    fill_in "Describe the dissemination", with: details
     check "This has been fed back to the field"
     click_button "Add output"
 
@@ -121,6 +121,33 @@ RSpec.describe "Contributing to a study" do
     expect(page).to have_text "Field added by #{user.name}"
 
     expect(dissemination).not_to be nil
+    expect(dissemination.fed_back_to_field).to be true
+    expect(dissemination.study).to eq study
+    expect(study).to have_latest_activity(key: "study.dissemination_added",
+                                          owner: user)
+  end
+
+  it "allows you to add an other category without js" do
+    details = "A test fed back dissemination"
+    other_category = "Some other category"
+
+    click_label("Record an output")
+    choose("output-type-dissemination")
+    select DisseminationCategory.other_internal_category.name,
+           from: "Dissemination category"
+    fill_in "If 'Other', describe the category in a couple of words",
+            with: other_category
+    fill_in "Describe the dissemination", with: details
+    check "This has been fed back to the field"
+    click_button "Add output"
+
+    dissemination = Dissemination.find_by_details(details)
+
+    expect(page).to have_text "Dissemination created successfully"
+    expect(page).to have_text "Other internal added by #{user.name}"
+
+    expect(dissemination).not_to be nil
+    expect(dissemination.other_dissemination_category).to eq other_category
     expect(dissemination.fed_back_to_field).to be true
     expect(dissemination.study).to eq study
     expect(study).to have_latest_activity(key: "study.dissemination_added",
