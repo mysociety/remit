@@ -53,6 +53,18 @@ class User < ActiveRecord::Base
   has_many :research_manager_studies,
            class_name: :Study,
            inverse_of: :research_manager
+  # E.g. when an admin user updates a study
+  # These should not be destroyed when the user is deleted, because they're
+  # an important record of who did what
+  has_many :created_activities, as: :owner,
+                                class_name: "PublicActivity::Activity",
+                                dependent: :restrict_with_exception
+  # E.g. when the user is set to a PI or RM on a study
+  # These should be destroyed when the user is destroyed because that should
+  # only happen if someone's made a mistake.
+  has_many :involved_activities, as: :recipient,
+                                 class_name: "PublicActivity::Activity",
+                                 dependent: :destroy
 
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external

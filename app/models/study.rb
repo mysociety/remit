@@ -155,7 +155,15 @@ class Study < ActiveRecord::Base
         key = "#{attr_name}_changed".to_sym
         params = { attribute: attr_name, before: before, after: after }
         owner = proc { |c, _m| c.current_user unless c.nil? }
-        create_activity key, parameters: params, owner: owner
+        recipient = nil
+        if %w(principal_investigator_id research_manager_id).include?(attr_name)
+          # Track the new owner/manager if it's changing
+          # It might be changing to nil though, hence find_by_id not find
+          recipient = User.find_by_id(after)
+        end
+        create_activity key, parameters: params,
+                             owner: owner,
+                             recipient: recipient
       end
     end
   end

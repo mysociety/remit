@@ -287,7 +287,8 @@ RSpec.describe Study, type: :model do
             attribute: "principal_investigator_id",
             before: nil,
             after: pi.id
-          })
+          },
+          recipient: pi)
       end
 
       it "logs changes to the research manager" do
@@ -300,7 +301,8 @@ RSpec.describe Study, type: :model do
             attribute: "research_manager_id",
             before: nil,
             after: rm.id
-          })
+          },
+          recipient: rm)
       end
 
       it "logs changes to the local erb approved date" do
@@ -514,7 +516,6 @@ RSpec.describe Study, type: :model do
           stages = stages.delete_if do |stage|
             stage == "concept" || stage == "withdrawn_postponed"
           end
-          puts stages
           stages.each do |stage|
             study.study_stage = stage
             expect(study.erb_status_needed?).to be true

@@ -23,6 +23,14 @@ RSpec.describe User, type: :model do
     is_expected.to have_many(:research_manager_studies).
       inverse_of(:research_manager).class_name(:Study)
   end
+  it do
+    is_expected.to have_many(:created_activities).
+      class_name("PublicActivity::Activity")
+  end
+  it do
+    is_expected.to have_many(:involved_activities).
+      class_name("PublicActivity::Activity")
+  end
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }
@@ -50,6 +58,44 @@ RSpec.describe User, type: :model do
       user.msf_location = external_location
       user.external_location = "some external location"
       expect(user).to be_valid
+    end
+  end
+
+  context "when the user has owned some activities", :truncation do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+      study.create_activity("title_changed", owner: user)
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    it "should not allow the user to be deleted" do
+      expected_error = ActiveRecord::DeleteRestrictionError
+      expect { user.destroy }.to raise_error(expected_error)
+    end
+  end
+
+  context "when the user is involved in some activities", :truncation do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:study) { FactoryGirl.create(:study) }
+
+    before do
+      PublicActivity.enabled = true
+      study.create_activity("principal_investigator_id_changed",
+                            recipient: user)
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    it "deletes the activities if the user is deleted" do
+      expect { user.destroy }.to change(study.activities, :count).by(-1)
     end
   end
 end
