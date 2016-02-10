@@ -1,9 +1,10 @@
 ActiveAdmin.register Document do
-  permit_params :document_type_id, :study_id, :document
+  permit_params :document_type_id, :study_id, :document, :user_id
 
   menu priority: 3
 
   filter :study
+  filter :user
   filter :created_at
   filter :document_type
 
@@ -12,6 +13,7 @@ ActiveAdmin.register Document do
     f.inputs "Details" do
       f.input :document_type
       f.input :study
+      f.input :user
       f.input :document, as: :file
     end
     f.actions
@@ -19,9 +21,10 @@ ActiveAdmin.register Document do
 
   index do
     selectable_column
-    column :study
     column :document_type
     column :document_file_name
+    column :user
+    column :study
     column :created_at
     column :updated_at
     actions

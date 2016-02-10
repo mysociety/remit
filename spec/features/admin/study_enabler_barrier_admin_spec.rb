@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "StudyEnablerBarrierAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
   let!(:enabler_barrier) { FactoryGirl.create(:delivery_barrier) }
 
@@ -15,12 +16,14 @@ RSpec.describe "StudyEnablerBarrierAdmin" do
     click_link "New Study Enabler Barrier"
     select enabler_barrier.name, from: "Enabler barrier"
     select study.title, from: "Study"
+    select user.name, from: "User"
     fill_in "Description", with: "Test study enabler"
     click_button "Create Study enabler barrier"
     expect(page).to have_text "Study enabler barrier was successfully created"
     enabler = StudyEnablerBarrier.find_by_description("Test study enabler")
     expect(enabler).not_to be nil
     expect(enabler.study).to eq study
+    expect(enabler.user).to eq user
     expect(enabler.enabler_barrier).to eq enabler_barrier
   end
 

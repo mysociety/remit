@@ -1,6 +1,6 @@
 ActiveAdmin.register Publication do
   permit_params :doi_number, :study_id, :lead_author, :article_title,
-                :book_or_journal_title, :publication_year
+                :book_or_journal_title, :publication_year, :user_id
 
   menu priority: 3
 
@@ -11,6 +11,7 @@ ActiveAdmin.register Publication do
     f.semantic_errors
     f.inputs "Details" do
       f.input :study
+      f.input :user
       f.input :doi_number, as: :string
       f.input :lead_author, as: :string
       f.input :article_title, as: :string

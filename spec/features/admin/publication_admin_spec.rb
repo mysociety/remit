@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "PublicationAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
 
   before do
@@ -17,11 +18,13 @@ RSpec.describe "PublicationAdmin" do
     fill_in "Book or journal title", with: "Test Journal"
     fill_in "Publication year", with: "2015"
     select study.title, from: "Study"
+    select user.name, from: "User"
     click_button "Create Publication"
     expect(page).to have_text "Publication was successfully created"
     publication = Publication.find_by_lead_author("Test Author")
     expect(publication).not_to be nil
     expect(publication.study).to eq study
+    expect(publication.user).to eq user
     expect(publication.article_title).to eq "Test Article"
     expect(publication.book_or_journal_title).to eq "Test Journal"
     expect(publication.publication_year).to eq 2015

@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "StudyNoteAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
 
   before do
@@ -14,11 +15,13 @@ RSpec.describe "StudyNoteAdmin" do
     click_link "New Study Note"
     fill_in "Notes", with: "Test study note"
     select study.title, from: "Study"
+    select user.name, from: "User"
     click_button "Create Study note"
     expect(page).to have_text "Study note was successfully created"
     note = StudyNote.find_by_notes("Test study note")
     expect(note).not_to be nil
     expect(note.study).to eq study
+    expect(note.user).to eq user
   end
 
   context "with an existing study note" do

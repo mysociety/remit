@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "DocumentAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
   let!(:document_type) { FactoryGirl.create(:protocol_doc_type) }
 
@@ -15,6 +16,7 @@ RSpec.describe "DocumentAdmin" do
     click_link "New Document"
     select document_type.name, from: "Document type"
     select study.title, from: "Study"
+    select user.name, from: "User"
     attach_file "Document", "spec/fixtures/test.pdf"
     click_button "Create Document"
     expect(page).to have_text "Document was successfully created"
@@ -24,6 +26,7 @@ RSpec.describe "DocumentAdmin" do
       document_type_id: document_type.id,
     ).first
     expect(document).not_to be nil
+    expect(document.user).to eq user
     expect(document.document).not_to be nil
   end
 

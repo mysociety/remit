@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "DisseminationAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
   let!(:category) { FactoryGirl.create(:working_group_category) }
 
@@ -17,11 +18,13 @@ RSpec.describe "DisseminationAdmin" do
     check "Fed back to field"
     select category.name, from: "Dissemination category"
     select study.title, from: "Study"
+    select user.name, from: "User"
     click_button "Create Dissemination"
     expect(page).to have_text "Dissemination was successfully created"
     dissemination = Dissemination.find_by_details("A test dissemination")
     expect(dissemination).not_to be nil
     expect(dissemination.study).to eq study
+    expect(dissemination.user).to eq user
     expect(dissemination.dissemination_category).to eq category
     expect(dissemination.fed_back_to_field).to be true
   end

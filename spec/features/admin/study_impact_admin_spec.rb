@@ -3,6 +3,7 @@ require "support/user_account_feature_helper"
 
 RSpec.describe "StudyImpactAdmin" do
   let(:admin_user) { FactoryGirl.create(:admin_user) }
+  let!(:user) { FactoryGirl.create(:user) }
   let!(:study) { FactoryGirl.create(:study) }
   let!(:impact_type) { FactoryGirl.create(:programme_impact) }
 
@@ -15,12 +16,14 @@ RSpec.describe "StudyImpactAdmin" do
     click_link "New Study Impact"
     select impact_type.name, from: "Impact type"
     select study.title, from: "Study"
+    select user.name, from: "User"
     fill_in "Description", with: "Test study impact"
     click_button "Create Study impact"
     expect(page).to have_text "Study impact was successfully created"
     impact = StudyImpact.find_by_description("Test study impact")
     expect(impact).not_to be nil
     expect(impact.study).to eq study
+    expect(impact.user).to eq user
     expect(impact.impact_type).to eq impact_type
   end
 
