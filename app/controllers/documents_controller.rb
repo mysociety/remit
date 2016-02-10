@@ -3,6 +3,7 @@ class DocumentsController < ApplicationController
     @study = Study.find(params[:study_id])
     @document = Document.new(document_params)
     @document.study = @study
+    @document.user = current_user
     if @document.save
       redirect_to @study, notice: "Document created successfully"
     else

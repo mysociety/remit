@@ -45,6 +45,7 @@ RSpec.describe "Contributing to a study" do
     expect(document).not_to be nil
     expect(document.document).not_to be nil
     expect(document.study).to eq study
+    expect(document.user).to eq user
 
     expect(study).to have_latest_activity(key: "study.document_added",
                                           owner: user)
@@ -62,6 +63,7 @@ RSpec.describe "Contributing to a study" do
 
     expect(note).not_to be nil
     expect(note.study).to eq study
+    expect(note.user).to eq user
     activity = study.activities.last
     expect(activity.key).to eq "study.study_note_added"
     expect(activity.owner).to eq user
@@ -84,6 +86,7 @@ RSpec.describe "Contributing to a study" do
 
     expect(publication).not_to be nil
     expect(publication.study).to eq study
+    expect(publication.user).to eq user
     expect(study).to have_latest_activity(key: "study.publication_added",
                                           owner: user)
   end
@@ -103,6 +106,7 @@ RSpec.describe "Contributing to a study" do
     expect(dissemination).not_to be nil
     expect(dissemination.fed_back_to_field).to be false
     expect(dissemination.study).to eq study
+    expect(dissemination.user).to eq user
     expect(study).to have_latest_activity(key: "study.dissemination_added",
                                           owner: user)
   end
@@ -125,6 +129,7 @@ RSpec.describe "Contributing to a study" do
     expect(dissemination).not_to be nil
     expect(dissemination.fed_back_to_field).to be true
     expect(dissemination.study).to eq study
+    expect(dissemination.user).to eq user
     expect(study).to have_latest_activity(key: "study.dissemination_added",
                                           owner: user)
   end
@@ -171,6 +176,7 @@ RSpec.describe "Contributing to a study" do
 
     expect(impact).not_to be nil
     expect(impact.study).to eq study
+    expect(impact.user).to eq user
     expect(impact.impact_type).to eq msf_policy_impact_type
 
     expect(study).to have_latest_activity(key: "study.study_impact_added",
@@ -197,10 +203,12 @@ RSpec.describe "Contributing to a study" do
 
     expect(msf_impact).not_to be nil
     expect(msf_impact.study).to eq study
+    expect(msf_impact.user).to eq user
     expect(msf_impact.impact_type).to eq msf_policy_impact_type
 
     expect(program_impact).not_to be nil
     expect(program_impact.study).to eq study
+    expect(program_impact.user).to eq user
     expect(program_impact.impact_type).to eq programme_impact_type
 
     activities = study.activities.first(2)
@@ -229,6 +237,7 @@ RSpec.describe "Contributing to a study" do
 
     expect(enabler_barrier).not_to be nil
     expect(enabler_barrier.study).to eq study
+    expect(enabler_barrier.user).to eq user
     expect(enabler_barrier.enabler_barrier).to eq delivery_barrier
 
     expect(study).to have_latest_activity(
@@ -259,10 +268,12 @@ RSpec.describe "Contributing to a study" do
 
     expect(delivery).not_to be nil
     expect(delivery.study).to eq study
+    expect(delivery.user).to eq user
     expect(delivery.enabler_barrier).to eq delivery_barrier
 
     expect(patient).not_to be nil
     expect(patient.study).to eq study
+    expect(patient.user).to eq user
     expect(patient.enabler_barrier).to eq patient_barrier
 
     activities = study.activities.first(2)

@@ -5,6 +5,7 @@ RSpec.describe DocumentsController, type: :controller do
   describe "POST #create" do
     let(:study) { FactoryGirl.create(:study) }
     let(:document_type) { FactoryGirl.create(:erb_documentation_doc_type) }
+    let(:user) { FactoryGirl.create(:user) }
     let(:document_upload) do
       fixture_file_upload("test.pdf", "application/pdf")
     end

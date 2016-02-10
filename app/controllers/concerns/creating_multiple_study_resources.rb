@@ -1,7 +1,7 @@
 module CreatingMultipleStudyResources
   extend ActiveSupport::Concern
 
-  def create_multiple_resources(study, resource_class, params, id_param,
+  def create_multiple_resources(study, user, resource_class, params, id_param,
                                 description_param)
     resources = {}
     resource_class.transaction do
@@ -13,6 +13,7 @@ module CreatingMultipleStudyResources
           id_param => id,
           description_param => descriptions[id])
         resource.study = study
+        resource.user = user
         resources[id.to_i] = resource
         # We call this and ignore the output for now, so that we can get
         # errors for each resource in one go and then decide whether to rollback

@@ -5,6 +5,7 @@ require "support/study_multiple_resources_controller_shared_examples"
 RSpec.describe OutputsController, type: :controller do
   describe "POST #create" do
     let(:study) { FactoryGirl.create(:study) }
+    let(:user) { FactoryGirl.create(:user) }
 
     context "when no output type is selected" do
       let(:attributes) do

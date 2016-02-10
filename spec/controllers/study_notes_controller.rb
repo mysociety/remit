@@ -4,6 +4,7 @@ require "support/study_contribution_controller_shared_examples"
 RSpec.describe StudyNotesController, type: :controller do
   describe "POST #create" do
     let(:study) { FactoryGirl.create(:study) }
+    let(:user) { FactoryGirl.create(:user) }
     let(:valid_attributes) do
       {
         study_id: study.id,

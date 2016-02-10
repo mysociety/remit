@@ -8,6 +8,7 @@ class StudyEnablerBarriersController < ApplicationController
     # way of knowing whether someone actually wanted to select
     @study_enabler_barriers = create_multiple_resources(
       @study,
+      current_user,
       StudyEnablerBarrier,
       study_enabler_barrier_params,
       :enabler_barrier_id,

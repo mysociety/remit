@@ -1,3 +1,5 @@
+require "support/devise"
+
 RSpec.shared_examples_for "study contribution controller" do
   context "when given valid data" do
     it "creates a resource" do
@@ -14,6 +16,28 @@ RSpec.shared_examples_for "study contribution controller" do
     it "sets a flash notice" do
       post :create, valid_attributes
       expect(flash[:notice]).to eq expected_success_message
+    end
+
+    context "when a user is logged in" do
+      before do
+        sign_in user
+      end
+
+      it "assigns the user to the resource" do
+        post :create, valid_attributes
+        expect(association.last.user).to eq user
+      end
+    end
+
+    context "when no user is logged in" do
+      before do
+        sign_out :user
+      end
+
+      it "assigns no user to the resource" do
+        post :create, valid_attributes
+        expect(association.last.user).to be_nil
+      end
     end
   end
 

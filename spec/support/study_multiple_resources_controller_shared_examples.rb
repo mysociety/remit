@@ -16,6 +16,28 @@ RSpec.shared_examples_for(
       post action, valid_attributes
       expect(flash[:notice]).to eq expected_success_message
     end
+
+    context "when a user is logged in" do
+      before do
+        sign_in user
+      end
+
+      it "assigns the user to the resource" do
+        post action, valid_attributes
+        expect(association.last.user).to eq user
+      end
+    end
+
+    context "when no user is logged in" do
+      before do
+        sign_out :user
+      end
+
+      it "assigns no user to the resource" do
+        post action, valid_attributes
+        expect(association.last.user).to be_nil
+      end
+    end
   end
 
   context "when given invalid data" do
@@ -84,6 +106,30 @@ RSpec.shared_examples_for(
     it "sets a flash notice" do
       post action, valid_attributes
       expect(flash[:notice]).to eq expected_success_message
+    end
+
+    context "when a user is logged in" do
+      before do
+        sign_in user
+      end
+
+      it "assigns the user to the resources" do
+        post action, valid_attributes
+        expect(association.last.user).to eq user
+        expect(association[-2].user).to eq user
+      end
+    end
+
+    context "when no user is logged in" do
+      before do
+        sign_out :user
+      end
+
+      it "assigns no user to the resource" do
+        post action, valid_attributes
+        expect(association.last.user).to be_nil
+        expect(association[-2].user).to be nil
+      end
     end
   end
 

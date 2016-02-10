@@ -22,6 +22,7 @@ class OutputsController < ApplicationController
   def create_study_impact
     @study_impacts = create_multiple_resources(
       @study,
+      current_user,
       StudyImpact,
       study_impact_params,
       :impact_type_id,
@@ -55,6 +56,7 @@ class OutputsController < ApplicationController
   def create_dissemination
     @dissemination = Dissemination.new(dissemination_params)
     @dissemination.study = @study
+    @dissemination.user = current_user
     if @dissemination.save
       redirect_to @study, notice: "Dissemination created successfully"
     else
@@ -73,6 +75,7 @@ class OutputsController < ApplicationController
   def create_publication
     @publication = Publication.new(publication_params)
     @publication.study = @study
+    @publication.user = current_user
     if @publication.save
       redirect_to @study, notice: "Publication created successfully"
     else

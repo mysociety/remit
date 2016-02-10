@@ -4,6 +4,7 @@ require "support/study_multiple_resources_controller_shared_examples"
 RSpec.describe StudyEnablerBarriersController, type: :controller do
   describe "POST #create_multiple", :truncation do
     let(:study) { FactoryGirl.create(:study) }
+    let(:user) { FactoryGirl.create(:user) }
 
     context "when one enabler/barrier is submitted" do
       let(:patient_barrier) { FactoryGirl.create(:patient_barrier) }

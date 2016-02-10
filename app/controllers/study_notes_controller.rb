@@ -3,6 +3,7 @@ class StudyNotesController < ApplicationController
     @study = Study.find(params[:study_id])
     @study_note = StudyNote.new(study_note_params)
     @study_note.study = @study
+    @study_note.user = current_user
     if @study_note.save
       redirect_to @study, notice: "Note created successfully"
     else
