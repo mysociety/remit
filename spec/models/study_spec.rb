@@ -283,7 +283,8 @@ RSpec.describe Study, type: :model do
             attribute: "erb_status_id",
             before: nil,
             after: accept_status.id
-          })
+          },
+          related_content: accept_status)
       end
 
       it "logs changes to the principal investigator" do

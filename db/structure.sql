@@ -35,6 +35,17 @@ CREATE TYPE dissemination_category_type AS ENUM (
 
 
 --
+-- Name: good_bad_neutral; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE good_bad_neutral AS ENUM (
+    'good',
+    'bad',
+    'neutral'
+);
+
+
+--
 -- Name: study_stage; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -304,7 +315,9 @@ CREATE TABLE erb_statuses (
     id integer NOT NULL,
     name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    description text NOT NULL,
+    good_bad_or_neutral good_bad_neutral DEFAULT 'neutral'::good_bad_neutral NOT NULL
 );
 
 
@@ -1464,4 +1477,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160203150222');
 INSERT INTO schema_migrations (version) VALUES ('20160203164358');
 
 INSERT INTO schema_migrations (version) VALUES ('20160203182723');
+
+INSERT INTO schema_migrations (version) VALUES ('20160210104516');
 

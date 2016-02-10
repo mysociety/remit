@@ -101,12 +101,24 @@ StudySetting.create(
 # Ethical Review Board (ERB) Statuses
 ErbStatus.create(
   [
-    { name: "Exempt" },
-    { name: "In draft" },
-    { name: "Submitted" },
-    { name: "Reject" },
-    { name: "Re-review" },
-    { name: "Accept" },
+    { name: "Exempt",
+      description: "Was marked as exempt from ERB",
+      good_bad_or_neutral: "good" },
+    { name: "In draft",
+      description: "Protocol is in draft",
+      good_bad_or_neutral: "neutral" },
+    { name: "Submitted",
+      description: "Protocol submitted to ERB",
+      good_bad_or_neutral: "neutral" },
+    { name: "Reject",
+      description: "Protocol was rejected by ERB",
+      good_bad_or_neutral: "bad" },
+    { name: "Re-review",
+      description: "Protocol re-submitted to ERB",
+      good_bad_or_neutral: "neutral" },
+    { name: "Accept",
+      description: "Protocol accepted by ERB",
+      good_bad_or_neutral: "good" },
   ]
 )
 

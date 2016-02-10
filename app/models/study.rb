@@ -179,9 +179,14 @@ class Study < ActiveRecord::Base
           # It might be changing to nil though, hence find_by_id not find
           recipient = User.find_by_id(after)
         end
+        related_content = nil
+        if attr_name == "erb_status_id"
+          related_content = ErbStatus.find_by_id(after)
+        end
         create_activity key, parameters: params,
                              owner: owner,
-                             recipient: recipient
+                             recipient: recipient,
+                             related_content: related_content
       end
     end
   end
