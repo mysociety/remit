@@ -11,16 +11,19 @@
 #  publication_year      :integer          not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  user_id               :integer
 #
 # Indexes
 #
 #  index_publications_on_study_id  (study_id)
+#  index_publications_on_user_id   (user_id)
 #
 
 class Publication < ActiveRecord::Base
   include StudyActivityTrackable
 
   belongs_to :study, inverse_of: :publications
+  belongs_to :user, inverse_of: :publications
 
   validates :lead_author, presence: true
   validates :article_title, presence: true

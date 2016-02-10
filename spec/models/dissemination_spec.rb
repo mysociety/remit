@@ -23,9 +23,11 @@ RSpec.describe Dissemination, type: :model do
   it do
     is_expected.to have_db_column(:other_dissemination_category).of_type(:text)
   end
+  it { is_expected.to have_db_column(:user_id).of_type(:integer) }
 
   # Associations
   it { is_expected.to belong_to(:study).inverse_of(:disseminations) }
+  it { is_expected.to belong_to(:user).inverse_of(:disseminations) }
   it do
     is_expected.to belong_to(:dissemination_category).
       inverse_of(:disseminations)

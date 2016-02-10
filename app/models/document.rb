@@ -11,11 +11,13 @@
 #  document_content_type :string
 #  document_file_size    :integer
 #  document_updated_at   :datetime
+#  user_id               :integer
 #
 # Indexes
 #
 #  index_documents_on_document_type_id  (document_type_id)
 #  index_documents_on_study_id          (study_id)
+#  index_documents_on_user_id           (user_id)
 #
 
 class Document < ActiveRecord::Base
@@ -74,6 +76,7 @@ class Document < ActiveRecord::Base
 
   belongs_to :document_type, inverse_of: :documents
   belongs_to :study, inverse_of: :documents
+  belongs_to :user, inverse_of: :documents
   validates :document_type, presence: true
   validates :study, presence: true
 

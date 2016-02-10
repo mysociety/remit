@@ -183,7 +183,8 @@ CREATE TABLE disseminations (
     fed_back_to_field boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    other_dissemination_category text
+    other_dissemination_category text,
+    user_id integer
 );
 
 
@@ -251,7 +252,8 @@ CREATE TABLE documents (
     document_file_name character varying,
     document_content_type character varying,
     document_file_size integer,
-    document_updated_at timestamp without time zone
+    document_updated_at timestamp without time zone,
+    user_id integer
 );
 
 
@@ -416,7 +418,8 @@ CREATE TABLE publications (
     book_or_journal_title text NOT NULL,
     publication_year integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -520,7 +523,8 @@ CREATE TABLE study_enabler_barriers (
     enabler_barrier_id integer NOT NULL,
     description text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -553,7 +557,8 @@ CREATE TABLE study_impacts (
     impact_type_id integer NOT NULL,
     description text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -585,7 +590,8 @@ CREATE TABLE study_notes (
     notes text NOT NULL,
     study_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -1108,6 +1114,13 @@ CREATE INDEX index_disseminations_on_study_id ON disseminations USING btree (stu
 
 
 --
+-- Name: index_disseminations_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_disseminations_on_user_id ON disseminations USING btree (user_id);
+
+
+--
 -- Name: index_document_types_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1126,6 +1139,13 @@ CREATE INDEX index_documents_on_document_type_id ON documents USING btree (docum
 --
 
 CREATE INDEX index_documents_on_study_id ON documents USING btree (study_id);
+
+
+--
+-- Name: index_documents_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_documents_on_user_id ON documents USING btree (user_id);
 
 
 --
@@ -1161,6 +1181,13 @@ CREATE UNIQUE INDEX index_msf_locations_on_name ON msf_locations USING btree (na
 --
 
 CREATE INDEX index_publications_on_study_id ON publications USING btree (study_id);
+
+
+--
+-- Name: index_publications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_publications_on_user_id ON publications USING btree (user_id);
 
 
 --
@@ -1227,6 +1254,13 @@ CREATE INDEX index_study_enabler_barriers_on_study_id ON study_enabler_barriers 
 
 
 --
+-- Name: index_study_enabler_barriers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_enabler_barriers_on_user_id ON study_enabler_barriers USING btree (user_id);
+
+
+--
 -- Name: index_study_impacts_on_impact_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1241,10 +1275,24 @@ CREATE INDEX index_study_impacts_on_study_id ON study_impacts USING btree (study
 
 
 --
+-- Name: index_study_impacts_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_impacts_on_user_id ON study_impacts USING btree (user_id);
+
+
+--
 -- Name: index_study_notes_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_study_notes_on_study_id ON study_notes USING btree (study_id);
+
+
+--
+-- Name: index_study_notes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_notes_on_user_id ON study_notes USING btree (user_id);
 
 
 --
@@ -1304,6 +1352,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_03839ae5f9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_notes
+    ADD CONSTRAINT fk_rails_03839ae5f9 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_03e5ee9cba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1312,11 +1368,27 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: fk_rails_086c771341; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY disseminations
+    ADD CONSTRAINT fk_rails_086c771341 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_0e2a1a9789; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY documents
     ADD CONSTRAINT fk_rails_0e2a1a9789 FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
+-- Name: fk_rails_2be0318c46; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY documents
+    ADD CONSTRAINT fk_rails_2be0318c46 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -1336,6 +1408,14 @@ ALTER TABLE ONLY study_notes
 
 
 --
+-- Name: fk_rails_4c9eefc8e4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_enabler_barriers
+    ADD CONSTRAINT fk_rails_4c9eefc8e4 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_529dd6c0d7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1344,11 +1424,27 @@ ALTER TABLE ONLY studies
 
 
 --
+-- Name: fk_rails_5b8fd83dce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY publications
+    ADD CONSTRAINT fk_rails_5b8fd83dce FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_656a38bbd9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY study_impacts
     ADD CONSTRAINT fk_rails_656a38bbd9 FOREIGN KEY (impact_type_id) REFERENCES impact_types(id);
+
+
+--
+-- Name: fk_rails_72e4b2d4a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_impacts
+    ADD CONSTRAINT fk_rails_72e4b2d4a3 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -1479,3 +1575,4 @@ INSERT INTO schema_migrations (version) VALUES ('20160203182723');
 
 INSERT INTO schema_migrations (version) VALUES ('20160210104516');
 
+INSERT INTO schema_migrations (version) VALUES ('20160210161706');

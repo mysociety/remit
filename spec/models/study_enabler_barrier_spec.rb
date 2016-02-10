@@ -15,10 +15,15 @@ RSpec.describe StudyEnablerBarrier, type: :model do
     is_expected.to have_db_column(:description).of_type(:text).
       with_options(null: false)
   end
+  it { is_expected.to have_db_column(:user_id).of_type(:integer) }
 
   # Associations
-  it { is_expected.to belong_to(:study) }
-  it { is_expected.to belong_to(:enabler_barrier) }
+  it { is_expected.to belong_to(:study).inverse_of(:study_enabler_barriers) }
+  it do
+    is_expected.to belong_to(:enabler_barrier).
+      inverse_of(:study_enabler_barriers)
+  end
+  it { is_expected.to belong_to(:user).inverse_of(:study_enabler_barriers) }
 
   # Validation
   it { is_expected.to validate_presence_of(:study) }

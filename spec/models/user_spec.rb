@@ -31,6 +31,12 @@ RSpec.describe User, type: :model do
     is_expected.to have_many(:involved_activities).
       class_name("PublicActivity::Activity")
   end
+  it { is_expected.to have_many(:documents).inverse_of(:user) }
+  it { is_expected.to have_many(:publications).inverse_of(:user) }
+  it { is_expected.to have_many(:disseminations).inverse_of(:user) }
+  it { is_expected.to have_many(:study_impacts).inverse_of(:user) }
+  it { is_expected.to have_many(:study_notes).inverse_of(:user) }
+  it { is_expected.to have_many(:study_enabler_barriers).inverse_of(:user) }
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }

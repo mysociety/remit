@@ -66,6 +66,13 @@ class User < ActiveRecord::Base
                                  class_name: "PublicActivity::Activity",
                                  dependent: :destroy
 
+  has_many :documents, inverse_of: :user
+  has_many :publications, inverse_of: :user
+  has_many :disseminations, inverse_of: :user
+  has_many :study_impacts, inverse_of: :user
+  has_many :study_notes, inverse_of: :user
+  has_many :study_enabler_barriers, inverse_of: :user
+
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external
 

@@ -8,11 +8,13 @@
 #  description    :text             not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  user_id        :integer
 #
 # Indexes
 #
 #  index_study_impacts_on_impact_type_id  (impact_type_id)
 #  index_study_impacts_on_study_id        (study_id)
+#  index_study_impacts_on_user_id         (user_id)
 #
 
 class StudyImpact < ActiveRecord::Base
@@ -20,6 +22,8 @@ class StudyImpact < ActiveRecord::Base
 
   belongs_to :study, inverse_of: :study_impacts
   belongs_to :impact_type, inverse_of: :study_impacts
+  belongs_to :user, inverse_of: :study_impacts
+
   validates :study, presence: true
   validates :impact_type, presence: true
   validates :description, presence: true

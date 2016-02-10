@@ -11,19 +11,21 @@
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  other_dissemination_category :text
+#  user_id                      :integer
 #
 # Indexes
 #
 #  index_disseminations_on_dissemination_category_id  (dissemination_category_id)
 #  index_disseminations_on_study_id                   (study_id)
+#  index_disseminations_on_user_id                    (user_id)
 #
-# rubocop:enable Metrics/LineLength
 
 class Dissemination < ActiveRecord::Base
   include StudyActivityTrackable
 
   belongs_to :dissemination_category, inverse_of: :disseminations
   belongs_to :study, inverse_of: :disseminations
+  belongs_to :user, inverse_of: :disseminations
 
   validates :study, presence: true
   validates :dissemination_category, presence: true

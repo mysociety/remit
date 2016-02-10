@@ -11,12 +11,14 @@ RSpec.describe Document, type: :model do
     is_expected.to have_db_column(:document_type_id).of_type(:integer).
       with_options(null: false)
   end
+  it { is_expected.to have_db_column(:user_id).of_type(:integer) }
 
   it { should have_attached_file(:document) }
 
   # Associations
   it { is_expected.to belong_to(:document_type).inverse_of(:documents) }
   it { is_expected.to belong_to(:study).inverse_of(:documents) }
+  it { is_expected.to belong_to(:user).inverse_of(:documents) }
 
   # Validation
   it { is_expected.to validate_presence_of(:study) }
