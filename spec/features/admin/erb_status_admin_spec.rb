@@ -9,6 +9,8 @@ RSpec.describe "ERBStatusAdmin" do
   let(:resource_class) { ErbStatus }
 
   def fill_in_extra_required_fields
+    fill_in "Description", with: "Test erb status"
+    select "good", from: "Good bad or neutral"
   end
 
   it_behaves_like "simple model admin"
