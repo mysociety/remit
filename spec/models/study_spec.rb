@@ -83,7 +83,6 @@ RSpec.describe Study, type: :model do
       concept: "concept",
       protocol_erb: "protocol_erb",
       delivery: "delivery",
-      output: "output",
       completion: "completion",
       withdrawn_postponed: "withdrawn_postponed",
     }
@@ -550,8 +549,6 @@ RSpec.describe Study, type: :model do
     let(:active_studies) do
       [
         FactoryGirl.create(:study, study_stage: :delivery,
-                                   protocol_needed: false),
-        FactoryGirl.create(:study, study_stage: :output,
                                    protocol_needed: false),
         FactoryGirl.create(:study, study_stage: :completion,
                                    protocol_needed: false,

@@ -50,7 +50,6 @@ class Study < ActiveRecord::Base
     concept: "Concept",
     protocol_erb: "Protocol & ERB",
     delivery: "Delivery",
-    output: "Output",
     completion: "Completion",
     withdrawn_postponed: "Withdrawn or Postponed",
   }.freeze
@@ -63,7 +62,6 @@ class Study < ActiveRecord::Base
     concept: "concept",
     protocol_erb: "protocol_erb",
     delivery: "delivery",
-    output: "output",
     completion: "completion",
     withdrawn_postponed: "withdrawn_postponed",
   }
@@ -97,7 +95,6 @@ class Study < ActiveRecord::Base
 
   def self.active
     query = "study_stage = 'delivery' " \
-            "OR study_stage = 'output' " \
             "OR (study_stage = 'completion' and completed >= ?)"
     where(query, Time.zone.today - 1.year)
   end
