@@ -8,9 +8,6 @@ FactoryGirl.define do
     factory :data_sharing_doc_type do
       name "Data sharing agreements"
     end
-    factory :dataset_doc_type do
-      name "Dataset"
-    end
     factory :study_report_doc_type do
       name "Study report"
     end
