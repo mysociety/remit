@@ -145,6 +145,15 @@ RSpec.describe Study, type: :model do
       study.country_codes = %w(GB BD)
       expect(study[:country_codes]).to eq "GB,BD"
     end
+
+    # https://github.com/mysociety/remit/issues/99 - it was possible to set
+    # duplicate country codes from the admin because we have a helpful list of
+    # common countries in the country select that are extra to the normal list
+    # and so get selected twice if you re-save a study with one of them.
+    it "only saves a unique set of codes" do
+      study.country_codes = %w(GB BD GB)
+      expect(study[:country_codes]).to eq "GB,BD"
+    end
   end
 
   describe "#country_codes" do

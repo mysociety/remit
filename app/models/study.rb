@@ -124,7 +124,7 @@ class Study < ActiveRecord::Base
   # Override the country_codes setter to store an array of codes as a
   # comma-separated string in the db.
   def country_codes=(codes)
-    self[:country_codes] = codes.reject(&:empty?).join(",")
+    self[:country_codes] = codes.reject(&:empty?).uniq.join(",")
   end
 
   # Override the country_codes getter to expand the comma-separated country
