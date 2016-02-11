@@ -151,3 +151,12 @@
     $end-percent: 50%
   );
 }
+
+// Widthdrawn study subnav only has two steps, so we make
+// the last one extra wide, to cover the join between the
+// green and toffee halves of the subnav background.
+.study-subnav--withdrawn_postponed {
+  li:last-child {
+    width: 50%;
+  }
+}
