@@ -1,6 +1,12 @@
 class HomeController < ApplicationController
+  include ListingStudies
+
   def index
-    @studies = Study.order(updated_at: :desc).page(params[:page]).per(10)
-    @total_studies = Study.count
+    # rubocop:disable Style/MultilineOperationIndentation
+    @studies = Study.send(@study_scope).
+                     order(updated_at: :desc).
+                     page(params[:page]).
+                     per(10)
+    # rubocop:enable Style/MultilineOperationIndentation
   end
 end

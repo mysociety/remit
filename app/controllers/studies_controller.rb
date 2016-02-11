@@ -1,10 +1,17 @@
 class StudiesController < ApplicationController
+  include ListingStudies
+
   before_action :set_and_authenticate_user, only: :index
 
   def index
     page = params[:page]
-    @studies = @user.studies.order(updated_at: :desc).page(page).per(10)
-    @total_studies = @user.studies.count
+    # rubocop:disable Style/MultilineOperationIndentation
+    @studies = @user.studies.
+                     send(@study_scope).
+                     order(updated_at: :desc).
+                     page(page).
+                     per(10)
+    # rubocop:enable Style/MultilineOperationIndentation
     render "home/index"
   end
 
