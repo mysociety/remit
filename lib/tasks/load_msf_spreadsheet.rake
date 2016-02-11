@@ -37,6 +37,13 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       date = Date.strptime(row[:concept_paper_date], "%d/%m/%Y")
     end
 
+    if row[:data_collection_completed_date].blank?
+      completed_date = nil
+    else
+      completed_date = Date.strptime(row[:data_collection_completed_date],
+                                     "%d/%m/%Y")
+    end
+
     country_codes = []
     unless row[:study_location].blank?
       study_locations = row[:study_location].split(",")
@@ -97,7 +104,8 @@ task :load_msf_spreadsheet, [:csv_file] => [:environment] do |_t, args|
       country_codes: country_codes,
       erb_reference: erb_reference,
       erb_status: erb_status,
-      principal_investigator: pi
+      principal_investigator: pi,
+      completed: completed_date
     )
   end
 end
