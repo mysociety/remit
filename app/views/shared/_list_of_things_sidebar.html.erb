@@ -11,6 +11,15 @@
             <a href="/search?erb=expiring" class="quick-filters__filter quick-filters__filter--expiring">
                 Studies with ERB approval expiring
             </a>
+          <% if @include_archived %>
+            <a href="?include_archived=0" class="quick-filters__filter quick-filters__filter--archived">
+                Exclude archived studies
+            </a>
+          <% else %>
+            <a href="?include_archived=1" class="quick-filters__filter quick-filters__filter--archived">
+                Include archived studies
+            </a>
+          <% end %>
         </div>
     </div>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
