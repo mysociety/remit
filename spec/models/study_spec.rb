@@ -594,4 +594,127 @@ RSpec.describe Study, type: :model do
       expect(Study.impactful_count).to eq 3
     end
   end
+
+  describe "archiving studies" do
+    let(:archive_date) { Time.zone.today - 1.year }
+    let!(:on_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date,
+                                 protocol_needed: false)
+    end
+    let!(:older_than_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date - 1.day,
+                                 protocol_needed: false)
+    end
+    let!(:younger_than_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date + 1.day,
+                                 protocol_needed: false)
+    end
+    let!(:not_archived) do
+      # Make one of every other stage to check they're excluded too
+      stages = Study.study_stages.keys
+      stages.delete("completion")
+      not_archived = []
+      stages.each do |stage|
+        not_archived << FactoryGirl.create(:study, study_stage: stage,
+                                                   protocol_needed: false)
+      end
+      not_archived << on_archive_date
+      not_archived << younger_than_archive_date
+      not_archived
+    end
+
+    describe "#archived" do
+      it "only returns archived studies" do
+        expect(Study.archived).to match_array([older_than_archive_date])
+      end
+    end
+
+    describe "#not_archived" do
+      it "only returns non-archived studies" do
+        expect(Study.not_archived).to match_array(not_archived)
+      end
+    end
+
+    describe "#archived?" do
+      context "when a study is archived" do
+        it "returns true" do
+          expect(older_than_archive_date.archived?).to be true
+        end
+      end
+
+      context "when a study is not archived" do
+        it "returns false" do
+          not_archived.each do |study|
+            expect(study.archived?).to be false
+          end
+        end
+      end
+    end
+  end
+
+  describe "#not_withdrawn" do
+    let!(:withdrawn) do
+      FactoryGirl.create(:study, study_stage: :withdrawn_postponed)
+    end
+    let!(:not_withdrawn) do
+      # Make one of every other stage to check they're excluded too
+      stages = Study.study_stages.keys
+      stages.delete("withdrawn_postponed")
+      not_withdrawn = []
+      stages.each do |stage|
+        not_withdrawn << FactoryGirl.create(:study, study_stage: stage,
+                                                    protocol_needed: false)
+      end
+      not_withdrawn
+    end
+
+    it "only returns non-withdrawn studies" do
+      expect(Study.not_withdrawn).to match_array(not_withdrawn)
+    end
+  end
+
+  describe "#not_archived_or_withdrawn" do
+    let(:archive_date) { Time.zone.today - 1.year }
+    let!(:on_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date,
+                                 protocol_needed: false)
+    end
+    let!(:older_than_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date - 1.day,
+                                 protocol_needed: false)
+    end
+    let!(:younger_than_archive_date) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 completed: archive_date + 1.day,
+                                 protocol_needed: false)
+    end
+    let!(:withdrawn) do
+      FactoryGirl.create(:study, study_stage: :withdrawn_postponed)
+    end
+    let!(:not_archived_or_withdrawn) do
+      # Make one of every other stage to check they're excluded too
+      stages = Study.study_stages.keys
+      stages.delete("completion")
+      stages.delete("withdrawn_postponed")
+      not_archived_or_withdrawn = []
+      stages.each do |stage|
+        study = FactoryGirl.create(:study, study_stage: stage,
+                                           protocol_needed: false)
+        not_archived_or_withdrawn << study
+      end
+      not_archived_or_withdrawn << on_archive_date
+      not_archived_or_withdrawn << younger_than_archive_date
+      not_archived_or_withdrawn
+    end
+
+    it "only returns not archived or withdrawn studies" do
+      expect(Study.not_archived_or_withdrawn).to(
+        match_array(not_archived_or_withdrawn))
+    end
+  end
 end

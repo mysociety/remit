@@ -52,6 +52,7 @@ class Study < ActiveRecord::Base
     delivery: "Delivery",
     completion: "Completion",
     withdrawn_postponed: "Withdrawn or Postponed",
+    archived: "Archived",
   }.freeze
   # Options for dropdowns have to be label => value
   STUDY_STAGE_OPTIONS = STUDY_STAGE_LABELS.invert.freeze
@@ -94,9 +95,32 @@ class Study < ActiveRecord::Base
   validate :other_study_type_is_set_when_study_type_is_other
 
   def self.active
-    query = "study_stage = 'delivery' " \
-            "OR (study_stage = 'completion' and completed >= ?)"
-    where(query, Time.zone.today - 1.year)
+    query = <<-SQL
+        study_stage = 'delivery'
+        OR study_stage = 'completion'
+    SQL
+    not_archived_or_withdrawn.where(query)
+  end
+
+  def self.archived
+    completion.where("completed IS NOT NULL AND completed < ?", archive_date)
+  end
+
+  def self.not_archived
+    query = <<-SQL
+      study_stage = 'completion'
+      AND completed IS NOT NULL
+      AND completed < ?
+    SQL
+    where.not(query, archive_date)
+  end
+
+  def self.not_withdrawn
+    where.not(study_stage: :withdrawn_postponed)
+  end
+
+  def self.not_archived_or_withdrawn
+    not_withdrawn.not_archived
   end
 
   # Return the count of studies with some kind of recorded impact
@@ -108,6 +132,19 @@ class Study < ActiveRecord::Base
     with_disseminations = joins(:disseminations).select(:id)
     impactful = with_disseminations + with_impacts + with_publications
     impactful.uniq.count
+  end
+
+  # Is this study archived?
+  # Things get automatically archived after they've been completed for more
+  # than a year
+  def archived?
+    return false if completed.nil?
+    completed < Study.archive_date
+  end
+
+  # What's the cutoff date for studies being archived
+  def self.archive_date
+    Time.zone.today - 1.year
   end
 
   def other_study_type_is_set_when_study_type_is_other
@@ -189,7 +226,11 @@ class Study < ActiveRecord::Base
   end
 
   def study_stage_label
-    STUDY_STAGE_LABELS[study_stage.to_sym]
+    if archived?
+      STUDY_STAGE_LABELS[:archived]
+    else
+      STUDY_STAGE_LABELS[study_stage.to_sym]
+    end
   end
 
   # When did this study enter the stage it's currently in?
