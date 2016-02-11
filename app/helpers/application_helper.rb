@@ -5,13 +5,19 @@ module ApplicationHelper
     # Initialise a timeline object with a nice label for each stage
     # and a state field for whether it's "done", "doing" or not yet reached.
     stages = Study.study_stages.keys.map(&:to_sym)
-    timeline = initial_study_timeline(stages)
 
     # We only want to show the "withdrawn" stage if the study is actually
     # withdrawn though...
     unless study.withdrawn_postponed?
-      timeline.delete(:withdrawn_postponed)
+      stages.delete(:withdrawn_postponed)
     end
+
+    # Likewise, only archived studies get that stage
+    if study.archived?
+      stages << :archived
+    end
+
+    timeline = initial_study_timeline(stages)
 
     # Fill in the state field based on the activities we've recorded against
     # the study.
@@ -23,9 +29,11 @@ module ApplicationHelper
     # Ensure that stages before the current one are completed, even if the
     # history shows the study jumped straight to it (e.g. because we
     # imported it when it was already in progress, or completed).
+    study_stage = study.archived? ? :archived : study.study_stage.to_sym
+    current_stage_index = stages.index(study_stage)
+
     # Withdrawn studies are different because we want them to end directly
     # in withdrawn from whatever state they were in before.
-    current_stage_index = stages.index(study.study_stage.to_sym)
     if study.withdrawn_postponed?
       timeline = ensure_withdrawn_timeline_is_complete timeline,
                                                        stages,

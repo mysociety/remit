@@ -73,6 +73,24 @@ RSpec.describe ApplicationHelper, type: :helper do
           expect(study_timeline(study)).to eq expected_withdrawn_timeline
         end
       end
+
+      context "when the study is archived" do
+        let(:study) do
+          FactoryGirl.create(:study, study_stage: "completion",
+                                     completed: Time.zone.today - 366.days,
+                                     erb_status: accept_status)
+        end
+
+        it "returns a timeline with multiple entries" do
+          expected_timeline = base_timeline
+          expected_timeline[:concept][:state] = "done"
+          expected_timeline[:protocol_erb][:state] = "done"
+          expected_timeline[:delivery][:state] = "done"
+          expected_timeline[:completion][:state] = "done"
+          expected_timeline[:archived] = { label: "Archived", state: "doing" }
+          expect(study_timeline(study)).to eq expected_timeline
+        end
+      end
     end
 
     context "given a study with history" do
@@ -174,6 +192,29 @@ RSpec.describe ApplicationHelper, type: :helper do
             label: "Withdrawn or Postponed",
             state: "doing"
           }
+          expect(study_timeline(study)).to eq expected_timeline
+        end
+      end
+
+      context "when the study is archived" do
+        let(:study) { FactoryGirl.create(:study) }
+
+        it "returns a timeline with multiple entries" do
+          study.study_stage = "protocol_erb"
+          study.erb_status = accept_status
+          study.save!
+          study.study_stage = "delivery"
+          study.save!
+          study.study_stage = "completion"
+          study.completed = Time.zone.today - 366.days
+          study.save!
+
+          expected_timeline = base_timeline
+          expected_timeline[:concept][:state] = "done"
+          expected_timeline[:protocol_erb][:state] = "done"
+          expected_timeline[:delivery][:state] = "done"
+          expected_timeline[:completion][:state] = "done"
+          expected_timeline[:archived] = { label: "Archived", state: "doing" }
           expect(study_timeline(study)).to eq expected_timeline
         end
       end
