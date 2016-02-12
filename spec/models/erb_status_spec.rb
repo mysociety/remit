@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe ErbStatus, type: :model do
+  let(:submitted) { ErbStatus.find_by_name("Submitted") }
+
   # Columns
   it do
     is_expected.to have_db_column(:name).of_type(:text).
@@ -28,4 +30,22 @@ RSpec.describe ErbStatus, type: :model do
   it { is_expected.to validate_uniqueness_of(:name) }
   it { is_expected.to validate_presence_of(:description) }
   it { is_expected.to validate_presence_of(:good_bad_or_neutral) }
+
+  it "should not allow you to change the 'Submitted' status's name" do
+    submitted.name = "new name"
+    expect(submitted).to be_invalid
+  end
+
+  # Methods
+  describe "#submitted_status" do
+    it "should return the 'Submitted' status record" do
+      expect(ErbStatus.submitted_status).to eq(submitted)
+    end
+
+    it "should raise an error if no 'Submitted' status record exists" do
+      submitted.destroy
+      expect { ErbStatus.submitted_status }.to(
+        raise_error(ActiveRecord::RecordNotFound))
+    end
+  end
 end

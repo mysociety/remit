@@ -9,7 +9,9 @@ RSpec.describe "public_activity/study/_erb_status_id_changed.html.erb",
   let(:in_draft) do
     ErbStatus.find_by_name("In draft") || FactoryGirl.create(:in_draft)
   end
-  let(:submitted) { FactoryGirl.create(:submitted) }
+  let(:submitted) do
+    ErbStatus.find_by_name("Submitted") || FactoryGirl.create(:submitted)
+  end
   let(:activity_without_owner) do
     study.create_activity :erb_status_id_changed,
                           parameters: { before: in_draft.id,
