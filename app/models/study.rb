@@ -124,6 +124,33 @@ class Study < ActiveRecord::Base
     not_withdrawn.not_archived
   end
 
+  def self.delayed_completing
+    query = <<-SQL
+      completed IS NULL
+      AND expected_completion_date IS NOT NULL
+      AND expected_completion_date < ?
+    SQL
+    where(query, Time.zone.today)
+  end
+
+  def self.erb_approval_expiring
+    query = <<-SQL
+      study_stage = 'delivery'
+      AND ( erb_approval_expiry IS NOT NULL AND erb_approval_expiry < ?)
+    SQL
+    where(query, Study.erb_approval_expiry_warning_at)
+  end
+
+  def self.erb_response_overdue
+    submitted = ErbStatus.submitted_status
+    query = <<-SQL
+      erb_status_id = ?
+      AND local_erb_submitted IS NOT NULL
+      AND local_erb_submitted < ?
+    SQL
+    where(query, submitted.id, Study.erb_response_overdue_at)
+  end
+
   # Return the count of studies with some kind of recorded impact
   # XXX - this should probably come from some kind of counter-cache on the
   # studies table, not from three separate queries to the DB
@@ -146,6 +173,14 @@ class Study < ActiveRecord::Base
   # What's the cutoff date for studies being archived
   def self.archive_date
     Time.zone.today - 1.year
+  end
+
+  def self.erb_approval_expiry_warning_at
+    Time.zone.today + 1.month
+  end
+
+  def self.erb_response_overdue_at
+    Time.zone.today - 3.months
   end
 
   def other_study_type_is_set_when_study_type_is_other

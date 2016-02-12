@@ -103,14 +103,13 @@ RSpec.describe Study, type: :model do
   end
 
   context "when erb_status_needed? is false" do
-    let(:erb_status) { FactoryGirl.create(:submitted) }
     let(:study) do
       FactoryGirl.build(:study, protocol_needed: false,
                                 study_stage: :protocol_erb)
     end
 
     it "doesn't validate the presence of erb_status" do
-      study.erb_status = erb_status
+      study.erb_status = nil
       expect(study).to be_valid
     end
   end
@@ -716,6 +715,153 @@ RSpec.describe Study, type: :model do
     it "only returns not archived or withdrawn studies" do
       expect(Study.not_archived_or_withdrawn).to(
         match_array(not_archived_or_withdrawn))
+    end
+  end
+
+  describe "#delayed_completing" do
+    let(:today) { Time.zone.today }
+
+    let!(:delayed) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today - 1.day,
+                                 completed: nil)
+    end
+
+    let!(:used_to_be_delayed) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today - 1.day,
+                                 completed: today)
+    end
+
+    let!(:not_yet_delayed) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today + 1.day,
+                                 completed: nil)
+    end
+
+    let!(:on_threshold) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today,
+                                 completed: nil)
+    end
+
+    let!(:no_expected_date) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: nil,
+                                 completed: nil)
+    end
+
+    it "only returns delayed studies" do
+      expect(Study.delayed_completing).to match_array([delayed])
+    end
+  end
+
+  describe "#erb_approval_expiring" do
+    let(:today) { Time.zone.today }
+    let(:threshold) { today + 1.month }
+    let(:inside_threshold) { threshold - 1.day }
+    let(:outside_threshold) { threshold + 1.day }
+    let(:accept) { FactoryGirl.create(:accept) }
+
+    let!(:expired) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: today - 1.day)
+    end
+
+    let!(:on_warning_threshold) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: threshold)
+    end
+
+    let!(:expiring_inside_threshold) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 erb_status: accept,
+                                 erb_approval_expiry: inside_threshold)
+    end
+
+    let!(:expiring_outside_threshold) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: outside_threshold)
+    end
+
+    let!(:no_expiry) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: nil)
+    end
+
+    let!(:expiring_but_completed) do
+      FactoryGirl.create(:study, study_stage: :completion,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: inside_threshold)
+    end
+
+    it "only returns studies whose approval is expiring" do
+      expected = [expired, expiring_inside_threshold]
+      expect(Study.erb_approval_expiring).to match_array(expected)
+    end
+  end
+
+  describe "#erb_response_overdue" do
+    let(:rereview) { FactoryGirl.create(:rereview) }
+    let(:accept) { FactoryGirl.create(:accept) }
+    let(:submitted) { ErbStatus.find_by_name("Submitted") }
+    let(:today) { Time.zone.today }
+    let(:threshold) { today - 3.months }
+    let!(:response_due_yesterday) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: submitted,
+                                 local_erb_submitted: threshold - 1.day)
+    end
+    let!(:response_due_today) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: submitted,
+                                 local_erb_submitted: threshold)
+    end
+    let!(:response_due_tomorrow) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: submitted,
+                                 local_erb_submitted: threshold + 1.day)
+    end
+    let!(:no_submission_date) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: submitted,
+                                 local_erb_submitted: nil)
+    end
+    let!(:received_response_overdue) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 local_erb_submitted: threshold + 1.day)
+    end
+    let!(:overdue_but_re_submitted) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: rereview,
+                                 local_erb_submitted: threshold + 1.day)
+    end
+
+    it "only returns studies whose erb response is overdue" do
+      expected = [response_due_yesterday]
+      expect(Study.erb_response_overdue).to match_array(expected)
     end
   end
 end
