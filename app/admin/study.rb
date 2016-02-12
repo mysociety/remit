@@ -6,7 +6,7 @@ ActiveAdmin.register Study do
                 :local_erb_approved, :completed, :local_collaborators,
                 :international_collaborators, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
-                :feedback_and_suggestions,
+                :feedback_and_suggestions, :expected_completion_date,
                 country_codes: [],
                 study_topic_ids: []
 
@@ -46,6 +46,7 @@ ActiveAdmin.register Study do
       f.input :research_manager
       f.input :research_team
       f.input :concept_paper_date
+      f.input :expected_completion_date
       f.input :protocol_needed
       f.input :pre_approved_protocol
       f.input :erb_status

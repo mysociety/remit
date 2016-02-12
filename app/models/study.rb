@@ -27,6 +27,7 @@
 #  country_codes               :text
 #  feedback_and_suggestions    :text
 #  study_stage                 :enum             default("concept"), not null
+#  expected_completion_date    :date
 #
 # Indexes
 #

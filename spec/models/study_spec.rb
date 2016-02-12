@@ -53,6 +53,7 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:research_manager_id).of_type(:integer) }
   it { is_expected.to have_db_column(:country_codes).of_type(:text) }
   it { is_expected.to have_db_column(:feedback_and_suggestions).of_type(:text) }
+  it { is_expected.to have_db_column(:expected_completion_date).of_type(:date) }
 
   # Associations
   it { is_expected.to belong_to(:study_type) }
