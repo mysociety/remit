@@ -37,6 +37,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_many(:study_impacts).inverse_of(:user) }
   it { is_expected.to have_many(:study_notes).inverse_of(:user) }
   it { is_expected.to have_many(:study_enabler_barriers).inverse_of(:user) }
+  it { is_expected.to have_many(:sent_alerts).inverse_of(:user) }
 
   # Validation
   it { is_expected.to validate_presence_of(:name) }

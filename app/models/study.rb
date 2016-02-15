@@ -84,6 +84,7 @@ class Study < ActiveRecord::Base
   has_many :publications, inverse_of: :study
   has_many :study_notes, inverse_of: :study
   has_many :documents, inverse_of: :study
+  has_many :sent_alerts, inverse_of: :study
 
   validates :title, presence: true
   validates :reference_number, presence: true

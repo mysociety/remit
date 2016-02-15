@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
   has_many :involved_activities, as: :recipient,
                                  class_name: "PublicActivity::Activity",
                                  dependent: :destroy
+  has_many :sent_alerts, inverse_of: :user
 
   has_many :documents, inverse_of: :user
   has_many :publications, inverse_of: :user

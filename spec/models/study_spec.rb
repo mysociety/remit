@@ -67,6 +67,7 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_many(:disseminations) }
   it { is_expected.to have_many(:publications) }
   it { is_expected.to have_many(:study_notes) }
+  it { is_expected.to have_many(:sent_alerts) }
 
   # Validation
   it { is_expected.to validate_presence_of(:study_stage) }

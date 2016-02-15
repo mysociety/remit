@@ -452,6 +452,39 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: sent_alerts; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE sent_alerts (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    user_id integer NOT NULL,
+    alert_type text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sent_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sent_alerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sent_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sent_alerts_id_seq OWNED BY sent_alerts.id;
+
+
+--
 -- Name: studies; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -840,6 +873,13 @@ ALTER TABLE ONLY publications ALTER COLUMN id SET DEFAULT nextval('publications_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY sent_alerts ALTER COLUMN id SET DEFAULT nextval('sent_alerts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY studies ALTER COLUMN id SET DEFAULT nextval('studies_id_seq'::regclass);
 
 
@@ -978,6 +1018,14 @@ ALTER TABLE ONLY msf_locations
 
 ALTER TABLE ONLY publications
     ADD CONSTRAINT publications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sent_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY sent_alerts
+    ADD CONSTRAINT sent_alerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1189,6 +1237,33 @@ CREATE INDEX index_publications_on_study_id ON publications USING btree (study_i
 --
 
 CREATE INDEX index_publications_on_user_id ON publications USING btree (user_id);
+
+
+-- Name: index_sent_alerts_on_alert_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_sent_alerts_on_alert_type ON sent_alerts USING btree (alert_type);
+
+
+--
+-- Name: index_sent_alerts_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_sent_alerts_on_study_id ON sent_alerts USING btree (study_id);
+
+
+--
+-- Name: index_sent_alerts_on_study_id_and_user_id_and_alert_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE UNIQUE INDEX index_sent_alerts_on_study_id_and_user_id_and_alert_type ON sent_alerts USING btree (study_id, user_id, alert_type);
+
+
+--
+-- Name: index_sent_alerts_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_sent_alerts_on_user_id ON sent_alerts USING btree (user_id);
 
 
 --
@@ -1415,6 +1490,13 @@ ALTER TABLE ONLY study_notes
 ALTER TABLE ONLY study_enabler_barriers
     ADD CONSTRAINT fk_rails_4c9eefc8e4 FOREIGN KEY (user_id) REFERENCES users(id);
 
+--
+-- Name: fk_rails_4f82512c3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sent_alerts
+    ADD CONSTRAINT fk_rails_4f82512c3f FOREIGN KEY (study_id) REFERENCES studies(id);
+
 
 --
 -- Name: fk_rails_529dd6c0d7; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1478,6 +1560,14 @@ ALTER TABLE ONLY study_impacts
 
 ALTER TABLE ONLY studies
     ADD CONSTRAINT fk_rails_99700bf9f1 FOREIGN KEY (research_manager_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_a9fe0d5311; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sent_alerts
+    ADD CONSTRAINT fk_rails_a9fe0d5311 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -1579,3 +1669,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160210104516');
 INSERT INTO schema_migrations (version) VALUES ('20160210161706');
 
 INSERT INTO schema_migrations (version) VALUES ('20160212155554');
+
+INSERT INTO schema_migrations (version) VALUES ('20160215092603');
