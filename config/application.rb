@@ -45,7 +45,7 @@ module Remit
       config.x.send("#{key}=".to_sym, value)
     end
 
-    # Set default_url_options for ActionMailer
+    # Set default_url_options and default from email for ActionMailer
     if config.x.hostname.present? && config.x.port.present?
       config.action_mailer.default_url_options = { host: config.x.hostname,
                                                    port: config.x.port }
@@ -54,5 +54,6 @@ module Remit
     else
       config.action_mailer.default_url_options = { host: "localhost" }
     end
+    ActionMailer::Base.default from: config.x.from_email
   end
 end

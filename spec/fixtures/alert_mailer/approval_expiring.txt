@@ -1,0 +1,14 @@
+Dear Steve Day
+
+This is an automated alert to let you know that:
+
+Test Study longer than thirty characters to test truncation
+
+Reference number: ABC123 is approaching its ERB approval expiry date
+according to the information we have in the ReMIT database.
+
+The ERB approval expiry date is 2015-02-15.
+
+You can see this study on ReMIT here:
+
+http://example.com/studies/1

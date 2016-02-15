@@ -105,4 +105,7 @@ RSpec.configure do |config|
 
   # Include Paperclip's matchers
   config.include Paperclip::Shoulda::Matchers
+
+  # Include specs in all folders
+  config.pattern = "**/*_spec.rb"
 end

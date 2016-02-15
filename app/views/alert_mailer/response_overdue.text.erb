@@ -1,0 +1,15 @@
+<% message.subject = "Study #{@study.reference_number} (#{truncate(@study.title)}) ERB response is overdue" %>
+Dear <%= @user.name %>
+
+This is an automated alert to let you know that:
+
+<%= @study.title %>
+
+Reference number: <%= @study.reference_number %> is delayed in receiving a response from the
+Ethical Review Board, according to the information we have in the ReMIT database.
+
+The protocol was submitted on <%= @study.local_erb_submitted.to_formatted_s(:short_ordinal) %>.
+
+You can see this study on ReMIT here:
+
+<%= study_url(@study) %>
