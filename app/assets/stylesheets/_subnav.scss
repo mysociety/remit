@@ -42,8 +42,8 @@
   @include gradient-horizontal(
     $start-color: $color-pale-green,
     $end-color: $color-off-white,
-    $start-percent: 50%,
-    $end-percent: 50%
+    $start-percent: 33%,
+    $end-percent: 33%
   );
   color: $color-light-grey;
 
@@ -89,6 +89,12 @@
     &:first-child {
       padding-left: 0;
       background-image: none;
+    }
+
+    // Make sure that the join between the green and grey halves of
+    // the subnav background is covered up by the last list item.
+    &:last-child {
+      width: 33%;
     }
   }
 
@@ -161,9 +167,8 @@
   );
 }
 
-// Widthdrawn study subnav only has two steps, so we make
-// the last one extra wide, to cover the join between the
-// green and toffee halves of the subnav background.
+// Withdrawn studies only have two items in the subnav, so the last
+// one has to be wider to make sure the middle is still covered up.
 .study-subnav--withdrawn_postponed {
   li:last-child {
     width: 50%;
