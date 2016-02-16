@@ -7,11 +7,6 @@ RSpec.shared_examples_for(
       end.to change { association.count }.by(1)
     end
 
-    it "redirects to the study page" do
-      post action, valid_attributes
-      expect(response).to redirect_to(study_path(study))
-    end
-
     it "sets a flash notice" do
       post action, valid_attributes
       expect(flash[:notice]).to eq expected_success_message
@@ -45,8 +40,8 @@ RSpec.shared_examples_for(
       post action, invalid_attributes
     end
 
-    it "renders studies/show" do
-      expect(response).to render_template("studies/show")
+    it "renders the right template" do
+      expect(response).to render_template(expected_error_template)
     end
 
     it "sets a flash alert" do
@@ -72,8 +67,8 @@ RSpec.shared_examples_for(
       post action, empty_attributes
     end
 
-    it "renders studies/show" do
-      expect(response).to render_template("studies/show")
+    it "renders the right template" do
+      expect(response).to render_template(expected_error_template)
     end
 
     it "sets a flash alert" do
@@ -96,11 +91,6 @@ RSpec.shared_examples_for(
       expect do
         post action, valid_attributes
       end.to change { association.count }.by(2)
-    end
-
-    it "redirects to the study page" do
-      post action, valid_attributes
-      expect(response).to redirect_to(study_path(study))
     end
 
     it "sets a flash notice" do
@@ -138,8 +128,8 @@ RSpec.shared_examples_for(
       post action, invalid_attributes
     end
 
-    it "renders studies/show" do
-      expect(response).to render_template("studies/show")
+    it "renders the right template" do
+      expect(response).to render_template(expected_error_template)
     end
 
     it "sets a flash alert" do
