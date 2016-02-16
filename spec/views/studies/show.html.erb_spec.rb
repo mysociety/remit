@@ -82,24 +82,26 @@ RSpec.describe "studies/show.html.erb", type: :view do
   describe "add impact link" do
     let(:admin_user) { FactoryGirl.create(:admin_user) }
     let(:normal_user) { FactoryGirl.create(:user) }
-    let(:impact_link) { "Add dissemination or impact for this study" }
+    let(:impact_link) do
+      "Record a dissemination or other impact for this study"
+    end
 
     it "isn't shown to anonymous users" do
       sign_out :user
       render
-      expect(rendered).not_to match(/#{impact_link}/)
+      expect(rendered).not_to have_text(impact_link)
     end
 
     it "isn't shown to normal users" do
       sign_in normal_user
       render
-      expect(rendered).not_to match(/#{impact_link}/)
+      expect(rendered).not_to have_text(impact_link)
     end
 
     it "is shown to admin users" do
       sign_in admin_user
       render
-      expect(rendered).to match(/#{impact_link}/)
+      expect(rendered).to have_text(impact_link)
     end
 
     it "is shown to pi's of the study" do
@@ -107,7 +109,7 @@ RSpec.describe "studies/show.html.erb", type: :view do
       study.save!
       sign_in normal_user
       render
-      expect(rendered).to match(/#{impact_link}/)
+      expect(rendered).to have_text(impact_link)
     end
 
     it "is shown to rm's of the study" do
@@ -115,7 +117,59 @@ RSpec.describe "studies/show.html.erb", type: :view do
       study.save!
       sign_in normal_user
       render
-      expect(rendered).to match(/#{impact_link}/)
+      expect(rendered).to have_text(impact_link)
+    end
+  end
+
+  describe "Invite users form" do
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:normal_user) { FactoryGirl.create(:user) }
+    let(:invite_link) { "Invite someone else to record an impact" }
+
+    it "isn't shown to anonymous users" do
+      sign_out :user
+      render
+      expect(rendered).not_to have_text(invite_link)
+    end
+
+    it "isn't shown to normal users" do
+      sign_in normal_user
+      render
+      expect(rendered).not_to have_text(invite_link)
+    end
+
+    it "is shown to admin users" do
+      sign_in admin_user
+      render
+      expect(rendered).to have_text(invite_link)
+    end
+
+    it "is shown to pi's of the study" do
+      study.principal_investigator = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(rendered).to have_text(invite_link)
+    end
+
+    it "is shown to rm's of the study" do
+      study.research_manager = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(rendered).to have_text(invite_link)
+    end
+
+    it "is expanded when there's an error" do
+      study.principal_investigator = normal_user
+      study.save!
+      study_invite = FactoryGirl.build(:study_invite, invited_user: nil)
+      study_invite.valid?
+      assign(:study_invite, study_invite)
+      sign_in normal_user
+      render
+      label = "Invite someone else to record an impact"
+      expect(rendered).to have_checked_field(label)
     end
   end
 

@@ -19,7 +19,7 @@ RSpec.describe "Adding impact to a study" do
     PublicActivity.enabled = true
     sign_in_account(user.email)
     visit study_path(study)
-    click_link("Add dissemination or impact for this study")
+    find(:xpath, "//a[@href='#{study_outputs_new_path(study)}']").click
   end
 
   after do

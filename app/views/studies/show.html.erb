@@ -1,4 +1,5 @@
 <% content_for :page_title, truncate(@study.title, length: 50) %>
+<% @study_invite ||= StudyInvite.new %>
 <header class="site-header">
     <div class="container">
         <%= render partial: 'studies/header' %>
@@ -30,29 +31,50 @@
               <% if @study.user_can_manage?(current_user) %>
                 <div class="study-main__secondary__section study-main__secondary__section--admin">
                     <h3>Manage this study:</h3>
-                    <ul>
-                      <% if @study.study_stage == 'protocol_erb' %>
-                        <li>
-                            <%= link_to study_progress_to_delivery_path(@study),
-                                        class: "btn btn-default",
-                                        method: :put do %>
-                                <span class="glyphicon glyphicon-transfer"></span> This study is in delivery
-                            <% end %>
-                        </li>
-                      <% elsif @study.study_stage == 'delivery' %>
-                        <li>
-                            <%= link_to study_progress_to_completion_path(@study),
-                                        class: "btn btn-default",
-                                        method: :put do %>
-                                <span class="glyphicon glyphicon-transfer"></span> This study has completed
-                            <% end %>
-                        </li>
-                      <% end %>
-                        <li>
-                            <%= link_to "Add dissemination or impact for this study",
-                                        study_outputs_new_path(@study) %>
-                        </li>
-                    </ul>
+                    <label class="action action--invite houdini-label" for="show-invitation-form">
+                        Invite someone else <br class="visible-lg-block">to record an impact
+                    </label>
+                    <input class="houdini-input"
+                           type="checkbox"
+                           id="show-invitation-form"
+                           <%= "checked" if @study_invite.errors.any? %>>
+                    <%= form_tag study_study_invites_path(@study),
+                                 class: "impact-invitation-form houdini-target" do %>
+                        <label for="invitation-email">Email address:</label>
+                        <div class="input-group">
+                            <input type="email"
+                                   class="form-control"
+                                   placeholder="person@example.com"
+                                   name="study_invite[invited_email]"
+                                   required>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Send</button>
+                            </span>
+                        </div>
+                    <% end %>
+                    <%= link_to study_outputs_new_path(@study),
+                                class: "action action--impacts" do %>
+                        Record a dissemination or <br class="visible-lg-block">other impact for this&nbsp;study
+                    <% end %>
+                  <% if @study.study_stage == 'protocol_erb' %>
+                    <%= link_to study_progress_to_delivery_path(@study),
+                                class: "action action--admin",
+                                method: :put do %>
+                        This study is in <br>delivery
+                    <% end %>
+                  <% elsif @study.study_stage == 'delivery' %>
+                    <%= link_to study_progress_to_completion_path(@study),
+                                class: "action action--admin",
+                                method: :put do %>
+                        This study has <br>completed
+                    <% end %>
+                  <% end %>
+                  <% if current_user.is_admin %>
+                    <a class="action action--admin"
+                       href="<%= edit_admin_study_path @study %>">
+                       Edit study details<br>(Admins only)
+                    </a>
+                  <% end  %>
                 </div>
               <% end %>
                 <div class="study-main__secondary__section">
@@ -94,17 +116,6 @@
                     <p>Be notified when there is activity on this study.</p>
                     <p><a href="#" class="btn btn-success">Follow this study</a></p>
                 </div>
-
-              <% if user_signed_in? && current_user.is_admin %>
-                <div class="study-main__secondary__section study-main__secondary__section--admin">
-                    <h3>Admin actions:</h3>
-                    <ul>
-                        <li>
-                            <a href="<%= edit_admin_study_path @study %>">Edit study details</a>
-                        </li>
-                    </ul>
-                </div>
-              <% end %>
             </div>
         </div>
     </div>

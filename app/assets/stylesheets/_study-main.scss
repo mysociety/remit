@@ -142,17 +142,13 @@
   background-color: $color-lighter-blue;
 }
 
-.file {
+.file,
+.action {
   display: block;
   position: relative;
   padding-left: 3.25em;
 
-  &:hover,
-  &:focus {
-    text-decoration: none;
-  }
-
-  // This will be the file icon
+  // This will be the icon
   &:before {
     content: "";
     display: block;
@@ -163,6 +159,24 @@
     left: 0;
     background-repeat: no-repeat;
     background-position: 0 0;
+  }
+}
+
+// Make houdini labels look like links
+label.file,
+label.action {
+  font-weight: inherit;
+  color: $color-hyperlink-blue;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+
+  &:focus {
+    @include tab-focus;
   }
 }
 
@@ -201,6 +215,36 @@
   }
 }
 
+.action--impacts {
+  &:before {
+    @include img-retina("action-impacts.png", "action-impacts@2x.png", 40px, 40px);
+    background-image: url("action-impacts.svg"), none;
+  }
+}
+
+.action--invite {
+  &:before {
+    @include img-retina("action-invite.png", "action-invite@2x.png", 40px, 40px);
+    background-image: url("action-invite.svg"), none;
+  }
+}
+
+.action--admin {
+  &:before {
+    @include img-retina("action-admin.png", "action-admin@2x.png", 40px, 40px);
+    background-image: url("action-admin.svg"), none;
+  }
+}
+
+// We only want the file name to be underlined,
+// so prevent the default underline first.
+.file {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
 .file__name {
   display: block;
   overflow: hidden;
@@ -220,6 +264,8 @@
 }
 
 .study-main__secondary__section {
+  @include clearfix();
+
   display: block;
   margin-bottom: 2em;
   padding: 1.25em;
@@ -232,8 +278,13 @@
     margin: 0 0 0.8em 0;
   }
 
-  .file {
+  .file,
+  .action {
     margin-top: 1em;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & > :last-child {
@@ -248,4 +299,17 @@
 
 .study-main__secondary__section__blank {
   color: $color-mid-grey-alternate;
+}
+
+.impact-invitation-form {
+  margin: 1em 0 1em 3.25em;
+  padding: 1em 0;
+  border: 1px solid darken($color-pale-green, 10%);
+  border-width: 1px 0;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
 }
