@@ -20,6 +20,11 @@ module ListingStudies
 
   def set_filter_form_values
     @study_types = StudyType.all.order(name: :asc)
+
+    # These indicate the current filter in use, if any, and will be
+    # set appropriately by get_filtered_studies
+    @study_type = nil
+    @study_stage = nil
   end
 
   def get_filtered_studies
@@ -31,6 +36,12 @@ module ListingStudies
 
     unless params[:study_type].blank?
       studies = studies.joins(:study_type).where('lower("study_types"."name") = ?', params[:study_type].downcase)
+      @study_type = params[:study_type].downcase
+    end
+
+    unless params[:study_stage].blank?
+      studies = studies.where(study_stage: params[:study_stage])
+      @study_stage = params[:study_stage].downcase
     end
 
     studies
