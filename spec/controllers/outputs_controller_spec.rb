@@ -3,6 +3,15 @@ require "support/study_contribution_controller_shared_examples"
 require "support/study_multiple_resources_controller_shared_examples"
 
 RSpec.describe OutputsController, type: :controller do
+  describe "GET #new" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    it "sets @study" do
+      get :new, study_id: study.id
+      expect(assigns[:study]).to eq study
+    end
+  end
+
   describe "POST #create" do
     let(:study) { FactoryGirl.create(:study) }
     let(:user) { FactoryGirl.create(:user) }
@@ -19,8 +28,8 @@ RSpec.describe OutputsController, type: :controller do
         post :create, attributes
       end
 
-      it "renders the study page" do
-        expect(response).to render_template("studies/show")
+      it "renders the new output page" do
+        expect(response).to render_template("outputs/new")
       end
 
       it "sets a flash alert" do
@@ -54,6 +63,7 @@ RSpec.describe OutputsController, type: :controller do
       let(:resource_name) { :publication }
       let(:expected_success_message) { "Publication created successfully" }
       let(:action) { :create }
+      let(:expected_error_template) { "outputs/new" }
 
       it_behaves_like "study contribution controller"
     end
@@ -85,6 +95,7 @@ RSpec.describe OutputsController, type: :controller do
       let(:association) { study.disseminations }
       let(:resource_name) { :dissemination }
       let(:expected_success_message) { "Dissemination created successfully" }
+      let(:expected_error_template) { "outputs/new" }
 
       it_behaves_like "study contribution controller"
     end
@@ -138,6 +149,7 @@ RSpec.describe OutputsController, type: :controller do
           "Sorry, you have to select at least one type of impact"
         end
         let(:action) { :create }
+        let(:expected_error_template) { "outputs/new" }
 
         it_behaves_like(
           "multiple resources controller when creating one resource")
@@ -184,6 +196,7 @@ RSpec.describe OutputsController, type: :controller do
         let(:valid_id) { programme_impact.id }
         let(:invalid_id) { msf_policy_impact.id }
         let(:action) { :create }
+        let(:expected_error_template) { "outputs/new" }
 
         it_behaves_like(
           "multiple resources controller when creating two resources")

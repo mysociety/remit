@@ -29,6 +29,7 @@ RSpec.describe DocumentsController, type: :controller do
     let(:association) { study.documents }
     let(:resource_name) { :document }
     let(:expected_success_message) { "Document created successfully" }
+    let(:expected_error_template) { "studies/show" }
 
     it_behaves_like "study contribution controller"
   end

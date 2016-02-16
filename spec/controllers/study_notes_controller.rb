@@ -24,6 +24,7 @@ RSpec.describe StudyNotesController, type: :controller do
     let(:association) { study.study_notes }
     let(:resource_name) { :study_note }
     let(:expected_success_message) { "Study note created successfully" }
+    let(:expected_error_template) { "studies/show" }
 
     it_behaves_like "study contribution controller"
   end

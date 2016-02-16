@@ -3,12 +3,16 @@ class OutputsController < ApplicationController
 
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
+  def new
+    @study = Study.find(params[:study_id])
+  end
+
   def create
     @study = Study.find(params[:study_id])
     resource_type = params[:output_type]
     if resource_type.blank?
-      flash[:alert] = "Sorry, you have to select an output type."
-      return render "studies/show"
+      flash.now[:alert] = "Sorry, you have to select an output type."
+      return render "new"
     end
     if ALLOWED_RESOURCE_TYPES.include? resource_type
       send("create_#{resource_type}")
@@ -31,20 +35,19 @@ class OutputsController < ApplicationController
     if @study_impacts.empty?
       # Empty form submitted
       @study_impacts_errors = true
-      flash[:alert] = "Sorry, you have to select at least one type of impact"
-      return render "studies/show"
+      flash.now[:alert] = "Sorry, you have to select at least " \
+                          "one type of impact"
     elsif @study_impacts.values.any?(&:invalid?)
       @study_impacts_errors = true
-      flash[:alert] = "Sorry, looks like we're missing something, can you " \
-                      "double check?"
-      return render "studies/show"
+      flash.now[:alert] = "Sorry, looks like we're missing something, can " \
+                          "you double check?"
+    else
+      # All good!
+      flash[:notice] = "#{@study_impacts.count} " \
+                       "#{'Impact'.pluralize(@study_impacts.count)} created " \
+                       "successfully"
     end
-
-    # All good!
-    message = "#{@study_impacts.count} " \
-              "#{'Impact'.pluralize(@study_impacts.count)} created " \
-              "successfully"
-    redirect_to @study, notice: message
+    render "new"
   end
 
   def study_impact_params
@@ -58,12 +61,12 @@ class OutputsController < ApplicationController
     @dissemination.study = @study
     @dissemination.user = current_user
     if @dissemination.save
-      redirect_to @study, notice: "Dissemination created successfully"
+      flash[:notice] = "Dissemination created successfully"
     else
-      flash[:alert] = "Sorry, looks like we're missing something, can you " \
-                    "double check?"
-      render "studies/show"
+      flash.now[:alert] = "Sorry, looks like we're missing something, can " \
+                          "you double check?"
     end
+    render "new"
   end
 
   def dissemination_params
@@ -77,12 +80,12 @@ class OutputsController < ApplicationController
     @publication.study = @study
     @publication.user = current_user
     if @publication.save
-      redirect_to @study, notice: "Publication created successfully"
+      flash[:notice] = "Publication created successfully"
     else
-      flash[:alert] = "Sorry, looks like we're missing something, can you " \
+      flash.now[:alert] = "Sorry, looks like we're missing something, can you " \
                     "double check?"
-      render "studies/show"
     end
+    render "new"
   end
 
   def publication_params

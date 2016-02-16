@@ -53,6 +53,7 @@ RSpec.describe StudyEnablerBarriersController, type: :controller do
         "Sorry, you have to select at least one type of enabler/barrier"
       end
       let(:action) { :create_multiple }
+      let(:expected_error_template) { "studies/show" }
 
       it_behaves_like "multiple resources controller when creating one resource"
     end
@@ -100,6 +101,8 @@ RSpec.describe StudyEnablerBarriersController, type: :controller do
       let(:valid_id) { patient_barrier.id }
       let(:invalid_id) { delivery_barrier.id }
       let(:action) { :create_multiple }
+      let(:expected_success_template) { "studies/show" }
+      let(:expected_error_template) { "studies/show" }
 
       it_behaves_like(
         "multiple resources controller when creating two resources")

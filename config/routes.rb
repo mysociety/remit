@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   resources :studies, only: :show do
     resources :documents, only: :create
     resources :study_notes, only: :create
-    # A generic create controller action that allows us to create a
+    # A generic create controller action that allows us to create a new
     # publication, dissemination or study_impact
+    get "outputs/new"
     post "outputs/create"
     resources :study_enabler_barriers do
       post :create_multiple, on: :collection
