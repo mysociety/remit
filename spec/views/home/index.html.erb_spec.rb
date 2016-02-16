@@ -7,6 +7,7 @@ RSpec.describe "home/index.html.erb", type: :view do
     # The view expects to be able to paginate the the list of studies
     @studies = Kaminari.paginate_array(@studies).page(1).per(10)
     assign(:studies, @studies)
+    @study_types = []
     render
   end
 
