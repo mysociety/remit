@@ -23,30 +23,35 @@
         </div>
     </div>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
-        <p>
-            <label>Stage:</label>
-            <select>
-                <option>All stages</option>
-            </select>
-        </p>
-        <p>
-            <label>Location:</label>
-            <select>
-                <option>All locations</option>
-            </select>
-        </p>
-        <p>
-            <label>Topic:</label>
-            <select>
-                <option>All topics</option>
-            </select>
-        </p>
-        <p>
-            <label>Methodology:</label>
-            <select>
-                <option>All methodologies</option>
-            </select>
-        </p>
+        <form method="get" action="/search">
+          <p>
+              <label>Stage:</label>
+              <select>
+                  <option>All stages</option>
+              </select>
+          </p>
+          <p>
+              <label>Location:</label>
+              <select>
+                  <option>All locations</option>
+              </select>
+          </p>
+          <p>
+              <label>Topic:</label>
+              <select>
+                  <option>All topics</option>
+              </select>
+          </p>
+          <p>
+              <label>Methodology:</label>
+              <select name="study_type">
+                  <option value="">All methodologies</option>
+                  <% @study_types.each do |t| %>
+                    <option value="<%= t.name.downcase %>"><%= t.name %></option>
+                  <% end %>
+              </select>
+          </p>
+        </form>
     </div>
     <a href="/export" class="list-of-things__secondary-action list-of-things__secondary-action--download">
         Download this page as a CSV for Excel
