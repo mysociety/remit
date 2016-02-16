@@ -18,3 +18,7 @@ def sign_in_account(email, password = "password")
   fill_in "Password", with: password
   click_button "Log in"
 end
+
+def sign_out
+  click_link "Sign Out"
+end
