@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     resources :study_enabler_barriers do
       post :create_multiple, on: :collection
     end
+    put "progress_to_delivery"
+    put "progress_to_completion"
   end
 
   # Users only have a list of studies at the moment, devise takes care of the
