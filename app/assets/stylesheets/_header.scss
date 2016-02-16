@@ -2,6 +2,19 @@
   padding: 3em 0; // might want to reduce this on small screens?
 }
 
+.site-header--impacts {
+  .container {
+    max-width: 48em;
+  }
+  .study-header__primary {
+    @extend .col-xs-12;
+  }
+  .add-outputs__title {
+    font-size: 1.5em;
+    color: $color-light-blue;
+  }
+}
+
 .site-header__title {
   @extend .row;
 
