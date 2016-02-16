@@ -19,7 +19,7 @@
           <% unless study.principal_investigator.blank? %>
             <dt>Principal investigator:</dt>
             <dd>
-                <a href="/search?pi=irwan%20pirou"><%= study.principal_investigator.name %></a>
+                <a href="/search?pi=<%= study.principal_investigator.name.downcase %>"><%= study.principal_investigator.name %></a>
             </dd>
           <% end %>
         </dl>
