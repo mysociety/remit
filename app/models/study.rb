@@ -311,4 +311,11 @@ class Study < ActiveRecord::Base
   def erb_status_needed?
     protocol_needed && !(concept? || withdrawn_postponed?)
   end
+
+  # Can the supplied user manage this study?
+  # e.g. change the study stage or invite people to edit it
+  def user_can_manage?(user)
+    return false if user.blank?
+    user.is_admin || research_manager == user || principal_investigator == user
+  end
 end

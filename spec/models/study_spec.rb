@@ -865,4 +865,48 @@ RSpec.describe Study, type: :model do
       expect(Study.erb_response_overdue).to match_array(expected)
     end
   end
+
+  describe "#user_can_manage?" do
+    let(:study) { FactoryGirl.create(:study) }
+    let(:user) { FactoryGirl.create(:user) }
+
+    context "when the user is not related to the study" do
+      it "returns false" do
+        expect(study.user_can_manage?(user)).to be false
+      end
+    end
+
+    context "when the user is the study pi" do
+      before do
+        study.principal_investigator = user
+        study.save!
+      end
+
+      it "returns true" do
+        expect(study.user_can_manage?(user)).to be true
+      end
+    end
+
+    context "when the user is the study rm" do
+      before do
+        study.research_manager = user
+        study.save!
+      end
+
+      it "returns true" do
+        expect(study.user_can_manage?(user)).to be true
+      end
+    end
+
+    context "when the user is an admin" do
+      before do
+        user.is_admin = true
+        user.save!
+      end
+
+      it "returns true" do
+        expect(study.user_can_manage?(user)).to be true
+      end
+    end
+  end
 end
