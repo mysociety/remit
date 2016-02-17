@@ -13,7 +13,7 @@ RSpec.describe Dissemination, type: :model do
       with_options(null: false)
   end
   it do
-    is_expected.to have_db_column(:fed_back_to_field).of_type(:boolean).
+    is_expected.to have_db_column(:fed_back_to_field).of_type(:text).
       with_options(null: false)
   end
   it do
@@ -37,10 +37,7 @@ RSpec.describe Dissemination, type: :model do
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:dissemination_category) }
   it { is_expected.to validate_presence_of(:details) }
-  it do
-    is_expected.to validate_inclusion_of(:fed_back_to_field).
-      in_array([true, false])
-  end
+  it { is_expected.to validate_presence_of(:fed_back_to_field) }
 
   context "when dissemination_category is 'Other internal'" do
     let(:other_internal_category) do

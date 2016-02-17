@@ -117,17 +117,10 @@
                   <%= label :dissemination, :details, "Describe the dissemination" %>
                   <%= text_area :dissemination, :details, { class: "form-control" } %>
               </div>
-              <p class="field-wrapper">
-                  <label class="checkbox-inline">
-                        <input type="hidden"
-                                name="dissemination[fed_back_to_field]"
-                                value="0">
-                        <input type="checkbox"
-                               name="dissemination[fed_back_to_field]"
-                               <%= "checked" if @dissemination.fed_back_to_field %>>
-                        This has been fed back to the field
-                  </label>
-              </p>
+              <div class="field-wrapper">
+                  <%= label :dissemination, :fed_back_to_field, "How have you fed back to people in the country or region where the study was conducted?" %>
+                  <%= text_area :dissemination, :fed_back_to_field, { class: "form-control" } %>
+              </div>
           </div>
 
           <input type="radio"
@@ -137,7 +130,7 @@
                  value="study_impact"
                  <%= "checked" if @study_impacts_errors %>>
           <label for="output-type-other" class="output-type-label houdini-label">
-              Other impact
+              Impact
           </label>
 
           <div class="action-sheet__section action-sheet__section--child houdini-target">

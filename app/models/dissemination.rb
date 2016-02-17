@@ -7,7 +7,7 @@
 #  dissemination_category_id    :integer          not null
 #  study_id                     :integer          not null
 #  details                      :text             not null
-#  fed_back_to_field            :boolean          not null
+#  fed_back_to_field            :text             not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  other_dissemination_category :text
@@ -30,7 +30,7 @@ class Dissemination < ActiveRecord::Base
   validates :study, presence: true
   validates :dissemination_category, presence: true
   validates :details, presence: true
-  validates :fed_back_to_field, inclusion: { in: [true, false] }
+  validates :fed_back_to_field, presence: true
   validate :other_dissemination_category_is_set_when_category_is_other
 
   def other_dissemination_category_is_set_when_category_is_other

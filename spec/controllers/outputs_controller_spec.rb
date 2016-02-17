@@ -79,7 +79,7 @@ RSpec.describe OutputsController, type: :controller do
           dissemination: {
             dissemination_category_id: dissemination_category.id,
             details: "Test dissemination",
-            fed_back_to_field: false
+            fed_back_to_field: "Some description"
           }
         }
       end
