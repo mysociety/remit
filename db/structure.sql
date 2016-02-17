@@ -616,6 +616,39 @@ ALTER SEQUENCE study_impacts_id_seq OWNED BY study_impacts.id;
 
 
 --
+-- Name: study_invites; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE study_invites (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    inviting_user_id integer NOT NULL,
+    invited_user_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: study_invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE study_invites_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: study_invites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE study_invites_id_seq OWNED BY study_invites.id;
+
+
+--
 -- Name: study_notes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -769,7 +802,8 @@ CREATE TABLE users (
     name text NOT NULL,
     msf_location_id integer,
     external_location text,
-    is_admin boolean DEFAULT false NOT NULL
+    is_admin boolean DEFAULT false NOT NULL,
+    invite_token character varying
 );
 
 
@@ -895,6 +929,13 @@ ALTER TABLE ONLY study_enabler_barriers ALTER COLUMN id SET DEFAULT nextval('stu
 --
 
 ALTER TABLE ONLY study_impacts ALTER COLUMN id SET DEFAULT nextval('study_impacts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_invites ALTER COLUMN id SET DEFAULT nextval('study_invites_id_seq'::regclass);
 
 
 --
@@ -1050,6 +1091,14 @@ ALTER TABLE ONLY study_enabler_barriers
 
 ALTER TABLE ONLY study_impacts
     ADD CONSTRAINT study_impacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: study_invites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY study_invites
+    ADD CONSTRAINT study_invites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1358,6 +1407,34 @@ CREATE INDEX index_study_impacts_on_user_id ON study_impacts USING btree (user_i
 
 
 --
+-- Name: index_study_invites_on_invited_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_invites_on_invited_user_id ON study_invites USING btree (invited_user_id);
+
+
+--
+-- Name: index_study_invites_on_inviting_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_invites_on_inviting_user_id ON study_invites USING btree (inviting_user_id);
+
+
+--
+-- Name: index_study_invites_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_study_invites_on_study_id ON study_invites USING btree (study_id);
+
+
+--
+-- Name: index_study_invites_on_study_id_and_invited_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE UNIQUE INDEX index_study_invites_on_study_id_and_invited_user_id ON study_invites USING btree (study_id, invited_user_id);
+
+
+--
 -- Name: index_study_notes_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1460,6 +1537,14 @@ ALTER TABLE ONLY documents
 
 
 --
+-- Name: fk_rails_24e0da1d15; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_invites
+    ADD CONSTRAINT fk_rails_24e0da1d15 FOREIGN KEY (invited_user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_2be0318c46; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1523,6 +1608,14 @@ ALTER TABLE ONLY study_impacts
 
 
 --
+-- Name: fk_rails_66bb2fb821; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_invites
+    ADD CONSTRAINT fk_rails_66bb2fb821 FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
 -- Name: fk_rails_72e4b2d4a3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1552,6 +1645,14 @@ ALTER TABLE ONLY studies_study_topics
 
 ALTER TABLE ONLY study_impacts
     ADD CONSTRAINT fk_rails_84b1d4daed FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
+-- Name: fk_rails_973ddb4933; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_invites
+    ADD CONSTRAINT fk_rails_973ddb4933 FOREIGN KEY (inviting_user_id) REFERENCES users(id);
 
 
 --
@@ -1673,4 +1774,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160212155554');
 INSERT INTO schema_migrations (version) VALUES ('20160215092603');
 
 INSERT INTO schema_migrations (version) VALUES ('20160217093325');
+
+INSERT INTO schema_migrations (version) VALUES ('20160217112504');
 

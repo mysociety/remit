@@ -1,3 +1,4 @@
+require "securerandom"
 # == Schema Information
 #
 # Table name: users
@@ -23,6 +24,7 @@
 #  msf_location_id        :integer
 #  external_location      :text
 #  is_admin               :boolean          default(FALSE), not null
+#  invite_token           :string
 #
 # Indexes
 #
@@ -73,9 +75,16 @@ class User < ActiveRecord::Base
   has_many :study_impacts, inverse_of: :user
   has_many :study_notes, inverse_of: :user
   has_many :study_enabler_barriers, inverse_of: :user
+  has_many :created_study_invites, class_name: :StudyInvite,
+                                   inverse_of: :inviting_user
+  has_many :received_study_invites, class_name: :StudyInvite,
+                                    inverse_of: :invited_user
+  has_many :invited_studies, through: :received_study_invites,
+                             source: :study
 
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external
+  validates :invite_token, uniqueness: true, allow_nil: true
 
   def external_location_is_set_if_msf_location_is_external
     if msf_location == MsfLocation.external_location && external_location.blank?
@@ -88,5 +97,16 @@ class User < ActiveRecord::Base
   def studies
     query = "principal_investigator_id = ? OR research_manager_id = ?"
     Study.where(query, id, id)
+  end
+
+  # These methods are taken from has_secure_token. We can't use that gem
+  # directly because don't want an invite token to be created automatically,
+  # only when one use invites another.
+  def regenerate_invite_token
+    update_attributes invite_token: self.class.generate_unique_secure_token
+  end
+
+  def self.generate_unique_secure_token
+    SecureRandom.base58(24)
   end
 end

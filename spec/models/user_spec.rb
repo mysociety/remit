@@ -38,10 +38,27 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_many(:study_notes).inverse_of(:user) }
   it { is_expected.to have_many(:study_enabler_barriers).inverse_of(:user) }
   it { is_expected.to have_many(:sent_alerts).inverse_of(:user) }
+  it do
+    is_expected.to have_many(:created_study_invites).inverse_of(:inviting_user)
+  end
+  it do
+    is_expected.to have_many(:received_study_invites).inverse_of(:invited_user)
+  end
+  it do
+    is_expected.to have_many(:invited_studies).
+      through(:received_study_invites).
+      source(:study)
+  end
 
   # Validation
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_inclusion_of(:is_admin).in_array([true, false]) }
+  describe "validations" do
+    subject { FactoryGirl.build(:user) }
+    it { is_expected.to validate_presence_of(:name) }
+    it do
+      is_expected.to validate_inclusion_of(:is_admin).in_array([true, false])
+    end
+    it { is_expected.to validate_uniqueness_of(:invite_token).allow_nil }
+  end
 
   context "when the when msf_location field is 'External'" do
     let(:external_location) { MsfLocation.find_by_name("External") }
