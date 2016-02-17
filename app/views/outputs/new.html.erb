@@ -1,23 +1,24 @@
 <% content_for :page_title, "Add dissemination or impact" %>
+<% content_for :page_title, truncate(@study.title, length: 50) %>
 
 <% @publication ||= Publication.new %>
 <% @dissemination ||= Dissemination.new %>
 <% @study_impacts = {} if @study_impacts.nil? %>
 
-<% content_for :page_title, truncate(@study.title, length: 50) %>
-<header class="site-header site-header--impacts">
-    <div class="container">
-        <h2 class="add-outputs__title">Add dissemination or impact for:</h2>
-        <div class="study-header">
-            <%= render partial: "studies/header_primary" %>
-        </div>
-    </div>
-</header>
-
 <div class="site-main site-main--impacts">
-   <div class="container">
+    <div class="container">
+
+        <h4 class="add-outputs__title">Add dissemination or impact for:</h4>
+        <div class="add-outputs__study">
+            <div class="study-header">
+                <%= render partial: "studies/header_primary" %>
+            </div>
+        </div>
+
+        <a class="add-outputs__add-study"><strong>Add another study</strong> sharing the same impacts</a>
+
       <%= form_tag study_outputs_create_path(@study),
-               class: "action-sheet" do %>
+               class: "add-outputs__form action-sheet" do %>
         <div class="output-type-accordion">
 
           <input type="radio"
@@ -137,7 +138,7 @@
             <% ImpactType.order(:name).each do |impact_type| %>
               <%= render partial: "shared/form_errors",
                          locals: { resource: @study_impacts[impact_type.id] } %>
-              <div class="other-impact-type">
+              <div class="field-wrapper other-impact-type">
                   <input type="checkbox"
                          class="houdini-input houdini-input--visible"
                          id="impact_type_<%= impact_type.name.parameterize %>"

@@ -11,7 +11,7 @@
   }
 
   textarea {
-    height: 10em;
+    height: 6em;
   }
 
   // We'd like to wrap everything in paragraphs, but Rails puts fields with
@@ -37,7 +37,7 @@
 }
 
 .action-sheet__section--child {
-  background-color: $color-mid-toffee;
+  background-color: mix(#fff, $color-pale-toffee, 50%);
   padding-left: 4em;
   margin: 0.5em 0;
 

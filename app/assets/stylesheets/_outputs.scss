@@ -1,0 +1,54 @@
+.add-outputs__title {
+  color: $color-dark-blue;
+  margin-bottom: 1em;
+}
+
+.add-outputs__study {
+  padding: 2em;
+  margin-bottom: 1.5em;
+  border-radius: 0.3em;
+  background-color: $color-dark-blue;
+  color: $color-white;
+
+  .study-header__primary {
+    @extend .col-sm-12; // full width (since there’s no .study-header__secondary)
+  }
+
+  .site-header__title h1 {
+    font-size: 2em;
+  }
+
+  .study-header__details > div {
+    @extend .col-sm-3;
+  }
+
+  .study-header__details__value {
+    margin-bottom: 0;
+  }
+}
+
+.add-outputs__add-study {
+  float: right;
+  cursor: pointer;
+  margin-bottom: 1.5em;
+
+  &:before {
+    @extend .glyphicon;
+    @extend .glyphicon-plus;
+
+    margin-right: 0.5em;
+  }
+}
+
+.add-outputs__form {
+  clear: right;
+
+  .output-type-label {
+    font-size: 1.25em;
+    padding-left: (4em/1.25);
+  }
+
+  .output-type-input {
+    margin-top: 1em !important; // because labels are bigger
+  }
+}
