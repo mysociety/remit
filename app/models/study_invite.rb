@@ -32,4 +32,7 @@ class StudyInvite < ActiveRecord::Base
   validates :invited_user, presence: true
   validates :inviting_user, presence: true
   validates :study, uniqueness: { scope: :invited_user }
+
+  def send_invite
+  end
 end

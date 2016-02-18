@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
     put "progress_to_delivery"
     put "progress_to_completion"
+    resources :study_invites, only: :create
   end
 
   # Users only have a list of studies at the moment, devise takes care of the
