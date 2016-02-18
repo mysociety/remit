@@ -129,6 +129,8 @@ GEM
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    has_secure_token (1.0.0)
+      activerecord (>= 3.0)
     i18n (0.7.0)
     i18n_data (0.7.0)
     inherited_resources (1.6.0)
@@ -302,6 +304,7 @@ DEPENDENCIES
   debugger
   devise
   factory_girl_rails (~> 4.0)
+  has_secure_token
   jquery-rails
   paperclip (~> 4.3)
   pg

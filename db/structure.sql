@@ -803,7 +803,7 @@ CREATE TABLE users (
     msf_location_id integer,
     external_location text,
     is_admin boolean DEFAULT false NOT NULL,
-    invite_token character varying
+    invite_token character varying NOT NULL
 );
 
 
@@ -1776,4 +1776,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160215092603');
 INSERT INTO schema_migrations (version) VALUES ('20160217093325');
 
 INSERT INTO schema_migrations (version) VALUES ('20160217112504');
+
+INSERT INTO schema_migrations (version) VALUES ('20160218115619');
 

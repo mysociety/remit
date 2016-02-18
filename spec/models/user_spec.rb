@@ -12,6 +12,10 @@ RSpec.describe User, type: :model do
     is_expected.to have_db_column(:is_admin).of_type(:boolean).
       with_options(null: false, default: false)
   end
+  it do
+    is_expected.to have_db_column(:invite_token).of_type(:string).
+      with_options(null: false)
+  end
 
   # Associations
   it { is_expected.to belong_to(:msf_location).inverse_of(:users) }
@@ -57,7 +61,6 @@ RSpec.describe User, type: :model do
     it do
       is_expected.to validate_inclusion_of(:is_admin).in_array([true, false])
     end
-    it { is_expected.to validate_uniqueness_of(:invite_token).allow_nil }
   end
 
   context "when the when msf_location field is 'External'" do

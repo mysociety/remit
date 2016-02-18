@@ -45,6 +45,9 @@ gem 'public_activity'
 # For file uploads
 gem "paperclip", "~> 4.3"
 
+# Backported Rails 5 has_secure_token
+gem 'has_secure_token'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
