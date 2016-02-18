@@ -12,7 +12,7 @@ class StudyInvitesController < ApplicationController
                                     invited_user: @invited_user)
     if @study_invite.save
       begin
-        @study_invite.send_invite
+        StudyInviteMailer.invite(@study_invite).deliver_now
       rescue
         flash.now[:alert] = "Sorry, something went wrong sending your " \
                             "invite. Can you try again?"

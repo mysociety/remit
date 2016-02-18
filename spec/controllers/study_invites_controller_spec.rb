@@ -85,8 +85,8 @@ RSpec.describe StudyInvitesController, type: :controller do
         end
 
         before do
-          expect_any_instance_of(StudyInvite).to(
-            receive(:send_invite).and_raise)
+          expect(StudyInviteMailer).to(
+            receive(:invite).and_raise)
           post :create, valid_data
         end
 

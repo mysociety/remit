@@ -28,7 +28,4 @@ class StudyInvite < ActiveRecord::Base
   validates :study, presence: true
   validates :invited_user, presence: true
   validates :inviting_user, presence: true
-
-  def send_invite
-  end
 end

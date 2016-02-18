@@ -1,0 +1,18 @@
+<% message.subject = "#{@inviting_user.name} would like you to contribute to their Médecins Sans Frontières research study (#{@study.reference_number})" %>
+Hi <%= @invited_user.name %>,
+
+<%= @inviting_user.name %> (<%= @inviting_user.email %>) has invited you to contribute to their study:
+
+<%= @study.title %>
+
+on the Médecins Sans Frontières ReMIT website.
+
+You can click this link:
+
+<%= "#{study_outputs_new_url(@study)}?token=#{@invited_user.invite_token}" %>
+
+at any time and there you'll find forms to describe any disseminations or other impact this study has had.
+
+Many thanks,
+
+MSF ReMIT team.
