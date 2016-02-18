@@ -5,25 +5,25 @@
     <div class="study-header__details">
         <div>
             <h3 class="study-header__details__key">Methodology</h3>
-            <p class="study-header__details__value"><a href="/search?methodology=mixed%20methods%20study"><%= @study.study_type.name %></a></p>
+            <p class="study-header__details__value">
+              <%= link_to @study.study_type.name, search_path(study_type: @study.study_type.name.downcase) %>
+            </p>
         </div>
         <div>
             <h3 class="study-header__details__key">
                 <%= "Topic".pluralize(@study.study_topics.count) %>
             </h3>
             <p class="study-header__details__value">
-                <a href="/search?topic=tuberculosis">
-                    <%= @study.study_topic_names %>
-                </a>
+                <% @study.study_topics.each do |study_topic| %>
+                  <%= link_to study_topic.name, search_path(study_topic: study_topic.name.downcase) %><%= "," unless study_topic == @study.study_topics.last %>
+                <% end %>
             </p>
         </div>
       <% unless @study.principal_investigator.blank? %>
         <div>
             <h3 class="study-header__details__key">Principal investigator</h3>
             <p class="study-header__details__value">
-                <a href="/search?pi=janet%20bloggs">
-                    <%= @study.principal_investigator.name %>
-                </a>
+              <%= link_to @study.principal_investigator.name, search_path(pi: @study.principal_investigator.name.downcase) %>
             </p>
         </div>
       <% end %>
@@ -33,9 +33,9 @@
                 <%= "Location".pluralize(@study.countries.count) %>
             </h3>
             <p class="study-header__details__value">
-                <a href="/search?location=south%20sudan">
-                    <%= @study.country_names %>
-                </a>
+              <% @study.countries.each do |country| %>
+                <%= link_to country.name, search_path(country: country.alpha2) %><%= "," unless country == @study.countries.last %>
+              <% end %>
             </p>
         </div>
       <% end %>

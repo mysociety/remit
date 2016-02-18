@@ -8,6 +8,8 @@ RSpec.describe "home/index.html.erb", type: :view do
     @studies = Kaminari.paginate_array(@studies).page(1).per(10)
     assign(:studies, @studies)
     @study_types = []
+    @study_topics = []
+    @countries = {}
     render
   end
 
@@ -42,7 +44,8 @@ RSpec.describe "home/index.html.erb", type: :view do
     @studies.first.country_codes = %w(GB BD)
     @studies.first.save!
     render
-    expect(rendered).to match(/United Kingdom and Bangladesh/)
+    expect(rendered).to match(/United Kingdom/)
+    expect(rendered).to match(/Bangladesh/)
   end
 
   context "when the user is logged in" do

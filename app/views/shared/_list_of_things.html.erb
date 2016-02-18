@@ -10,16 +10,18 @@
         <dl class="dl-horizontal">
             <dt>Study details</dt>
             <dd>
-                <a href="/search?study_type=<%= study.study_type.name.downcase %>"><%= study.study_type.name %></a>
+                <%= link_to study.study_type.name, search_path(study_type: study.study_type.name.downcase) %>
               <% unless study.country_names.blank? %>
                 in
-                <a href="/search?location=ethiopia"><%= study.country_names %></a>
+                <% study.countries.each do |country| %>
+                  <%= link_to country.name, search_path(country: country.alpha2) %><%= "," unless country == study.countries.last %>
+                <% end %>
               <% end %>
             </dd>
           <% unless study.principal_investigator.blank? %>
             <dt>Principal investigator:</dt>
             <dd>
-                <a href="/search?pi=<%= study.principal_investigator.name.downcase %>"><%= study.principal_investigator.name %></a>
+                <%= link_to study.principal_investigator.name, search_path(pi: study.principal_investigator.name.downcase) %>
             </dd>
           <% end %>
         </dl>

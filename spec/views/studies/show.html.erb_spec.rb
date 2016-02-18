@@ -43,7 +43,8 @@ RSpec.describe "studies/show.html.erb", type: :view do
     study.country_codes = %w(GB BD)
     study.save!
     render
-    expect(rendered).to match(/United Kingdom and Bangladesh/)
+    expect(rendered).to match(/United Kingdom/)
+    expect(rendered).to match(/Bangladesh/)
   end
 
   it "shows the pi when there is one" do
