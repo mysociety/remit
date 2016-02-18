@@ -24,9 +24,4 @@ RSpec.describe StudyInvite, type: :model do
   it { is_expected.to validate_presence_of(:study) }
   it { is_expected.to validate_presence_of(:invited_user) }
   it { is_expected.to validate_presence_of(:inviting_user) }
-  # This should work, but there's a bug in shoulda-matchers
-  # https://github.com/thoughtbot/shoulda-matchers/issues/814
-  xit do
-    is_expected.to validate_uniqueness_of(:study_id).scoped_to(:invited_user)
-  end
 end

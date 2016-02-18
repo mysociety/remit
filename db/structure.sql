@@ -1428,13 +1428,6 @@ CREATE INDEX index_study_invites_on_study_id ON study_invites USING btree (study
 
 
 --
--- Name: index_study_invites_on_study_id_and_invited_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE UNIQUE INDEX index_study_invites_on_study_id_and_invited_user_id ON study_invites USING btree (study_id, invited_user_id);
-
-
---
 -- Name: index_study_notes_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1778,4 +1771,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160217093325');
 INSERT INTO schema_migrations (version) VALUES ('20160217112504');
 
 INSERT INTO schema_migrations (version) VALUES ('20160218115619');
+
+INSERT INTO schema_migrations (version) VALUES ('20160218153609');
 
