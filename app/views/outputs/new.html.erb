@@ -44,7 +44,10 @@
                   </div>
               </div>
 
-              <input type="checkbox" class="houdini-input" id="publication_details">
+              <input type="checkbox"
+                     class="houdini-input"
+                     id="publication_details"
+                     <%= "checked" if @publication.errors.any?%>>
               <div class="houdini-target">
                   <div class="row">
                       <div class="col-sm-6">
