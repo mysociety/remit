@@ -20,11 +20,21 @@ module ListingStudies
 
   def set_filter_form_values
     @study_types = StudyType.all.order(name: :asc)
+    @study_topics = StudyTopic.all.order(name: :asc)
+    @countries = {}
+    Study.select(:country_codes).distinct.map(&:country_codes).flatten.each do |codes|
+      codes.split(",").each do |code|
+        @countries[ISO3166::Country.new(code).name] = code
+      end
+    end
 
     # These indicate the current filter in use, if any, and will be
     # set appropriately by get_filtered_studies
     @study_type = nil
     @study_stage = nil
+    @study_topic = nil
+    @study_setting = nil
+    @country = nil
   end
 
   def get_filtered_studies
@@ -37,6 +47,16 @@ module ListingStudies
     unless params[:study_type].blank?
       studies = studies.joins(:study_type).where('lower("study_types"."name") = ?', params[:study_type].downcase)
       @study_type = params[:study_type].downcase
+    end
+
+    unless params[:study_topic].blank?
+      studies = studies.joins(:study_topics).where('lower("study_topics"."name") = ?', params[:study_topic].downcase)
+      @study_topic = params[:study_topic].downcase
+    end
+
+    unless params[:country].blank? || ISO3166::Country.new(params[:country]).nil?
+      studies = studies.in_country(params[:country])
+      @country = params[:country]
     end
 
     unless params[:study_stage].blank?

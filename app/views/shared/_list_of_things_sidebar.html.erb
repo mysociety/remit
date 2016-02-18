@@ -35,14 +35,21 @@
           </p>
           <p>
               <label>Location:</label>
-              <select>
-                  <option>All locations</option>
+              <select name="country">
+                  <option value="">All locations</option>
+                  <% @countries.keys.sort.each do |name| %>
+                    <% code = @countries[name] %>
+                    <option value="<%= code %>" <%= "selected" if code == @country %>><%= name %></option>
+                  <% end %>
               </select>
           </p>
           <p>
               <label>Topic:</label>
-              <select>
-                  <option>All topics</option>
+              <select name="study_topic">
+                  <option value="">All topics</option>
+                  <% @study_topics.each do |t| %>
+                    <option value="<%= t.name.downcase %>" <%= "selected" if t.name.downcase == @study_topic %>><%= t.name %></option>
+                  <% end %>
               </select>
           </p>
           <p>

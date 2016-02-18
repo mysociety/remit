@@ -163,6 +163,10 @@ class Study < ActiveRecord::Base
     impactful.uniq.count
   end
 
+  def self.in_country(code)
+    where("country_codes LIKE ?", "%#{code}%")
+  end
+
   # Is this study archived?
   # Things get automatically archived after they've been completed for more
   # than a year
