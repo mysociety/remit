@@ -29,9 +29,30 @@ RSpec.describe OutputsController, type: :controller do
                                             inviting_user: pi)
         end
 
+        before do
+          sign_out :user
+        end
+
         it "allows them in via their invite_token" do
           get :new, study_id: study.id, token: invited_user.invite_token
           expect(response).to have_http_status(:success)
+        end
+
+        context "but they visit with the wrong invite code" do
+          it "forbids access" do
+            bad_token = invited_user.invite_token[0...-2]
+            get :new, study_id: study.id, token: bad_token
+            expect(response).to have_http_status(:forbidden)
+          end
+        end
+
+        context "but they try to access another study" do
+          it "forbids access" do
+            other_study = FactoryGirl.create(:study)
+            get :new, study_id: other_study.id,
+                      token: invited_user.invite_token
+            expect(response).to have_http_status(:forbidden)
+          end
         end
       end
     end

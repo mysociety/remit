@@ -112,9 +112,9 @@ class OutputsController < ApplicationController
     if params[:token].present?
       @invite_token = params[:token]
       @invited_user = User.find_by_invite_token(params[:token])
-      return forbidden if @invited_user.nil?
+      return forbidden if @invited_user.blank?
       @invite = StudyInvite.where(study: @study, invited_user: @invited_user)
-      return forbidden if @invite.nil?
+      return forbidden if @invite.blank?
       # We have to sign in the user because we rely on the current_user helper
       # in lots of places to tie up actions and outputs with users, however,
       # we sign them out again after the action has finished so that they
