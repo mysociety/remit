@@ -78,6 +78,46 @@ RSpec.describe "studies/show.html.erb", type: :view do
     end
   end
 
+  describe "add impact link" do
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:normal_user) { FactoryGirl.create(:user) }
+    let(:impact_link) { "Add dissemination or impact for this study" }
+
+    it "isn't shown to anonymous users" do
+      sign_out :user
+      render
+      expect(rendered).not_to match(/#{impact_link}/)
+    end
+
+    it "isn't shown to normal users" do
+      sign_in normal_user
+      render
+      expect(rendered).not_to match(/#{impact_link}/)
+    end
+
+    it "is shown to admin users" do
+      sign_in admin_user
+      render
+      expect(rendered).to match(/#{impact_link}/)
+    end
+
+    it "is shown to pi's of the study" do
+      study.principal_investigator = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(rendered).to match(/#{impact_link}/)
+    end
+
+    it "is shown to rm's of the study" do
+      study.research_manager = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(rendered).to match(/#{impact_link}/)
+    end
+  end
+
   describe "documents sidebar" do
     let(:document_type) { FactoryGirl.create(:document_type) }
 
