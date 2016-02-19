@@ -11,17 +11,15 @@ class StudyInvitesController < ApplicationController
     @study_invite = StudyInvite.new(study: @study,
                                     inviting_user: @inviting_user,
                                     invited_user: @invited_user)
-    if @study_invite.save
-      begin
-        StudyInviteMailer.invite(@study_invite).deliver_now
-      rescue
-        flash.now[:alert] = "Sorry, something went wrong sending your " \
-                            "invite. Can you try again?"
+    begin
+      unless @study_invite.save
+        flash.now[:alert] = "Sorry, looks like we're missing something, can " \
+                            "you double check?"
         return render "studies/show"
       end
-    else
-      flash.now[:alert] = "Sorry, looks like we're missing something, can " \
-                          "you double check?"
+    rescue
+      flash.now[:alert] = "Sorry, something went wrong sending your " \
+                          "invite. Can you try again?"
       return render "studies/show"
     end
     redirect_to @study, notice: "#{@invited_user.email} was invited " \

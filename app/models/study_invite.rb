@@ -28,4 +28,10 @@ class StudyInvite < ActiveRecord::Base
   validates :study, presence: true
   validates :invited_user, presence: true
   validates :inviting_user, presence: true
+
+  after_save :send_invite
+
+  def send_invite
+    StudyInviteMailer.invite(self).deliver_now
+  end
 end
