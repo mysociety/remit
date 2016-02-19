@@ -9,7 +9,6 @@ def click_label(text)
 end
 
 RSpec.describe "Contributing to a study" do
-  let!(:study) { FactoryGirl.create(:study) }
   let!(:document_type) { FactoryGirl.create(:protocol_doc_type) }
   let!(:dissemination_category) { FactoryGirl.create(:field) }
   let!(:msf_policy_impact_type) { FactoryGirl.create(:msf_policy_impact) }
@@ -17,6 +16,7 @@ RSpec.describe "Contributing to a study" do
   let!(:delivery_barrier) { FactoryGirl.create(:delivery_barrier) }
   let!(:patient_barrier) { FactoryGirl.create(:patient_barrier) }
   let!(:user) { FactoryGirl.create(:normal_user) }
+  let!(:study) { FactoryGirl.create(:study, principal_investigator: user) }
 
   before do
     PublicActivity.enabled = true

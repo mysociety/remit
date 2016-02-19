@@ -15,7 +15,9 @@
         <div class="study-main">
             <div class="study-main__primary">
                 <div class="study-main__actions">
+                  <% if @study.user_can_manage?(current_user) %>
                     <%= render partial: "studies/study_actions" %>
+                  <% end %>
                 </div>
                 <div class="study-main__timeline timeline">
                     <ol reversed>
@@ -25,7 +27,7 @@
                 </div>
             </div>
             <div class="study-main__secondary">
-              <% if @study.user_can_manage?(current_user)%>
+              <% if @study.user_can_manage?(current_user) %>
                 <div class="study-main__secondary__section study-main__secondary__section--admin">
                     <h3>Manage this study:</h3>
                     <ul>

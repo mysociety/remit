@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/devise.rb"
+require "support/devise"
 
 RSpec.describe "studies/show.html.erb", type: :view do
   let(:study) { FactoryGirl.create(:study) }
@@ -115,6 +115,45 @@ RSpec.describe "studies/show.html.erb", type: :view do
       sign_in normal_user
       render
       expect(rendered).to match(/#{impact_link}/)
+    end
+  end
+
+  describe "study actions bar" do
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:normal_user) { FactoryGirl.create(:user) }
+
+    it "isn't shown to anonymous users" do
+      sign_out :user
+      render
+      expect(view).not_to render_template(partial: "studies/_study_actions")
+    end
+
+    it "isn't shown to normal users" do
+      sign_in normal_user
+      render
+      expect(view).not_to render_template(partial: "studies/_study_actions")
+    end
+
+    it "is shown to admin users" do
+      sign_in admin_user
+      render
+      expect(view).to render_template(partial: "studies/_study_actions")
+    end
+
+    it "is shown to pi's of the study" do
+      study.principal_investigator = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(view).to render_template(partial: "studies/_study_actions")
+    end
+
+    it "is shown to rm's of the study" do
+      study.research_manager = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(view).to render_template(partial: "studies/_study_actions")
     end
   end
 
