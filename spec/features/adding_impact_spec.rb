@@ -9,11 +9,11 @@ def click_label(text)
 end
 
 RSpec.describe "Adding impact to a study" do
-  let!(:study) { FactoryGirl.create(:study) }
+  let!(:user) { FactoryGirl.create(:normal_user) }
+  let!(:study) { FactoryGirl.create(:study, principal_investigator: user) }
   let!(:dissemination_category) { FactoryGirl.create(:field) }
   let!(:msf_policy_impact_type) { FactoryGirl.create(:msf_policy_impact) }
   let!(:programme_impact_type) { FactoryGirl.create(:programme_impact) }
-  let!(:user) { FactoryGirl.create(:normal_user) }
 
   before do
     PublicActivity.enabled = true
