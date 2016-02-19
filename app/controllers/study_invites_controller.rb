@@ -1,7 +1,8 @@
 require "securerandom"
 
 class StudyInvitesController < ApplicationController
-  before_action :set_study
+  before_action :set_study_from_study_id
+  before_action :check_user_can_manage_study
   before_action :set_inviting_user
 
   def create
@@ -30,19 +31,8 @@ class StudyInvitesController < ApplicationController
 
   private
 
-  def set_study
-    @study = Study.find(params[:study_id])
-  end
-
   def set_inviting_user
-    if current_user.nil?
-      return redirect_to new_user_session_path
-    else
-      @inviting_user = current_user
-    end
-    # unless @study.user_can_manage?(@inviting_user)
-    #   forbidden
-    # end
+    @inviting_user = current_user
   end
 
   def find_or_create_invited_user(email)

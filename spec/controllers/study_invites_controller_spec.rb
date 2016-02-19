@@ -1,5 +1,6 @@
 require "rails_helper"
 require "support/devise"
+require "support/study_management_access_control_shared_examples"
 
 RSpec.shared_examples_for "successful study invite POST" do
   let(:valid_data) do
@@ -38,8 +39,10 @@ end
 
 RSpec.describe StudyInvitesController, type: :controller do
   describe "POST #create" do
-    let!(:study) { FactoryGirl.create(:study) }
     let!(:inviting_user) { FactoryGirl.create(:user) }
+    let!(:study) do
+      FactoryGirl.create(:study, principal_investigator: inviting_user)
+    end
     let!(:existing_user) { FactoryGirl.create(:user) }
     let(:new_email) { "definitely-not-aready-registered@example.com" }
 
@@ -99,18 +102,17 @@ RSpec.describe StudyInvitesController, type: :controller do
                                       "your invite. Can you try again?"
         end
       end
-    end
 
-    it "requires a logged in user" do
-      valid_data = {
-        study_id: study.id, study_invite: { invited_email: new_email }
-      }
-      sign_out(:user)
-      post :create, valid_data
-      expect(response).to redirect_to(new_user_session_path)
+      it_behaves_like "study management action" do
+        def trigger_action(study)
+          valid_data = {
+            study_id: study.id,
+            study_invite: { invited_email: new_email }
+          }
+          post :create, valid_data
+        end
+      end
     end
-
-    xit "requires that the user can manage the study"
 
     context "when given invalid data" do
       let(:invalid_data) do
