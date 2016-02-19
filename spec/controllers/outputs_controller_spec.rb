@@ -14,9 +14,25 @@ RSpec.describe OutputsController, type: :controller do
       expect(assigns[:study]).to eq study
     end
 
-    it_behaves_like "study management action" do
-      def trigger_action(study)
-        get :new, study_id: study.id
+    describe "access control" do
+      it_behaves_like "study management action" do
+        def trigger_action(study)
+          get :new, study_id: study.id
+        end
+      end
+
+      context "when someone's been invited via email" do
+        let!(:invited_user) { FactoryGirl.create(:user) }
+        let!(:study_invite) do
+          FactoryGirl.create(:study_invite, study: study,
+                                            invited_user: invited_user,
+                                            inviting_user: pi)
+        end
+
+        it "allows them in via their invite_token" do
+          get :new, study_id: study.id, token: invited_user.invite_token
+          expect(response).to have_http_status(:success)
+        end
       end
     end
   end
@@ -81,6 +97,22 @@ RSpec.describe OutputsController, type: :controller do
             post :create, valid_attributes
           end
         end
+
+        context "when someone's been invited via email" do
+          let!(:invited_user) { FactoryGirl.create(:user) }
+          let!(:study_invite) do
+            FactoryGirl.create(:study_invite, study: study,
+                                              invited_user: invited_user,
+                                              inviting_user: pi)
+          end
+
+          it "allows them in via their invite_token" do
+            valid_attributes[:study_id] = study.id
+            valid_attributes[:token] = invited_user.invite_token
+            post :create, valid_attributes
+            expect(response).to have_http_status(:success)
+          end
+        end
       end
     end
 
@@ -120,6 +152,22 @@ RSpec.describe OutputsController, type: :controller do
           def trigger_action(study)
             valid_attributes[:study_id] = study.id
             post :create, valid_attributes
+          end
+        end
+
+        context "when someone's been invited via email" do
+          let!(:invited_user) { FactoryGirl.create(:user) }
+          let!(:study_invite) do
+            FactoryGirl.create(:study_invite, study: study,
+                                              invited_user: invited_user,
+                                              inviting_user: pi)
+          end
+
+          it "allows them in via their invite_token" do
+            valid_attributes[:study_id] = study.id
+            valid_attributes[:token] = invited_user.invite_token
+            post :create, valid_attributes
+            expect(response).to have_http_status(:success)
           end
         end
       end
@@ -186,6 +234,22 @@ RSpec.describe OutputsController, type: :controller do
               post :create, valid_attributes
             end
           end
+
+          context "when someone's been invited via email" do
+            let!(:invited_user) { FactoryGirl.create(:user) }
+            let!(:study_invite) do
+              FactoryGirl.create(:study_invite, study: study,
+                                                invited_user: invited_user,
+                                                inviting_user: pi)
+            end
+
+            it "allows them in via their invite_token" do
+              valid_attributes[:study_id] = study.id
+              valid_attributes[:token] = invited_user.invite_token
+              post :create, valid_attributes
+              expect(response).to have_http_status(:success)
+            end
+          end
         end
       end
 
@@ -240,6 +304,22 @@ RSpec.describe OutputsController, type: :controller do
             def trigger_action(study)
               valid_attributes[:study_id] = study.id
               post :create, valid_attributes
+            end
+          end
+
+          context "when someone's been invited via email" do
+            let!(:invited_user) { FactoryGirl.create(:user) }
+            let!(:study_invite) do
+              FactoryGirl.create(:study_invite, study: study,
+                                                invited_user: invited_user,
+                                                inviting_user: pi)
+            end
+
+            it "allows them in via their invite_token" do
+              valid_attributes[:study_id] = study.id
+              valid_attributes[:token] = invited_user.invite_token
+              post :create, valid_attributes
+              expect(response).to have_http_status(:success)
             end
           end
         end

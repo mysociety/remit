@@ -2,7 +2,7 @@ class OutputsController < ApplicationController
   include CreatingMultipleStudyResources
 
   before_action :set_study_from_study_id, only: [:new, :create]
-  before_action :check_user_can_manage_study, only: [:new, :create]
+  before_action :check_user_can_contribute_to_study, only: [:new, :create]
 
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
@@ -20,6 +20,19 @@ class OutputsController < ApplicationController
     else
       raise ActionController::RoutingError.new("Not Found")
     end
+  end
+
+  # Override render and redirect_to so that we sign the invited user out
+  # before we render or redirect anywhere.
+  def render(*args)
+    sign_out_invited_user
+    super
+  end
+
+  # This is a "just in case" - no invited user should be redirect anywhere
+  def redirect_to(*args)
+    sign_out_invited_user
+    super
   end
 
   private
@@ -93,5 +106,28 @@ class OutputsController < ApplicationController
     params.require(:publication).permit(:doi_number, :article_title,
                                         :book_or_journal_title,
                                         :publication_year, :lead_author)
+  end
+
+  def check_user_can_contribute_to_study
+    if params[:token].present?
+      @invite_token = params[:token]
+      @invited_user = User.find_by_invite_token(params[:token])
+      return forbidden if @invited_user.nil?
+      @invite = StudyInvite.where(study: @study, invited_user: @invited_user)
+      return forbidden if @invite.nil?
+      # We have to sign in the user because we rely on the current_user helper
+      # in lots of places to tie up actions and outputs with users, however,
+      # we sign them out again after the action has finished so that they
+      # don't ever get access to things they shouldn't
+      sign_in(@invited_user)
+    else
+      check_user_can_manage_study
+    end
+  end
+
+  def sign_out_invited_user
+    unless @invited_user.blank?
+      sign_out(@invited_user)
+    end
   end
 end

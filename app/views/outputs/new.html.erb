@@ -19,6 +19,9 @@
 
       <%= form_tag study_outputs_create_path(@study),
                class: "add-outputs__form action-sheet" do %>
+        <% if @invite_token.present? %>
+          <input type="hidden" name="token" value="<%= @invite_token %>">
+        <% end %>
         <div class="output-type-accordion">
 
           <input type="radio"

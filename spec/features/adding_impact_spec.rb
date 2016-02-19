@@ -8,18 +8,9 @@ def click_label(text)
   find("label", text: text).click
 end
 
-RSpec.describe "Adding impact to a study" do
-  let!(:user) { FactoryGirl.create(:normal_user) }
-  let!(:study) { FactoryGirl.create(:study, principal_investigator: user) }
-  let!(:dissemination_category) { FactoryGirl.create(:field) }
-  let!(:msf_policy_impact_type) { FactoryGirl.create(:msf_policy_impact) }
-  let!(:programme_impact_type) { FactoryGirl.create(:programme_impact) }
-
+RSpec.shared_examples_for "Adding impact to a study" do
   before do
     PublicActivity.enabled = true
-    sign_in_account(user.email)
-    visit study_path(study)
-    find(:xpath, "//a[@href='#{study_outputs_new_path(study)}']").click
   end
 
   after do
@@ -41,9 +32,9 @@ RSpec.describe "Adding impact to a study" do
 
     expect(publication).not_to be nil
     expect(publication.study).to eq study
-    expect(publication.user).to eq user
+    expect(publication.user).to eq expected_user
     expect(study).to have_latest_activity(key: "study.publication_added",
-                                          owner: user)
+                                          owner: expected_user)
   end
 
   it "allows you to contribute a dissemination that hasn't been fed back" do
@@ -62,9 +53,9 @@ RSpec.describe "Adding impact to a study" do
     expect(dissemination).not_to be nil
     expect(dissemination.fed_back_to_field).to eq "Some description"
     expect(dissemination.study).to eq study
-    expect(dissemination.user).to eq user
+    expect(dissemination.user).to eq expected_user
     expect(study).to have_latest_activity(key: "study.dissemination_added",
-                                          owner: user)
+                                          owner: expected_user)
   end
 
   it "allows you to add an other category without js" do
@@ -90,8 +81,9 @@ RSpec.describe "Adding impact to a study" do
     expect(dissemination.other_dissemination_category).to eq other_category
     expect(dissemination.fed_back_to_field).to eq "Some description"
     expect(dissemination.study).to eq study
+    expect(dissemination.user).to eq expected_user
     expect(study).to have_latest_activity(key: "study.dissemination_added",
-                                          owner: user)
+                                          owner: expected_user)
   end
 
   it "allows you to contribute a single impact" do
@@ -107,11 +99,11 @@ RSpec.describe "Adding impact to a study" do
 
     expect(impact).not_to be nil
     expect(impact.study).to eq study
-    expect(impact.user).to eq user
+    expect(impact.user).to eq expected_user
     expect(impact.impact_type).to eq msf_policy_impact_type
 
     expect(study).to have_latest_activity(key: "study.study_impact_added",
-                                          owner: user)
+                                          owner: expected_user)
   end
 
   it "allows you to contribute multiple impacts" do
@@ -131,21 +123,57 @@ RSpec.describe "Adding impact to a study" do
 
     expect(msf_impact).not_to be nil
     expect(msf_impact.study).to eq study
-    expect(msf_impact.user).to eq user
+    expect(msf_impact.user).to eq expected_user
     expect(msf_impact.impact_type).to eq msf_policy_impact_type
 
     expect(program_impact).not_to be nil
     expect(program_impact.study).to eq study
-    expect(program_impact.user).to eq user
+    expect(program_impact.user).to eq expected_user
     expect(program_impact.impact_type).to eq programme_impact_type
 
     activities = study.activities.first(2)
 
     expect(activities[0]).to match_activity(key: "study.study_impact_added",
-                                            owner: user,
+                                            owner: expected_user,
                                             related_content: msf_impact)
     expect(activities[1]).to match_activity(key: "study.study_impact_added",
-                                            owner: user,
+                                            owner: expected_user,
                                             related_content: program_impact)
+  end
+end
+
+RSpec.describe "Adding impact to a study" do
+  let!(:user) { FactoryGirl.create(:normal_user) }
+  let!(:study) { FactoryGirl.create(:study, principal_investigator: user) }
+  let!(:dissemination_category) { FactoryGirl.create(:field) }
+  let!(:msf_policy_impact_type) { FactoryGirl.create(:msf_policy_impact) }
+  let!(:programme_impact_type) { FactoryGirl.create(:programme_impact) }
+
+  context "as a logged in user" do
+    let(:expected_user) { user }
+    before do
+      sign_in_account(user.email)
+      visit study_path(study)
+      find(:xpath, "//a[@href='#{study_outputs_new_path(study)}']").click
+    end
+
+    it_behaves_like "Adding impact to a study"
+  end
+
+  context "as a user invited by email" do
+    let!(:invited_user) { FactoryGirl.create(:user) }
+    let(:expected_user) { invited_user }
+    let!(:study_invite) do
+      FactoryGirl.create(:study_invite, study: study,
+                                        invited_user: invited_user,
+                                        inviting_user: user)
+    end
+
+    before do
+      path = study_outputs_new_path(study)
+      visit "#{path}?token=#{invited_user.invite_token}"
+    end
+
+    it_behaves_like "Adding impact to a study"
   end
 end
