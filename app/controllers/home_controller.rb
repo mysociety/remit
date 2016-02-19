@@ -3,10 +3,10 @@ class HomeController < ApplicationController
 
   def index
     # rubocop:disable Style/MultilineOperationIndentation
-    @studies = Study.send(@study_scope).
-                     order(updated_at: :desc).
-                     page(params[:page]).
-                     per(10)
+    @studies = get_filtered_studies.
+                 order(updated_at: :desc).
+                 page(params[:page]).
+                 per(10)
     # rubocop:enable Style/MultilineOperationIndentation
   end
 end

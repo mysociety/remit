@@ -46,4 +46,55 @@ RSpec.shared_examples_for "study listing controller" do
       end
     end
   end
+
+  describe "#set_filter_form_values" do
+    let(:modelling_type) { FactoryGirl.create(:modelling_type) }
+    let(:modelling_study) { FactoryGirl.create(:study, study_type: modelling_type) }
+    let(:modelling_completion_study) { FactoryGirl.create(:study, study_type: modelling_type, study_stage: :completion, protocol_needed: false) }
+
+    context "when no filters are applied" do
+      # let(:params) { {} }
+
+      it "sets nil filter values" do
+        get action, params
+        expect(assigns[:study_type]).to be nil
+        expect(assigns[:study_stage]).to be nil
+      end
+
+      it "shows all studies" do
+        get action, params
+        if params[:user_id].blank?
+          expected_studies = Study.all.last(10)
+        else
+          expected_studies = Study.where(principal_investigator_id: params[:user_id]).last(10)
+        end
+        expect(assigns[:studies]).to match_array expected_studies
+      end
+    end
+
+    context "when filters are applied" do
+      let(:extra_params) { {study_type: 'modelling', study_stage: 'completion'} }
+
+      it "sets correct filter values" do
+        get action, params.merge(extra_params)
+        expect(assigns[:study_type]).to eq 'modelling'
+        expect(assigns[:study_stage]).to eq 'completion'
+      end
+
+      it "shows only matching studies" do
+        unless params[:user_id].blank?
+          modelling_completion_study.principal_investigator_id = params[:user_id]
+          modelling_completion_study.save
+        end
+        get action, params.merge(extra_params)
+        expect(assigns[:studies]).to match_array [modelling_completion_study]
+      end
+    end
+
+    it "displays correct filter options" do
+      get action, params
+      expect(assigns[:study_types]).to match_array StudyType.all
+      expect(assigns[:study_topics]).to match_array StudyTopic.all
+    end
+  end
 end
