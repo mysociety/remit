@@ -21,7 +21,7 @@
           <% unless study.principal_investigator.blank? %>
             <dt>Principal investigator:</dt>
             <dd>
-                <%= link_to study.principal_investigator.name, search_path(pi: study.principal_investigator.name.downcase) %>
+                <%= link_to study.principal_investigator.name, search_path(q: study.principal_investigator.name.downcase) %>
             </dd>
           <% end %>
         </dl>

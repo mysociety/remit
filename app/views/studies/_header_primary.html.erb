@@ -23,7 +23,7 @@
         <div>
             <h3 class="study-header__details__key">Principal investigator</h3>
             <p class="study-header__details__value">
-              <%= link_to @study.principal_investigator.name, search_path(pi: @study.principal_investigator.name.downcase) %>
+              <%= link_to @study.principal_investigator.name, search_path(q: @study.principal_investigator.name.downcase) %>
             </p>
         </div>
       <% end %>

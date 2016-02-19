@@ -40,10 +40,6 @@ module ListingStudies
   def get_filtered_studies
     studies = Study.send(@study_scope)
 
-    unless params[:pi].blank?
-      studies = studies.joins(:principal_investigator).where('lower("users"."name") = ?', params[:pi].downcase)
-    end
-
     unless params[:study_type].blank?
       studies = studies.joins(:study_type).where('lower("study_types"."name") = ?', params[:study_type].downcase)
       @study_type = params[:study_type].downcase
