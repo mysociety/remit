@@ -1,10 +1,17 @@
 require "rails_helper"
 require "support/study_multiple_resources_controller_shared_examples"
+require "support/study_management_access_control_shared_examples"
 
 RSpec.describe StudyEnablerBarriersController, type: :controller do
   describe "POST #create_multiple", :truncation do
-    let(:study) { FactoryGirl.create(:study) }
     let(:user) { FactoryGirl.create(:user) }
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:pi) { FactoryGirl.create(:user) }
+    let(:rm) { FactoryGirl.create(:user) }
+    let(:study) do
+      FactoryGirl.create(:study, principal_investigator: pi,
+                                 research_manager: rm)
+    end
 
     context "when one enabler/barrier is submitted" do
       let(:patient_barrier) { FactoryGirl.create(:patient_barrier) }
@@ -56,6 +63,15 @@ RSpec.describe StudyEnablerBarriersController, type: :controller do
       let(:expected_error_template) { "studies/show" }
 
       it_behaves_like "multiple resources controller when creating one resource"
+
+      describe "access control" do
+        it_behaves_like "study management action" do
+          def trigger_action(study)
+            valid_attributes[:study_id] = study.id
+            post :create_multiple, valid_attributes
+          end
+        end
+      end
     end
 
     context "when multiple impact types are submitted" do
@@ -106,6 +122,15 @@ RSpec.describe StudyEnablerBarriersController, type: :controller do
 
       it_behaves_like(
         "multiple resources controller when creating two resources")
+
+      describe "access control" do
+        it_behaves_like "study management action" do
+          def trigger_action(study)
+            valid_attributes[:study_id] = study.id
+            post :create_multiple, valid_attributes
+          end
+        end
+      end
     end
   end
 end

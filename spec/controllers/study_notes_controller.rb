@@ -1,10 +1,17 @@
 require "rails_helper"
 require "support/study_contribution_controller_shared_examples"
+require "support/study_management_access_control_shared_examples"
 
 RSpec.describe StudyNotesController, type: :controller do
   describe "POST #create" do
-    let(:study) { FactoryGirl.create(:study) }
     let(:user) { FactoryGirl.create(:user) }
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:pi) { FactoryGirl.create(:user) }
+    let(:rm) { FactoryGirl.create(:user) }
+    let(:study) do
+      FactoryGirl.create(:study, principal_investigator: pi,
+                                 research_manager: rm)
+    end
     let(:valid_attributes) do
       {
         study_id: study.id,
@@ -27,5 +34,14 @@ RSpec.describe StudyNotesController, type: :controller do
     let(:expected_error_template) { "studies/show" }
 
     it_behaves_like "study contribution controller"
+
+    describe "access control" do
+      it_behaves_like "study management action" do
+        def trigger_action(study)
+          valid_attributes[:study_id] = study.id
+          post :create, valid_attributes
+        end
+      end
+    end
   end
 end

@@ -1,6 +1,8 @@
 class StudyNotesController < ApplicationController
+  before_action :set_study_from_study_id, only: [:create]
+  before_action :check_user_can_manage_study, only: [:create]
+
   def create
-    @study = Study.find(params[:study_id])
     @study_note = StudyNote.new(study_note_params)
     @study_note.study = @study
     @study_note.user = current_user

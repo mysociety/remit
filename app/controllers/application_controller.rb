@@ -34,6 +34,22 @@ class ApplicationController < ActionController::Base
       end
   end
 
+  # Check that the current user is allowed to manage a study
+  # Note: expects you to set a study in @study before you call this
+  def check_user_can_manage_study
+    if current_user.nil?
+      return redirect_to new_user_session_path
+    end
+    unless @study.user_can_manage?(current_user)
+      forbidden
+    end
+  end
+
+  # Set an @study from the study_id param
+  def set_study_from_study_id
+    @study = Study.find(params[:study_id])
+  end
+
   protected
 
   # Helper to return and render a 403

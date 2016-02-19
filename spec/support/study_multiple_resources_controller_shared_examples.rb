@@ -1,5 +1,9 @@
 RSpec.shared_examples_for(
   "multiple resources controller when creating one resource") do
+  before do
+    sign_in pi
+  end
+
   context "when given valid data" do
     it "creates a resource" do
       expect do
@@ -12,26 +16,9 @@ RSpec.shared_examples_for(
       expect(flash[:notice]).to eq expected_success_message
     end
 
-    context "when a user is logged in" do
-      before do
-        sign_in user
-      end
-
-      it "assigns the user to the resource" do
-        post action, valid_attributes
-        expect(association.last.user).to eq user
-      end
-    end
-
-    context "when no user is logged in" do
-      before do
-        sign_out :user
-      end
-
-      it "assigns no user to the resource" do
-        post action, valid_attributes
-        expect(association.last.user).to be_nil
-      end
+    it "assigns the user to the resource" do
+      post action, valid_attributes
+      expect(association.last.user).to eq pi
     end
   end
 
@@ -86,6 +73,10 @@ end
 
 RSpec.shared_examples_for(
   "multiple resources controller when creating two resources") do
+  before do
+    sign_in pi
+  end
+
   context "when given valid data" do
     it "creates two resources" do
       expect do
@@ -98,28 +89,10 @@ RSpec.shared_examples_for(
       expect(flash[:notice]).to eq expected_success_message
     end
 
-    context "when a user is logged in" do
-      before do
-        sign_in user
-      end
-
-      it "assigns the user to the resources" do
-        post action, valid_attributes
-        expect(association.last.user).to eq user
-        expect(association[-2].user).to eq user
-      end
-    end
-
-    context "when no user is logged in" do
-      before do
-        sign_out :user
-      end
-
-      it "assigns no user to the resource" do
-        post action, valid_attributes
-        expect(association.last.user).to be_nil
-        expect(association[-2].user).to be nil
-      end
+    it "assigns the user to the resources" do
+      post action, valid_attributes
+      expect(association.last.user).to eq pi
+      expect(association[-2].user).to eq pi
     end
   end
 

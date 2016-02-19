@@ -1,21 +1,27 @@
 require "rails_helper"
 require "support/study_contribution_controller_shared_examples"
 require "support/study_multiple_resources_controller_shared_examples"
+require "support/study_management_access_control_shared_examples"
+require "support/devise"
 
 RSpec.describe OutputsController, type: :controller do
-  describe "GET #new" do
-    let(:study) { FactoryGirl.create(:study) }
+  let(:pi) { FactoryGirl.create(:user) }
+  let(:study) { FactoryGirl.create(:study, principal_investigator: pi) }
 
+  describe "GET #new" do
     it "sets @study" do
       get :new, study_id: study.id
       expect(assigns[:study]).to eq study
     end
+
+    it_behaves_like "study management action" do
+      def trigger_action(study)
+        get :new, study_id: study.id
+      end
+    end
   end
 
   describe "POST #create" do
-    let(:study) { FactoryGirl.create(:study) }
-    let(:user) { FactoryGirl.create(:user) }
-
     context "when no output type is selected" do
       let(:attributes) do
         {
@@ -25,6 +31,7 @@ RSpec.describe OutputsController, type: :controller do
       end
 
       before do
+        sign_in pi
         post :create, attributes
       end
 
@@ -66,6 +73,15 @@ RSpec.describe OutputsController, type: :controller do
       let(:expected_error_template) { "outputs/new" }
 
       it_behaves_like "study contribution controller"
+
+      describe "access control" do
+        it_behaves_like "study management action" do
+          def trigger_action(study)
+            valid_attributes[:study_id] = study.id
+            post :create, valid_attributes
+          end
+        end
+      end
     end
 
     context "when the dissemination output type is selected" do
@@ -98,6 +114,15 @@ RSpec.describe OutputsController, type: :controller do
       let(:expected_error_template) { "outputs/new" }
 
       it_behaves_like "study contribution controller"
+
+      describe "access control" do
+        it_behaves_like "study management action" do
+          def trigger_action(study)
+            valid_attributes[:study_id] = study.id
+            post :create, valid_attributes
+          end
+        end
+      end
     end
 
     context "when the study impact output type is selected", :truncation do
@@ -153,6 +178,15 @@ RSpec.describe OutputsController, type: :controller do
 
         it_behaves_like(
           "multiple resources controller when creating one resource")
+
+        describe "access control" do
+          it_behaves_like "study management action" do
+            def trigger_action(study)
+              valid_attributes[:study_id] = study.id
+              post :create, valid_attributes
+            end
+          end
+        end
       end
 
       context "when multiple impact types are submitted" do
@@ -200,6 +234,15 @@ RSpec.describe OutputsController, type: :controller do
 
         it_behaves_like(
           "multiple resources controller when creating two resources")
+
+        describe "access control" do
+          it_behaves_like "study management action" do
+            def trigger_action(study)
+              valid_attributes[:study_id] = study.id
+              post :create, valid_attributes
+            end
+          end
+        end
       end
     end
   end

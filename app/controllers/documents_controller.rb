@@ -1,6 +1,8 @@
 class DocumentsController < ApplicationController
+  before_action :set_study_from_study_id, only: [:create]
+  before_action :check_user_can_manage_study, only: [:create]
+
   def create
-    @study = Study.find(params[:study_id])
     @document = Document.new(document_params)
     @document.study = @study
     @document.user = current_user

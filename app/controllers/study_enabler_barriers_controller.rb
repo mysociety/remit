@@ -1,8 +1,10 @@
 class StudyEnablerBarriersController < ApplicationController
   include CreatingMultipleStudyResources
 
+  before_action :set_study_from_study_id, only: [:create_multiple]
+  before_action :check_user_can_manage_study, only: [:create_multiple]
+
   def create_multiple
-    @study = Study.find(params[:study_id])
     # The study enabler barrier form allows you to create multiple
     # enablers/barriers via multiple text areas. However, we don't have any
     # way of knowing whether someone actually wanted to select

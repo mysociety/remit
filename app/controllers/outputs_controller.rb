@@ -1,14 +1,15 @@
 class OutputsController < ApplicationController
   include CreatingMultipleStudyResources
 
+  before_action :set_study_from_study_id, only: [:new, :create]
+  before_action :check_user_can_manage_study, only: [:new, :create]
+
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
   def new
-    @study = Study.find(params[:study_id])
   end
 
   def create
-    @study = Study.find(params[:study_id])
     resource_type = params[:output_type]
     if resource_type.blank?
       flash.now[:alert] = "Sorry, you have to select an output type."
@@ -82,8 +83,8 @@ class OutputsController < ApplicationController
     if @publication.save
       flash[:notice] = "Publication created successfully"
     else
-      flash.now[:alert] = "Sorry, looks like we're missing something, can you " \
-                    "double check?"
+      flash.now[:alert] = "Sorry, looks like we're missing something, can " \
+                          "you double check?"
     end
     render "new"
   end

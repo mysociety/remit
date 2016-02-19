@@ -1,6 +1,7 @@
 require "rails_helper"
 require "support/devise"
 require "support/study_listing_controller_shared_examples"
+require "support/study_management_access_control_shared_examples"
 
 RSpec.describe StudiesController, type: :controller do
   describe "GET #show" do
@@ -69,6 +70,28 @@ RSpec.describe StudiesController, type: :controller do
       it "forbids users from accessing other user's pages" do
         get :index, user_id: other_user.id
         expect(response).to have_http_status(403)
+      end
+    end
+  end
+
+  describe "PUT #progress_to_delivery" do
+    it_behaves_like "study management action" do
+      def trigger_action(study)
+        study.study_stage = :protocol_erb
+        study.protocol_needed = false
+        study.save!
+        put :progress_to_delivery, study_id: study.id
+      end
+    end
+  end
+
+  describe "PUT #progress_to_completion" do
+    it_behaves_like "study management action" do
+      def trigger_action(study)
+        study.study_stage = :delivery
+        study.protocol_needed = false
+        study.save!
+        put :progress_to_completion, study_id: study.id
       end
     end
   end

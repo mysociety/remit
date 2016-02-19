@@ -2,8 +2,8 @@ class StudiesController < ApplicationController
   include ListingStudies
 
   before_action :set_and_authenticate_user, only: :index
-  before_action :set_study, only: [:progress_to_delivery,
-                                   :progress_to_completion]
+  before_action :set_study_from_study_id, only: [:progress_to_delivery,
+                                                 :progress_to_completion]
   before_action :check_user_can_manage_study, only: [:progress_to_delivery,
                                                      :progress_to_completion]
 
@@ -53,25 +53,12 @@ class StudiesController < ApplicationController
 
   protected
 
-  def set_study
-    @study = Study.find(params[:study_id])
-  end
-
   def set_and_authenticate_user
     if current_user.nil?
       return redirect_to new_user_session_path
     end
     @user = User.find(params[:user_id])
     unless @user == current_user || current_user.is_admin
-      forbidden
-    end
-  end
-
-  def check_user_can_manage_study
-    if current_user.nil?
-      return redirect_to new_user_session_path
-    end
-    unless @study.user_can_manage?(current_user)
       forbidden
     end
   end
