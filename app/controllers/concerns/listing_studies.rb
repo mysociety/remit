@@ -6,6 +6,7 @@ module ListingStudies
     before_action :set_study_scope, only: :index
     before_action :set_filter_form_values, only: :index
     before_action :set_ordering, only: :index
+    before_action :set_flagged_studies_count, only: :index
   end
 
   def set_include_archived
@@ -83,5 +84,11 @@ module ListingStudies
     end
 
     studies
+  end
+
+  def set_flagged_studies_count
+    unless current_user.blank?
+      @flagged_studies_count = current_user.studies.flagged.count
+    end
   end
 end

@@ -15,7 +15,6 @@ class StudiesController < ApplicationController
                                     page(page).
                                     per(10)
     # rubocop:enable Style/MultilineOperationIndentation
-    @flagged_studies_count = @user.studies.flagged.count
     @show_flagged = true
     render "home/index"
   end
