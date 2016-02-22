@@ -10,7 +10,7 @@
         <dl class="dl-horizontal">
             <dt>Study details</dt>
             <dd>
-                <%= link_to study.study_type.name, search_path(study_type: study.study_type.name.downcase) %>
+                <%= link_to study.study_type.name, search_path(study_type: study.study_type.name) %>
               <% unless study.country_names.blank? %>
                 in
                 <% study.countries.each do |country| %>
@@ -21,7 +21,7 @@
           <% unless study.principal_investigator.blank? %>
             <dt>Principal investigator:</dt>
             <dd>
-                <%= link_to study.principal_investigator.name, search_path(q: study.principal_investigator.name.downcase) %>
+                <%= link_to study.principal_investigator.name, search_path(q: study.principal_investigator.name) %>
             </dd>
           <% end %>
         </dl>
