@@ -14,9 +14,18 @@ module ListingStudies
   end
 
   def set_study_scope
-    @study_scope = :not_archived_or_withdrawn
-    if @include_archived
-      @study_scope = :not_withdrawn
+    case params[:scope]
+    when "delayed_completing"
+      @study_scope = :delayed_completing
+    when "erb_response_overdue"
+      @study_scope = :erb_response_overdue
+    when "erb_approval_expiring"
+      @study_scope = :erb_approval_expiring
+    else
+      @study_scope = :not_archived_or_withdrawn
+      if @include_archived
+        @study_scope = :not_withdrawn
+      end
     end
   end
 
