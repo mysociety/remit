@@ -1,5 +1,6 @@
 require "rails_helper"
 require "support/study_listing_controller_shared_examples"
+require "support/devise"
 
 RSpec.describe HomeController, type: :controller do
   describe "GET #index" do
@@ -14,6 +15,22 @@ RSpec.describe HomeController, type: :controller do
       let(:params) { {} }
 
       it_behaves_like "study listing controller"
+    end
+
+    context "when a user is logged in" do
+      it "sets flagged_studies_count" do
+        user = FactoryGirl.create(:user)
+        FactoryGirl.create(
+          :study,
+          study_stage: :delivery,
+          protocol_needed: false,
+          expected_completion_date: Time.zone.today - 1.day,
+          completed: nil,
+          principal_investigator: user)
+        sign_in user
+        get :index
+        expect(assigns[:flagged_studies_count]).to eq 1
+      end
     end
   end
 end

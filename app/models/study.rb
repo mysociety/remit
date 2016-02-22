@@ -154,6 +154,16 @@ class Study < ActiveRecord::Base
     where(query, submitted.id, Study.erb_response_overdue_at)
   end
 
+  # Return the studies which will trigger a flag to PIs/RMs
+  def self.flagged
+    (delayed_completing + erb_approval_expiring + erb_response_overdue).uniq
+  end
+
+  # Return studies in a particular country
+  def self.in_country(code)
+    where("country_codes LIKE ?", "%#{code}%")
+  end
+
   # Return the count of studies with some kind of recorded impact
   # XXX - this should probably come from some kind of counter-cache on the
   # studies table, not from three separate queries to the DB
@@ -163,18 +173,6 @@ class Study < ActiveRecord::Base
     with_disseminations = joins(:disseminations).select(:id)
     impactful = with_disseminations + with_impacts + with_publications
     impactful.uniq.count
-  end
-
-  def self.in_country(code)
-    where("country_codes LIKE ?", "%#{code}%")
-  end
-
-  # Is this study archived?
-  # Things get automatically archived after they've been completed for more
-  # than a year
-  def archived?
-    return false if completed.nil? || study_stage != "completion"
-    completed < Study.archive_date
   end
 
   # What's the cutoff date for studies being archived
@@ -188,6 +186,38 @@ class Study < ActiveRecord::Base
 
   def self.erb_response_overdue_at
     Time.zone.today - 3.months
+  end
+
+  # Is this study archived?
+  # Things get automatically archived after they've been completed for more
+  # than a year
+  def archived?
+    return false if completed.nil? || study_stage != "completion"
+    completed < Study.archive_date
+  end
+
+  # Does this study need flagging to the PI/RM for closer attention?
+  def flagged?
+    delayed_completing? || erb_approval_expiring? || erb_response_overdue?
+  end
+
+  # Is the study delayed in completing?
+  def delayed_completing?
+    return false if expected_completion_date.blank? || completed.present?
+    expected_completion_date < Time.zone.today
+  end
+
+  # Is the study's ERB approval going to expire soon?
+  def erb_approval_expiring?
+    return false unless delivery? && erb_approval_expiry.present?
+    erb_approval_expiry < Study.erb_approval_expiry_warning_at
+  end
+
+  # Is the ERB response overdue for this study?
+  def erb_response_overdue?
+    submitted = ErbStatus.submitted_status
+    return false unless erb_status == submitted && local_erb_submitted.present?
+    local_erb_submitted < Study.erb_response_overdue_at
   end
 
   def other_study_type_is_set_when_study_type_is_other

@@ -34,6 +34,10 @@ RSpec.describe StudiesController, type: :controller do
       expect(response).to render_template("home/index")
     end
 
+    it "sets @show_flagged" do
+      expect(assigns[:show_flagged]).to be true
+    end
+
     context "when the user has some studies" do
       let!(:studies) do
         FactoryGirl.create_list(:study, 20, principal_investigator: user)
@@ -46,6 +50,18 @@ RSpec.describe StudiesController, type: :controller do
       let(:params) { { user_id: user.id } }
 
       it_behaves_like "study listing controller"
+
+      it "sets @flagged_studies_count" do
+        FactoryGirl.create(
+          :study,
+          study_stage: :delivery,
+          protocol_needed: false,
+          expected_completion_date: Time.zone.today - 1.day,
+          completed: nil,
+          principal_investigator: user)
+        get action, params
+        expect(assigns[:flagged_studies_count]).to eq 1
+      end
     end
 
     describe "access control" do

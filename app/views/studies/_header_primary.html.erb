@@ -1,6 +1,13 @@
 <div class="study-header__primary">
     <div class="site-header__title">
-        <h1><%= @study.title %></h1>
+        <h1>
+            <%= @study.title %>
+          <% if @study.user_can_manage?(current_user) %>
+            <span class="badge badge--red">
+                <span class="glyphicon glyphicon-flag"></span>
+            </span>
+          <% end %>
+        </h1>
     </div>
     <div class="study-header__details">
         <div>

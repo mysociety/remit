@@ -10,6 +10,7 @@ RSpec.describe "home/index.html.erb", type: :view do
     @study_types = []
     @study_topics = []
     @countries = {}
+    assign(:flagged_studies_count, 0)
     render
   end
 

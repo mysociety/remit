@@ -4,27 +4,32 @@
       <% if @studies.each do |study| %>
         <div class="list-of-things__list__item list-of-things__list__item--study">
             <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage_label %></p>
-        <h2 class="list-of-things__list__item__title">
-            <a href="<%= study_path study %>"><%= study.title %></a>
-        </h2>
-        <dl class="dl-horizontal">
-            <dt>Study details</dt>
-            <dd>
-                <%= link_to study.study_type.name, search_path(study_type: study.study_type.name) %>
-              <% unless study.country_names.blank? %>
-                in
-                <% study.countries.each do |country| %>
-                  <%= link_to country.name, search_path(country: country.alpha2) %><%= "," unless country == study.countries.last %>
-                <% end %>
-              <% end %>
-            </dd>
-          <% unless study.principal_investigator.blank? %>
-            <dt>Principal investigator:</dt>
-            <dd>
-                <%= link_to study.principal_investigator.name, search_path(q: study.principal_investigator.name) %>
-            </dd>
+          <% if @show_flagged && study.flagged? %>
+            &nbsp;<span class="badge badge--red">
+                <span class="glyphicon glyphicon-flag"></span>
+            </span>
           <% end %>
-        </dl>
+            <h2 class="list-of-things__list__item__title">
+                <a href="<%= study_path study %>"><%= study.title %></a>
+            </h2>
+            <dl class="dl-horizontal">
+                <dt>Study details</dt>
+                <dd>
+                    <%= link_to study.study_type.name, search_path(study_type: study.study_type.name) %>
+                  <% unless study.country_names.blank? %>
+                    in
+                    <% study.countries.each do |country| %>
+                      <%= link_to country.name, search_path(country: country.alpha2) %><%= "," unless country == study.countries.last %>
+                    <% end %>
+                  <% end %>
+                </dd>
+              <% unless study.principal_investigator.blank? %>
+                <dt>Principal investigator:</dt>
+                <dd>
+                    <%= link_to study.principal_investigator.name, search_path(q: study.principal_investigator.name) %>
+                </dd>
+              <% end %>
+            </dl>
         </div>
       <% end.empty? %>
         <div class="list-of-things__list__item list-of-things__list__item--study">

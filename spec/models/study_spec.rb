@@ -729,7 +729,7 @@ RSpec.describe Study, type: :model do
     end
   end
 
-  describe "#delayed_completing" do
+  describe "#delayed_completing and delayed_completing?" do
     let(:today) { Time.zone.today }
 
     let!(:delayed) do
@@ -767,12 +767,27 @@ RSpec.describe Study, type: :model do
                                  completed: nil)
     end
 
-    it "only returns delayed studies" do
-      expect(Study.delayed_completing).to match_array([delayed])
+    describe "#delayed_completing" do
+      it "only returns delayed studies" do
+        expect(Study.delayed_completing).to match_array([delayed])
+      end
+    end
+
+    describe "#delayed_completing?" do
+      it "returns true for delayed studies" do
+        expect(delayed.delayed_completing?).to be true
+      end
+
+      it "returns false otherwise" do
+        expect(used_to_be_delayed.delayed_completing?).to be false
+        expect(not_yet_delayed.delayed_completing?).to be false
+        expect(on_threshold.delayed_completing?).to be false
+        expect(no_expected_date.delayed_completing?).to be false
+      end
     end
   end
 
-  describe "#erb_approval_expiring" do
+  describe "#erb_approval_expiring and erb_approval_expiring?" do
     let(:today) { Time.zone.today }
     let(:threshold) { today + 1.month }
     let(:inside_threshold) { threshold - 1.day }
@@ -821,13 +836,32 @@ RSpec.describe Study, type: :model do
                                  erb_approval_expiry: inside_threshold)
     end
 
-    it "only returns studies whose approval is expiring" do
-      expected = [expired, expiring_inside_threshold]
-      expect(Study.erb_approval_expiring).to match_array(expected)
+    describe "#erb_approval_expiring" do
+      it "only returns studies whose approval is expiring" do
+        expected = [expired, expiring_inside_threshold]
+        expect(Study.erb_approval_expiring).to match_array(expected)
+      end
+    end
+
+    describe "#erb_approval_expiring?" do
+      it "returns true when approval is expiring" do
+        expect(expiring_inside_threshold.erb_approval_expiring?).to be true
+      end
+
+      it "returns true when approval has expired" do
+        expect(expired.erb_approval_expiring?).to be true
+      end
+
+      it "returns false otherwise" do
+        expect(on_warning_threshold.erb_approval_expiring?).to be false
+        expect(expiring_outside_threshold.erb_approval_expiring?).to be false
+        expect(no_expiry.erb_approval_expiring?).to be false
+        expect(expiring_but_completed.erb_approval_expiring?).to be false
+      end
     end
   end
 
-  describe "#erb_response_overdue" do
+  describe "#erb_response_overdue and #erb_response_overdue?" do
     let(:rereview) { FactoryGirl.create(:rereview) }
     let(:accept) { FactoryGirl.create(:accept) }
     let(:submitted) { ErbStatus.find_by_name("Submitted") }
@@ -870,9 +904,25 @@ RSpec.describe Study, type: :model do
                                  local_erb_submitted: threshold + 1.day)
     end
 
-    it "only returns studies whose erb response is overdue" do
-      expected = [response_due_yesterday]
-      expect(Study.erb_response_overdue).to match_array(expected)
+    describe "#erb_response_overdue" do
+      it "only returns studies whose erb response is overdue" do
+        expected = [response_due_yesterday]
+        expect(Study.erb_response_overdue).to match_array(expected)
+      end
+    end
+
+    describe "#erb_response_overdue?" do
+      it "returns true for overdue studies" do
+        expect(response_due_yesterday.erb_response_overdue?).to be true
+      end
+
+      it "returns false otherwise" do
+        expect(response_due_today.erb_response_overdue?).to be false
+        expect(response_due_tomorrow.erb_response_overdue?).to be false
+        expect(no_submission_date.erb_response_overdue?).to be false
+        expect(received_response_overdue.erb_response_overdue?).to be false
+        expect(overdue_but_re_submitted.erb_response_overdue?).to be false
+      end
     end
   end
 
@@ -932,6 +982,64 @@ RSpec.describe Study, type: :model do
       expect(Study.in_country("GB")).to match_array(uk_expected)
       bd_expected = [bd_study, bd_and_uk_study]
       expect(Study.in_country("BD")).to match_array(bd_expected)
+    end
+  end
+
+  describe "#flagged and #flagged?" do
+    let(:accept) { FactoryGirl.create(:accept) }
+    let(:submitted) { ErbStatus.find_by_name("Submitted") }
+    let(:today) { Time.zone.today }
+    let!(:normal_study) { FactoryGirl.create(:study) }
+    let!(:response_overdue) do
+      FactoryGirl.create(:study, study_stage: :protocol_erb,
+                                 protocol_needed: true,
+                                 erb_status: submitted,
+                                 local_erb_submitted: today - 4.months)
+    end
+    let!(:expired) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: true,
+                                 erb_status: accept,
+                                 erb_approval_expiry: today - 1.day)
+    end
+    let!(:delayed) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today - 1.day,
+                                 completed: nil)
+    end
+    let!(:delayed_and_expired) do
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 protocol_needed: false,
+                                 expected_completion_date: today - 1.day,
+                                 completed: nil,
+                                 erb_status: accept,
+                                 erb_approval_expiry: today - 1.day)
+    end
+
+    describe "#flagged" do
+      it "includes delayed, overdue and expiring studies, without duplicates" do
+        expected = [response_overdue, expired, delayed, delayed_and_expired]
+        expect(Study.flagged).to match_array(expected)
+      end
+    end
+
+    describe "#flagged?" do
+      it "returns true for expired studies" do
+        expect(expired.flagged?).to be true
+      end
+      it "returns true for overdue studies" do
+        expect(response_overdue.flagged?).to be true
+      end
+      it "returns true for delayed studies" do
+        expect(delayed.flagged?).to be true
+      end
+      it "returns true for delayed and expired studies" do
+        expect(delayed_and_expired.flagged?).to be true
+      end
+      it "returns false otherwise" do
+        expect(normal_study.flagged?).to be false
+      end
     end
   end
 end

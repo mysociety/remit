@@ -12,6 +12,9 @@
                 <a href="<%= user_studies_path(current_user) %>"
                    class="<%= "active" if current_page?(user_studies_path(current_user)) %>">
                     Your studies
+                    <% if @flagged_studies_count > 0 %>
+                        <span class="badge badge--red"><%= @flagged_studies_count %></span>
+                    <% end %>
                 </a>
             </li>
             <li>

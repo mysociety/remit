@@ -7,5 +7,8 @@ class HomeController < ApplicationController
                                     page(params[:page]).
                                     per(10)
     # rubocop:enable Style/MultilineOperationIndentation
+    unless current_user.blank?
+      @flagged_studies_count = current_user.studies.flagged.count
+    end
   end
 end
