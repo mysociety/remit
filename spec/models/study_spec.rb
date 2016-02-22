@@ -917,4 +917,19 @@ RSpec.describe Study, type: :model do
       end
     end
   end
+
+  describe "#in_country" do
+    let(:uk_study) { FactoryGirl.create(:study, country_codes: ["GB"]) }
+    let(:bd_study) { FactoryGirl.create(:study, country_codes: ["BD"]) }
+    let(:bd_and_uk_study) do
+      FactoryGirl.create(:study, country_codes: %w(BD GB))
+    end
+
+    it "lists studies in the given country" do
+      uk_expected = [uk_study, bd_and_uk_study]
+      expect(Study.in_country("GB")).to match_array(uk_expected)
+      bd_expected = [bd_study, bd_and_uk_study]
+      expect(Study.in_country("BD")).to match_array(bd_expected)
+    end
+  end
 end
