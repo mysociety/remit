@@ -1,16 +1,18 @@
-<form method="get" class="list-of-things__sorting">
-  <%= page_entries_info @studies, entry_name: "study" %> by
-  <select name="order">
-      <option value="updated" <%= "selected" if params[:order] == "updated" %>>most recently updated</option>
-      <option value="created" <%= "selected" if params[:order] == "created" %>>most recently created</option>
-  </select>
-  <input type="hidden" name="q" value="<%= @q %>" />
-  <input type="hidden" name="study_stage" value="<%= @study_stage %>" />
-  <input type="hidden" name="country" value="<%= @country %>" />
-  <input type="hidden" name="study_type" value="<%= @study_type %>" />
-  <input type="hidden" name="study_topic" value="<%= @study_topic %>" />
-  <input type="hidden" name="include_archived" value="<%= "1" if @include_archived %>" />
-  <button type="submit" class="btn btn-success">
-      Go
-  </button>
-</form>
+<% if @studies.any? %>
+  <form method="get" class="list-of-things__sorting">
+    <%= page_entries_info @studies, entry_name: "study" %> by
+    <select name="order">
+        <option value="updated" <%= "selected" if params[:order] == "updated" %>>most recently updated</option>
+        <option value="created" <%= "selected" if params[:order] == "created" %>>most recently created</option>
+    </select>
+    <input type="hidden" name="q" value="<%= @q %>" />
+    <input type="hidden" name="study_stage" value="<%= @study_stage %>" />
+    <input type="hidden" name="country" value="<%= @country %>" />
+    <input type="hidden" name="study_type" value="<%= @study_type %>" />
+    <input type="hidden" name="study_topic" value="<%= @study_topic %>" />
+    <input type="hidden" name="include_archived" value="<%= "1" if @include_archived %>" />
+    <button type="submit" class="btn btn-success">
+        Go
+    </button>
+  </form>
+<% end %>
