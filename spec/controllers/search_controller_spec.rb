@@ -21,31 +21,37 @@ RSpec.describe SearchController, type: :controller do
         topic = StudyTopic.find_by_name("Brucellosis") ||
                 FactoryGirl.create(:brucellosis)
         pi = FactoryGirl.create(:user, name: "Barry Einstein")
-        @study = FactoryGirl.create(:study,
-                  country_codes: ['ZW'],
-                  title: "water sanitation study",
-                  study_topics: [topic],
-                  principal_investigator: pi
-                )
+        @study = FactoryGirl.create(
+          :study,
+          reference_number: "OCA12-34",
+          country_codes: ["ZW"],
+          title: "water sanitation study",
+          study_topics: [topic],
+          principal_investigator: pi)
       end
 
       it "allows searching by title" do
-        get :index, { q: "sanitation" }
+        get :index, q: "sanitation"
         expect(assigns[:studies]).to include @study
       end
 
       it "allows searching by PI name" do
-        get :index, { q: "einstein" }
+        get :index, q: "einstein"
         expect(assigns[:studies]).to include @study
       end
 
       it "allows searching by topic" do
-        get :index, { q: "brucellosis" }
+        get :index, q: "brucellosis"
         expect(assigns[:studies]).to include @study
       end
 
       it "allows searching by country" do
-        get :index, { q: "zimbabwe" }
+        get :index, q: "zimbabwe"
+        expect(assigns[:studies]).to include @study
+      end
+
+      it "allows searching by reference number" do
+        get :index, q: "OCA12-34"
         expect(assigns[:studies]).to include @study
       end
     end
