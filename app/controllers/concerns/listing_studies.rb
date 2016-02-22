@@ -23,8 +23,9 @@ module ListingStudies
     @study_types = StudyType.all.order(name: :asc)
     @study_topics = StudyTopic.all.order(name: :asc)
     @countries = {}
-    Study.select(:country_codes).distinct.map(&:country_codes).flatten.each do |codes|
-      codes.split(",").each do |code|
+    codes = Study.select(:country_codes).distinct.map(&:country_codes).flatten
+    codes.each do |code_string|
+      code_string.split(",").each do |code|
         @countries[ISO3166::Country.new(code).name] = code
       end
     end
@@ -41,29 +42,37 @@ module ListingStudies
   def set_ordering
     case params[:order]
     when "updated"
-      @ordering = {updated_at: :desc}
+      @ordering = { updated_at: :desc }
     when "created"
-      @ordering = {created_at: :desc}
+      @ordering = { created_at: :desc }
     else
-      @ordering = {updated_at: :desc}
+      @ordering = { updated_at: :desc }
     end
   end
-
 
   def get_filtered_studies
     studies = Study.send(@study_scope)
 
     unless params[:study_type].blank?
-      studies = studies.joins(:study_type).where('lower("study_types"."name") = ?', params[:study_type].downcase)
+      study_type_sql = 'lower("study_types"."name") = ?'
+      # rubocop:disable Style/MultilineOperationIndentation
+      studies = studies.joins(:study_type).
+                        where(study_type_sql, params[:study_type].downcase)
+      # rubocop:enable Style/MultilineOperationIndentation
       @study_type = params[:study_type].downcase
     end
 
     unless params[:study_topic].blank?
-      studies = studies.joins(:study_topics).where('lower("study_topics"."name") = ?', params[:study_topic].downcase)
+      study_topic_sql = 'lower("study_topics"."name") = ?'
+      # rubocop:disable Style/MultilineOperationIndentation
+      studies = studies.joins(:study_topics).
+                        where(study_topic_sql, params[:study_topic].downcase)
+      # rubocop:enable Style/MultilineOperationIndentation
       @study_topic = params[:study_topic].downcase
     end
 
-    unless params[:country].blank? || ISO3166::Country.new(params[:country]).nil?
+    unless params[:country].blank? ||
+           ISO3166::Country.new(params[:country]).nil?
       studies = studies.in_country(params[:country])
       @country = params[:country]
     end

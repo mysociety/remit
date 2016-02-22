@@ -49,19 +49,16 @@ RSpec.shared_examples_for "study listing controller" do
 
   describe "#set_filter_form_values" do
     let(:modelling_type) { FactoryGirl.create(:modelling_type) }
-    let(:modelling_study) {
+    let(:modelling_study) do
       FactoryGirl.create(:study, study_type: modelling_type)
-    }
-    let(:modelling_completion_study) {
-      FactoryGirl.create(:study,
-        study_type: modelling_type,
-        study_stage: :completion,
-        protocol_needed: false)
-    }
+    end
+    let(:modelling_completion_study) do
+      FactoryGirl.create(:study, study_type: modelling_type,
+                                 study_stage: :completion,
+                                 protocol_needed: false)
+    end
 
     context "when no filters are applied" do
-      # let(:params) { {} }
-
       it "sets nil filter values" do
         get action, params
         expect(assigns[:study_type]).to be nil
@@ -81,14 +78,14 @@ RSpec.shared_examples_for "study listing controller" do
     end
 
     context "when filters are applied" do
-      let(:extra_params) {
-        {study_type: 'modelling', study_stage: 'completion'}
-      }
+      let(:extra_params) do
+        { study_type: "modelling", study_stage: "completion" }
+      end
 
       it "sets correct filter values" do
         get action, params.merge(extra_params)
-        expect(assigns[:study_type]).to eq 'modelling'
-        expect(assigns[:study_stage]).to eq 'completion'
+        expect(assigns[:study_type]).to eq "modelling"
+        expect(assigns[:study_stage]).to eq "completion"
       end
 
       it "shows only matching studies" do
@@ -113,18 +110,18 @@ RSpec.shared_examples_for "study listing controller" do
     before do
       Study.destroy_all
       # Created a long time ago, updated recently
-      @study1 = FactoryGirl.create(:study,
+      @study1 = FactoryGirl.create(
+        :study,
         updated_at: 1.week.ago,
         created_at: 6.months.ago,
-        principal_investigator_id: params[:user_id]
-      )
+        principal_investigator_id: params[:user_id])
       # Created and updated a short while ago,
       # i.e. between the created/updated dates of @study1
-      @study2 = FactoryGirl.create(:study,
+      @study2 = FactoryGirl.create(
+        :study,
         updated_at: 3.months.ago,
         created_at: 3.months.ago,
-        principal_investigator_id: params[:user_id]
-      )
+        principal_investigator_id: params[:user_id])
     end
 
     it "defaults to ordering by most recently updated" do
@@ -134,13 +131,13 @@ RSpec.shared_examples_for "study listing controller" do
     end
 
     it "can be ordered by updated_at" do
-      get action, params.merge(order: 'updated')
+      get action, params.merge(order: "updated")
       expect(assigns[:studies].first).to eq @study1
       expect(assigns[:studies].last).to eq @study2
     end
 
     it "can be ordered by created_at" do
-      get action, params.merge(order: 'created')
+      get action, params.merge(order: "created")
       expect(assigns[:studies].first).to eq @study2
       expect(assigns[:studies].last).to eq @study1
     end

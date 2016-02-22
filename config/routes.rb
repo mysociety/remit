@@ -24,5 +24,5 @@ Rails.application.routes.draw do
     resources :studies, only: :index
   end
 
-  get '/search', :to => "search#index"
+  get "/search", to: "search#index"
 end

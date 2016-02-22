@@ -3,10 +3,9 @@ class SearchController < ApplicationController
 
   def index
     # rubocop:disable Style/MultilineOperationIndentation
-    @studies = get_search_results.
-                 order(@ordering).
-                 page(params[:page]).
-                 per(10)
+    @studies = get_search_results.order(@ordering).
+                                  page(params[:page]).
+                                  per(10)
     # rubocop:enable Style/MultilineOperationIndentation
   end
 
@@ -49,7 +48,7 @@ class SearchController < ApplicationController
       # Match reference number. We do this exactly because it's quite short
       # and so a LIKE could bring up lots of false positives
       reference_number_sql = 'lower("reference_number") = ?'
-      queries << studies.where(reference_number_sql, "#{@q.downcase}").to_sql
+      queries << studies.where(reference_number_sql, @q.downcase).to_sql
 
       sql = "(#{queries.join(' UNION ')}) AS studies"
       studies = Study.from(sql)

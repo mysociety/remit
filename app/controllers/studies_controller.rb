@@ -10,12 +10,10 @@ class StudiesController < ApplicationController
   def index
     page = params[:page]
     # rubocop:disable Style/MultilineOperationIndentation
-    @studies = get_filtered_studies.
-                 where(principal_investigator_id: @user.id).
-                 send(@study_scope).
-                 order(@ordering).
-                 page(page).
-                 per(10)
+    @studies = get_filtered_studies.where(principal_investigator_id: @user.id).
+                                    order(@ordering).
+                                    page(page).
+                                    per(10)
     # rubocop:enable Style/MultilineOperationIndentation
     render "home/index"
   end
