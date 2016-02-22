@@ -37,6 +37,32 @@ RSpec.shared_examples_for "Adding impact to a study" do
                                           owner: expected_user)
   end
 
+  it "allows you to contribute a publication by DOI number" do
+    # This is easier than setting up a whole VCR setup for this one api call
+    successful_doi_result = BibTeX::Entry.new(title: "Test journal article",
+                                              journal: "Test journal",
+                                              year: "1953",
+                                              author: "Test author et al")
+    expect(BibURI).to receive(:lookup).and_return(successful_doi_result)
+
+    choose("output-type-publication")
+    fill_in "DOI", with: "doi:1234"
+    click_button "Add output"
+
+    publication = Publication.find_by_article_title("Test journal article")
+
+    expect(page).to have_text "Publication created successfully"
+
+    expect(publication).not_to be nil
+    expect(publication.study).to eq study
+    expect(publication.user).to eq expected_user
+    expect(publication.book_or_journal_title).to eq "Test journal"
+    expect(publication.publication_year).to eq 1953
+    expect(publication.lead_author).to eq "Test author et al"
+    expect(study).to have_latest_activity(key: "study.publication_added",
+                                          owner: expected_user)
+  end
+
   it "allows you to contribute a dissemination that hasn't been fed back" do
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"

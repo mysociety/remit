@@ -39,7 +39,12 @@
               <div class="row">
                   <div class="col-sm-6">
                       <%= label :publication, :doi_number, "DOI" %>
-                      <%= text_field :publication, :doi_number, { class: "form-control" } %>
+                      <%= text_field :publication,
+                                     :doi_number,
+                                     {
+                                       class: "form-control",
+                                       placeholder: "e.g doi:10.1038/171737a0"
+                                     } %>
                       <%= label :publication,
                                 :details,
                                 raw("Or enter details manually&hellip;"),

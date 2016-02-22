@@ -1,3 +1,5 @@
+require "biburi"
+
 # == Schema Information
 #
 # Table name: publications
@@ -25,6 +27,9 @@ class Publication < ActiveRecord::Base
   belongs_to :study, inverse_of: :publications
   belongs_to :user, inverse_of: :publications
 
+  # This has to run first, because it potentially sets other values that
+  # following validators check
+  validates_with DoiNumberValidator
   validates :lead_author, presence: true
   validates :article_title, presence: true
   validates :book_or_journal_title, presence: true
