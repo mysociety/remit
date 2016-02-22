@@ -28,6 +28,8 @@
 #  feedback_and_suggestions    :text
 #  study_stage                 :enum             default("concept"), not null
 #  expected_completion_date    :date
+#  erb_submitted               :date
+#  erb_approved                :date
 #
 # Indexes
 #

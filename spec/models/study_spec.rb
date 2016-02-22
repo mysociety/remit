@@ -39,6 +39,8 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:erb_status_id).of_type(:integer) }
   it { is_expected.to have_db_column(:erb_reference).of_type(:text) }
   it { is_expected.to have_db_column(:erb_approval_expiry).of_type(:date) }
+  it { is_expected.to have_db_column(:erb_submitted).of_type(:date) }
+  it { is_expected.to have_db_column(:erb_approved).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_submitted).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_approved).of_type(:date) }
   it { is_expected.to have_db_column(:completed).of_type(:date) }
