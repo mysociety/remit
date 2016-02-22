@@ -120,7 +120,7 @@ RSpec.describe DelayedStudyAlerter, type: :mailer do
         principal_investigator: pi,
         research_manager: rm,
         erb_status: submitted,
-        local_erb_submitted: Time.zone.today - 4.months)
+        erb_submitted: Time.zone.today - 4.months)
     end
     let(:alert_type) { SentAlert::RESPONSE_OVERDUE }
     let(:action) { :alert_response_overdue }

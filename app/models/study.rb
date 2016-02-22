@@ -46,8 +46,8 @@ class Study < ActiveRecord::Base
   include PublicActivity::Common
   ACTIVITY_TRACKED_ATTRS = %w(study_stage erb_status_id title
                               principal_investigator_id research_manager_id
-                              local_erb_submitted local_erb_approved
-                              completed).freeze
+                              erb_submitted erb_approved local_erb_submitted
+                              local_erb_approved completed).freeze
 
   STUDY_STAGE_LABELS = {
     concept: "Concept",
@@ -150,8 +150,8 @@ class Study < ActiveRecord::Base
     submitted = ErbStatus.submitted_status
     query = <<-SQL
       erb_status_id = ?
-      AND local_erb_submitted IS NOT NULL
-      AND local_erb_submitted < ?
+      AND erb_submitted IS NOT NULL
+      AND erb_submitted < ?
     SQL
     where(query, submitted.id, Study.erb_response_overdue_at)
   end
@@ -218,8 +218,8 @@ class Study < ActiveRecord::Base
   # Is the ERB response overdue for this study?
   def erb_response_overdue?
     submitted = ErbStatus.submitted_status
-    return false unless erb_status == submitted && local_erb_submitted.present?
-    local_erb_submitted < Study.erb_response_overdue_at
+    return false unless erb_status == submitted && erb_submitted.present?
+    erb_submitted < Study.erb_response_overdue_at
   end
 
   def other_study_type_is_set_when_study_type_is_other

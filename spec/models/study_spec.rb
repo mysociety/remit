@@ -319,6 +319,32 @@ RSpec.describe Study, type: :model do
           recipient: rm)
       end
 
+      it "logs changes to the erb approved date" do
+        study.erb_approved = Date.new(2015, 1, 1)
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          key: "study.erb_approved_changed",
+          parameters: {
+            attribute: "erb_approved",
+            before: nil,
+            after: Date.new(2015, 1, 1)
+          })
+      end
+
+      it "logs changes to the erb submitted date" do
+        study.erb_submitted = Date.new(2015, 1, 1)
+        study.save!
+        expect(study.reload.activities.length).to eq 2
+        expect(study).to have_latest_activity(
+          key: "study.erb_submitted_changed",
+          parameters: {
+            attribute: "erb_submitted",
+            before: nil,
+            after: Date.new(2015, 1, 1)
+          })
+      end
+
       it "logs changes to the local erb approved date" do
         study.local_erb_approved = Date.new(2015, 1, 1)
         study.save!
@@ -873,37 +899,37 @@ RSpec.describe Study, type: :model do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: submitted,
-                                 local_erb_submitted: threshold - 1.day)
+                                 erb_submitted: threshold - 1.day)
     end
     let!(:response_due_today) do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: submitted,
-                                 local_erb_submitted: threshold)
+                                 erb_submitted: threshold)
     end
     let!(:response_due_tomorrow) do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: submitted,
-                                 local_erb_submitted: threshold + 1.day)
+                                 erb_submitted: threshold + 1.day)
     end
     let!(:no_submission_date) do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: submitted,
-                                 local_erb_submitted: nil)
+                                 erb_submitted: nil)
     end
     let!(:received_response_overdue) do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: accept,
-                                 local_erb_submitted: threshold + 1.day)
+                                 erb_submitted: threshold + 1.day)
     end
     let!(:overdue_but_re_submitted) do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: rereview,
-                                 local_erb_submitted: threshold + 1.day)
+                                 erb_submitted: threshold + 1.day)
     end
 
     describe "#erb_response_overdue" do
@@ -996,7 +1022,7 @@ RSpec.describe Study, type: :model do
       FactoryGirl.create(:study, study_stage: :protocol_erb,
                                  protocol_needed: true,
                                  erb_status: submitted,
-                                 local_erb_submitted: today - 4.months)
+                                 erb_submitted: today - 4.months)
     end
     let!(:expired) do
       FactoryGirl.create(:study, study_stage: :delivery,

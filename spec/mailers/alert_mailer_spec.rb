@@ -22,7 +22,7 @@ RSpec.describe AlertMailer, type: :mailer do
       title: "Test Study longer than thirty characters to test truncation",
       reference_number: "ABC123",
       expected_completion_date: Date.new(2015, 2, 15),
-      local_erb_submitted: Date.new(2015, 2, 15),
+      erb_submitted: Date.new(2015, 2, 15),
       erb_approval_expiry: Date.new(2015, 2, 15))
   end
   let(:user) { FactoryGirl.create(:user, name: "Steve Day") }
