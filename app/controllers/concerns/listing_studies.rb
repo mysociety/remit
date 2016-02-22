@@ -5,6 +5,7 @@ module ListingStudies
     before_action :set_include_archived, only: :index
     before_action :set_study_scope, only: :index
     before_action :set_filter_form_values, only: :index
+    before_action :set_ordering, only: :index
   end
 
   def set_include_archived
@@ -36,6 +37,18 @@ module ListingStudies
     @study_setting = nil
     @country = nil
   end
+
+  def set_ordering
+    case params[:order]
+    when "updated"
+      @ordering = {updated_at: :desc}
+    when "created"
+      @ordering = {created_at: :desc}
+    else
+      @ordering = {updated_at: :desc}
+    end
+  end
+
 
   def get_filtered_studies
     studies = Study.send(@study_scope)

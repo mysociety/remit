@@ -13,7 +13,7 @@ class StudiesController < ApplicationController
     @studies = get_filtered_studies.
                  where(principal_investigator_id: @user.id).
                  send(@study_scope).
-                 order(updated_at: :desc).
+                 order(@ordering).
                  page(page).
                  per(10)
     # rubocop:enable Style/MultilineOperationIndentation

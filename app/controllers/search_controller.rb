@@ -4,7 +4,7 @@ class SearchController < ApplicationController
   def index
     # rubocop:disable Style/MultilineOperationIndentation
     @studies = get_search_results.
-                 order(updated_at: :desc).
+                 order(@ordering).
                  page(params[:page]).
                  per(10)
     # rubocop:enable Style/MultilineOperationIndentation
