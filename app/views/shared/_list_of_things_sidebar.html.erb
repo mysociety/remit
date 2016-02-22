@@ -11,15 +11,6 @@
             <a href="/search?erb=expiring" class="quick-filters__filter quick-filters__filter--expiring">
                 Studies with ERB approval expiring
             </a>
-          <% if @include_archived %>
-            <a href="?include_archived=0" class="quick-filters__filter quick-filters__filter--archived">
-                Exclude archived studies
-            </a>
-          <% else %>
-            <a href="?include_archived=1" class="quick-filters__filter quick-filters__filter--archived">
-                Include archived studies
-            </a>
-          <% end %>
         </div>
     </div>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
@@ -29,7 +20,11 @@
               <select name="study_stage">
                   <option value="">All stages</option>
                   <% Study::STUDY_STAGE_LABELS.each do |k, v| %>
-                    <option value="<%= k %>" <%= "selected" if k.to_s == @study_stage %>><%= v %></option>
+                    <% unless k == :archived || k == :withdrawn_postponed %>
+                        <option value="<%= k %>" <%= "selected" if k.to_s == @study_stage %>>
+                            <%= v %>
+                        </option>
+                    <% end %>
                   <% end %>
               </select>
           </p>
@@ -60,6 +55,16 @@
                     <option value="<%= t.name.downcase %>" <%= "selected" if t.name.downcase == @study_type %>><%= t.name %></option>
                   <% end %>
               </select>
+          </p>
+          <p>
+              <label for="include_archived">
+                <input id="include_archived"
+                       type="checkbox"
+                       value="1"
+                       name="include_archived"
+                       <%= "checked" if @include_archived %>>
+                Include archived studies?
+              </label>
           </p>
           <p>
             <input type="hidden" name="q" value="<%= @q %>" />

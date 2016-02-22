@@ -9,6 +9,7 @@
   <input type="hidden" name="country" value="<%= @country %>" />
   <input type="hidden" name="study_type" value="<%= @study_type %>" />
   <input type="hidden" name="study_topic" value="<%= @study_topic %>" />
+  <input type="hidden" name="include_archived" value="<%= "1" if @include_archived %>" />
   <button type="submit" class="btn btn-success">
       Go
   </button>
