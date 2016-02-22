@@ -171,7 +171,7 @@ class Study < ActiveRecord::Base
   # Things get automatically archived after they've been completed for more
   # than a year
   def archived?
-    return false if completed.nil?
+    return false if completed.nil? || study_stage != "completion"
     completed < Study.archive_date
   end
 

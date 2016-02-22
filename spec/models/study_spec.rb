@@ -613,6 +613,13 @@ RSpec.describe Study, type: :model do
                                  completed: archive_date + 1.day,
                                  protocol_needed: false)
     end
+    let!(:completed_but_not_in_right_stage) do
+      # Some of the existing data has a completion date but the study is still
+      # marked as being in delivery
+      FactoryGirl.create(:study, study_stage: :delivery,
+                                 completed: archive_date - 1.day,
+                                 protocol_needed: false)
+    end
     let!(:not_archived) do
       # Make one of every other stage to check they're excluded too
       stages = Study.study_stages.keys
@@ -624,6 +631,7 @@ RSpec.describe Study, type: :model do
       end
       not_archived << on_archive_date
       not_archived << younger_than_archive_date
+      not_archived << completed_but_not_in_right_stage
       not_archived
     end
 
