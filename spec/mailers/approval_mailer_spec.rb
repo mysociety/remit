@@ -14,7 +14,7 @@ RSpec.describe ApprovalMailer, type: :mailer do
     let(:fixture) do
       Rails.root.join("spec",
                       "fixtures",
-                      "admin_mailer",
+                      "approval_mailer",
                       "new_user_waiting_for_approval.txt")
     end
 
