@@ -221,6 +221,19 @@ RSpec.describe User, type: :model do
         expect(admin_mail.subject).to eq "New user waiting for approval on " \
                                          "ReMIT: test@londonmsf.org"
       end
+
+      context "when a user is subsequently approved" do
+        it "sends an email to the user" do
+          user.save!
+          ActionMailer::Base.deliveries = []
+          user.approved = true
+          user.save!
+          expect(ActionMailer::Base.deliveries.length).to eq 1
+          mail = ActionMailer::Base.deliveries.last
+          expect(mail.to).to eq [user.email]
+          expect(mail.subject).to eq "Your account on ReMIT has been approved!"
+        end
+      end
     end
   end
 end

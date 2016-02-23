@@ -88,7 +88,8 @@ class User < ActiveRecord::Base
   validate :external_location_is_set_if_msf_location_is_external
 
   after_initialize :auto_approve_msf_emails, if: :new_record?
-  after_create :send_admin_mail, unless: :approved?
+  after_create :send_admin_approval_mail, unless: :approved?
+  after_update :send_approval_mail, if: :approved_changed?
 
   def external_location_is_set_if_msf_location_is_external
     if msf_location == MsfLocation.external_location && external_location.blank?
@@ -107,8 +108,14 @@ class User < ActiveRecord::Base
     self.approved = true if email =~ /.*(@|\.)msf\.org$/i
   end
 
-  def send_admin_mail
-    AdminMailer.new_user_waiting_for_approval(self).deliver_now
+  def send_admin_approval_mail
+    ApprovalMailer.new_user_waiting_for_approval(self).deliver_now
+  end
+
+  def send_approval_mail
+    if approved_was == false && approved == true
+      ApprovalMailer.notify_user_of_approval(self).deliver_now
+    end
   end
 
   # Override devise's method to check that a user is approved as well as

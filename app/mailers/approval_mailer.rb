@@ -4,4 +4,9 @@ class ApprovalMailer < ApplicationMailer
     admins = User.where(is_admin: true).map(&:email)
     mail to: admins
   end
+
+  def notify_user_of_approval(user)
+    @user = user
+    mail to: user.email
+  end
 end
