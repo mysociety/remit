@@ -56,6 +56,10 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:country_codes).of_type(:text) }
   it { is_expected.to have_db_column(:feedback_and_suggestions).of_type(:text) }
   it { is_expected.to have_db_column(:expected_completion_date).of_type(:date) }
+  it do
+    is_expected.to have_db_column(:hidden).of_type(:boolean).
+      with_options(default: false)
+  end
 
   # Associations
   it { is_expected.to belong_to(:study_type) }
@@ -1068,6 +1072,15 @@ RSpec.describe Study, type: :model do
       it "returns false otherwise" do
         expect(normal_study.flagged?).to be false
       end
+    end
+  end
+
+  describe "#visible" do
+    let(:hidden) { FactoryGirl.create(:study, hidden: true) }
+    let(:visible) { FactoryGirl.create(:study) }
+
+    it "only returns visible studies" do
+      expect(Study.visible).to eq [visible]
     end
   end
 end

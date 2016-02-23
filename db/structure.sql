@@ -516,7 +516,8 @@ CREATE TABLE studies (
     study_stage study_stage DEFAULT 'concept'::study_stage NOT NULL,
     expected_completion_date date,
     erb_submitted date,
-    erb_approved date
+    erb_approved date,
+    hidden boolean DEFAULT false
 );
 
 
@@ -1782,4 +1783,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160218153609');
 INSERT INTO schema_migrations (version) VALUES ('20160222175051');
 
 INSERT INTO schema_migrations (version) VALUES ('20160223095020');
+
+INSERT INTO schema_migrations (version) VALUES ('20160223132202');
 

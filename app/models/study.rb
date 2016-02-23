@@ -30,6 +30,7 @@
 #  expected_completion_date    :date
 #  erb_submitted               :date
 #  erb_approved                :date
+#  hidden                      :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -99,6 +100,10 @@ class Study < ActiveRecord::Base
   validates :erb_status, presence: true, if: :erb_status_needed?
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
+
+  def self.visible
+    where(hidden: false)
+  end
 
   def self.active
     query = <<-SQL
