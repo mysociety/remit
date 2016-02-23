@@ -44,7 +44,8 @@ class StudyInvitesController < ApplicationController
                       password: password,
                       password_confirmation: password,
                       msf_location: external_location,
-                      external_location: "Invited external user")
+                      external_location: "Invited external user",
+                      approved: true)
       user.skip_confirmation!
       user.save!
     end
