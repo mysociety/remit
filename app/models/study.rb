@@ -434,14 +434,15 @@ class Study < ActiveRecord::Base
 
     stage_changes.each do |activity|
       after = activity.parameters[:after]
-      if after == "withdrawn_postponed" && dates[:withdrawn_change].blank?
-        dates[:withdrawn_change] = activity.created_at
-      elsif after == "completion" && dates[:completion_change].blank?
-        dates[:completion_change] = activity.created_at
-      elsif after == "delivery" && dates[:delivery_change].blank?
-        dates[:delivery_change] = activity.created_at
-      elsif after == "protocol_erb" && dates[:protocol_change].blank?
-        dates[:protocol_change] = activity.created_at
+      created_at = activity.created_at.to_formatted_s(:medium_ordinal)
+      if after == :withdrawn_postponed && dates[:withdrawn_change].blank?
+        dates[:withdrawn_change] = created_at
+      elsif after == :completion && dates[:completion_change].blank?
+        dates[:completion_change] = created_at
+      elsif after == :delivery && dates[:delivery_change].blank?
+        dates[:delivery_change] = created_at
+      elsif after == :protocol_erb && dates[:protocol_change].blank?
+        dates[:protocol_change] = created_at
       end
     end
 
