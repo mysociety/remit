@@ -157,8 +157,18 @@ RSpec.describe User, type: :model do
                  password_confirmation: "password")
       end
 
+      before do
+        ActionMailer::Base.deliveries = []
+      end
+
       it "automatically approves them" do
         expect(user.approved?).to be true
+      end
+
+      it "doesn't send an email to the admins" do
+        user.save!
+        # confirmation mail for the user only
+        expect(ActionMailer::Base.deliveries.length).to eq 1
       end
     end
 
@@ -170,12 +180,23 @@ RSpec.describe User, type: :model do
                  password_confirmation: "password")
       end
 
+      before do
+        ActionMailer::Base.deliveries = []
+      end
+
       it "automatically approves them" do
         expect(user.approved?).to be true
+      end
+
+      it "doesn't send an email to the admins" do
+        user.save!
+        # confirmation mail for the user only
+        expect(ActionMailer::Base.deliveries.length).to eq 1
       end
     end
 
     context "when the user has an non-MSF email address" do
+      let!(:admin) { FactoryGirl.create(:admin_user) }
       let(:user) do
         User.new(email: "test@londonmsf.org",
                  name: "test user",
@@ -183,8 +204,22 @@ RSpec.describe User, type: :model do
                  password_confirmation: "password")
       end
 
+      before do
+        ActionMailer::Base.deliveries = []
+      end
+
       it "doesn't automatically approve them" do
         expect(user.approved?).to be false
+      end
+
+      it "emails admins about the new user" do
+        user.save!
+        # confirmation mail and then the admin mail
+        expect(ActionMailer::Base.deliveries.length).to eq 2
+        admin_mail = ActionMailer::Base.deliveries.last
+        expect(admin_mail.to).to eq [admin.email]
+        expect(admin_mail.subject).to eq "New user waiting for approval on " \
+                                         "ReMIT: test@londonmsf.org"
       end
     end
   end

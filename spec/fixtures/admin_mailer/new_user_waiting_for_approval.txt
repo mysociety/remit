@@ -1,0 +1,8 @@
+There's a new user who needs your approval on ReMIT.
+
+Test User
+non-approved-user@example.com
+
+You can approve them here:
+
+http://example.com/admin/users/3/edit

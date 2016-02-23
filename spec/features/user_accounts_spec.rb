@@ -51,11 +51,19 @@ RSpec.describe "User accounts" do
     end
 
     context "when you have a non-MSF email address" do
+      let!(:admin) { FactoryGirl.create(:admin_user) }
+
+      before do
+        ActionMailer::Base.deliveries = []
+      end
+
       it "Lets you sign up for an account" do
         sign_up_for_an_account "test@example.com", "Test User"
-        confirmation_mail = ActionMailer::Base.deliveries.last
+        confirmation_mail = ActionMailer::Base.deliveries.first
+        admin_mail = ActionMailer::Base.deliveries.last
 
         expect(confirmation_mail.to[0]).to eq "test@example.com"
+        expect(admin_mail.to[0]).to eq admin.email
         user_account = User.find_by_email("test@example.com")
         expect(user_account).not_to be_nil
         expect(user_account.confirmed?).to be false
@@ -65,7 +73,7 @@ RSpec.describe "User accounts" do
 
       it "Lets you confirm your account" do
         sign_up_for_an_account "test@example.com", "Test User"
-        email = ActionMailer::Base.deliveries.last
+        email = ActionMailer::Base.deliveries.first
         token = email.body.match(/confirmation_token=[\w-]*/)
         visit "/users/confirmation?#{token}"
         expected_text = "Your email address has been successfully confirmed"
@@ -80,7 +88,7 @@ RSpec.describe "User accounts" do
       it "Lets you resend a confirmation email" do
         sign_up_for_an_account "test@example.com", "Test User"
 
-        first_email = ActionMailer::Base.deliveries.last
+        first_email = ActionMailer::Base.deliveries.first
 
         visit "/"
         click_link "Sign In or Sign Up"
