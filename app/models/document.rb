@@ -80,7 +80,12 @@ class Document < ActiveRecord::Base
   validates :document_type, presence: true
   validates :study, presence: true
 
-  has_attached_file :document
+  has_attached_file(
+    :document,
+    # rubocop:disable Metrics/LineLength
+    path: ":rails_root/uploads/:class/:attachment/:id_partition/:style/:filename"
+  # rubocop:enable Metrics/LineLength
+  )
   validates_attachment :document,
                        presence: true,
                        content_type: { content_type: ALLOWED_CONTENT_TYPES }

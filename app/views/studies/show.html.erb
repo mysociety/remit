@@ -81,7 +81,7 @@
                 <div class="study-main__secondary__section">
                     <h3>Documents:</h3>
                   <% if @study.documents.each do |document| %>
-                    <a href="<%= document.document.url %>" class="file file--<%= document.nice_content_type[:generic_type].parameterize %>">
+                    <a href="<%= document_path(document) %>" class="file file--<%= document.nice_content_type[:generic_type].parameterize %>">
                         <span class="file__name">
                             <%= document.document_file_name %>
                         </span>

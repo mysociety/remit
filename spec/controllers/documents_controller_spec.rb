@@ -1,8 +1,26 @@
 require "rails_helper"
 require "support/study_contribution_controller_shared_examples"
 require "support/study_management_access_control_shared_examples"
+require "support/devise"
 
 RSpec.describe DocumentsController, type: :controller do
+  describe "GET #show" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:document) { FactoryGirl.create(:document) }
+
+    it "should allow logged in users to access it" do
+      sign_in user
+      get :show, id: document.id
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should not allow logged in users to access it" do
+      sign_out :user
+      get :show, id: document.id
+      expect(response).to redirect_to(new_user_session_path)
+    end
+  end
+
   describe "POST #create" do
     let(:user) { FactoryGirl.create(:user) }
     let(:admin_user) { FactoryGirl.create(:admin_user) }

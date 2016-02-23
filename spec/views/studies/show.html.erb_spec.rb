@@ -225,7 +225,7 @@ RSpec.describe "studies/show.html.erb", type: :view do
       documents.each do |document|
         expected_text = "#{document.document_file_name} " \
                         "#{number_to_human_size(document.document_file_size)}"
-        expected_url = document.document.url
+        expected_url = document_path(document)
         expect(rendered).to have_link expected_text, href: expected_url
       end
     end

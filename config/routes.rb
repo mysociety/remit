@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :study_invites, only: :create
   end
 
+  resources :documents, only: :show
+
   # Users only have a list of studies at the moment, devise takes care of the
   # rest
   resources :users, only: []  do
