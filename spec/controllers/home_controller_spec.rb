@@ -32,5 +32,7 @@ RSpec.describe HomeController, type: :controller do
         expect(assigns[:flagged_studies_count]).to eq 1
       end
     end
+
+    it_behaves_like "hidden study listing controller"
   end
 end

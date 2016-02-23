@@ -16,6 +16,8 @@ RSpec.describe SearchController, type: :controller do
       it_behaves_like "study listing controller"
     end
 
+    it_behaves_like "hidden study listing controller"
+
     context "searching by various fields" do
       before do
         topic = StudyTopic.find_by_name("Brucellosis") ||

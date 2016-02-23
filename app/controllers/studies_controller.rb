@@ -20,7 +20,11 @@ class StudiesController < ApplicationController
   end
 
   def show
-    @study = Study.find(params[:id])
+    if current_user
+      @study = Study.find(params[:id])
+    else
+      @study = Study.visible.find(params[:id])
+    end
     @document = Document.new
     @study_note = StudyNote.new
     @publication = Publication.new

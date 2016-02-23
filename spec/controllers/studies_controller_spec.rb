@@ -16,6 +16,25 @@ RSpec.describe StudiesController, type: :controller do
       get :show, id: study.id
       expect(assigns[:study]).to eq study
     end
+
+    context "when the study is hidden" do
+      before do
+        study.hidden = true
+        study.save!
+      end
+
+      it "is hidden from anonymous users" do
+        expect do
+          get :show, id: study.id
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "is shown to logged in users" do
+        sign_in FactoryGirl.create(:user)
+        get :show, id: study.id
+        expect(response).to have_http_status(:success)
+      end
+    end
   end
 
   describe "GET #index" do

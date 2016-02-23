@@ -1,4 +1,5 @@
 require "rails_helper"
+require "support/devise"
 
 RSpec.shared_examples_for "study listing controller" do
   it "lists the studies" do
@@ -140,6 +141,27 @@ RSpec.shared_examples_for "study listing controller" do
       get action, params.merge(order: "created")
       expect(assigns[:studies].first).to eq @study2
       expect(assigns[:studies].last).to eq @study1
+    end
+  end
+end
+
+RSpec.shared_examples_for "hidden study listing controller" do
+  let(:user) { FactoryGirl.create(:user) }
+  let(:hidden) { FactoryGirl.create(:study, hidden: true) }
+
+  context "when a user is logged in" do
+    it "includes hidden studies" do
+      sign_in user
+      get :index
+      expect(assigns[:studies]).to include(hidden)
+    end
+  end
+
+  context "when a user is logged out" do
+    it "excludes hidden studies" do
+      sign_out :user
+      get :index
+      expect(assigns[:studies]).not_to include(hidden)
     end
   end
 end

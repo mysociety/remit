@@ -61,7 +61,11 @@ module ListingStudies
   end
 
   def get_filtered_studies
-    studies = Study.send(@study_scope)
+    if current_user
+      studies = Study.send(@study_scope)
+    else
+      studies = Study.visible.send(@study_scope)
+    end
 
     unless params[:study_type].blank?
       study_type_sql = 'lower("study_types"."name") = ?'
