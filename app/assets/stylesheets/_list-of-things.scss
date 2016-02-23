@@ -18,6 +18,21 @@
   select {
     margin: 0 0.2em;
   }
+
+  .bootstrap-select {
+    width: auto !important; // override ridiculous .bootstrap-select 100% width selector
+    margin-left: 0.2em !important; // another ridiculously specific selector to override
+    margin-right: 0.2em;
+    vertical-align: -0.8em; // line up with baseline of nearby text
+
+    .dropdown-toggle {
+      width: auto;
+    }
+  }
+
+  .btn-success {
+    vertical-align: baseline;
+  }
 }
 
 .list-of-things__list__item {

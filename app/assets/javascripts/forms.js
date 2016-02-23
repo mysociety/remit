@@ -40,4 +40,9 @@ $(function(){
     $('#dissemination_dissemination_category_id').on('change', function(e){
         showOrHideOtherCategoryInput();
     });
+
+    // Submit sorting form automatically on selection of sort option
+    $('.list-of-things__sorting').on('changed.bs.select', function(e){
+        $(this).trigger('submit');
+    }).children('.btn-success').hide();
 });
