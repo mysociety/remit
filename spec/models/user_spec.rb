@@ -16,6 +16,10 @@ RSpec.describe User, type: :model do
     is_expected.to have_db_column(:invite_token).of_type(:string).
       with_options(null: false)
   end
+  it do
+    is_expected.to have_db_column(:approved).of_type(:boolean).
+      with_options(null: false, default: false)
+  end
 
   # Associations
   it { is_expected.to belong_to(:msf_location).inverse_of(:users) }
@@ -141,6 +145,47 @@ RSpec.describe User, type: :model do
 
     it "lists all of the user's studies" do
       expect(user.studies).to match_array(expected_studies)
+    end
+  end
+
+  describe "user approval" do
+    context "when the user has an msf.org email address" do
+      let(:user) do
+        User.new(email: "test@msf.org",
+                 name: "test user",
+                 password: "password",
+                 password_confirmation: "password")
+      end
+
+      it "automatically approves them" do
+        expect(user.approved?).to be true
+      end
+    end
+
+    context "when the user has an subdomain.msf.org email address" do
+      let(:user) do
+        User.new(email: "test@london.msf.org",
+                 name: "test user",
+                 password: "password",
+                 password_confirmation: "password")
+      end
+
+      it "automatically approves them" do
+        expect(user.approved?).to be true
+      end
+    end
+
+    context "when the user has an non-MSF email address" do
+      let(:user) do
+        User.new(email: "test@londonmsf.org",
+                 name: "test user",
+                 password: "password",
+                 password_confirmation: "password")
+      end
+
+      it "doesn't automatically approve them" do
+        expect(user.approved?).to be false
+      end
     end
   end
 end

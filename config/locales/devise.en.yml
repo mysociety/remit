@@ -16,6 +16,7 @@ en:
       timeout: "Your session expired. Please sign in again to continue."
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
+      confirmed_but_not_approved: "Your email address has been confirmed, but your account still has to be approved by the administrator before you can access the site."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"

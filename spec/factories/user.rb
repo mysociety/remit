@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :user, aliases: [:confirmed_user, :normal_user] do
     sequence(:name) { |n| "User #{n}" }
     sequence(:email) { |n| "user-#{n}@msf.org" }
+    approved true
 
     # This is the best way to set the password for the factory
     after(:build) do |u|

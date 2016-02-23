@@ -24,6 +24,7 @@
 #  external_location      :text
 #  is_admin               :boolean          default(FALSE), not null
 #  invite_token           :string           not null
+#  approved               :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -86,6 +87,8 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external
 
+  after_initialize :auto_approve_msf_emails, if: :new_record?
+
   def external_location_is_set_if_msf_location_is_external
     if msf_location == MsfLocation.external_location && external_location.blank?
       message = "You must describe the location if you choose " \
@@ -97,5 +100,24 @@ class User < ActiveRecord::Base
   def studies
     query = "principal_investigator_id = ? OR research_manager_id = ?"
     Study.where(query, id, id)
+  end
+
+  def auto_approve_msf_emails
+    self.approved = true if email =~ /.*(@|\.)msf\.org$/i
+  end
+
+  # Override devise's method to check that a user is approved as well as
+  # confirmed/not locked/etc before they sign in.
+  def active_for_authentication?
+    super && approved?
+  end
+
+  # Tell the user why they can't be logged in when they're not approved
+  def inactive_message
+    if confirmed? && !approved?
+      :confirmed_but_not_approved
+    else
+      super # Use whatever other message
+    end
   end
 end
