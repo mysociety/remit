@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AdminMailer, type: :mailer do
+RSpec.describe ApprovalMailer, type: :mailer do
   describe "new_user_waiting_for_approval" do
     let!(:admin1) { FactoryGirl.create(:admin_user) }
     let!(:admin2) { FactoryGirl.create(:admin_user) }
@@ -10,7 +10,7 @@ RSpec.describe AdminMailer, type: :mailer do
                                email: "non-approved-user@example.com",
                                id: 3)
     end
-    let(:mail) { AdminMailer.new_user_waiting_for_approval(user) }
+    let(:mail) { ApprovalMailer.new_user_waiting_for_approval(user) }
     let(:fixture) do
       Rails.root.join("spec",
                       "fixtures",
