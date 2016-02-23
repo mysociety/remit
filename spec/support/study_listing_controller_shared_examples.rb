@@ -12,6 +12,13 @@ RSpec.shared_examples_for "study listing controller" do
     expect(assigns[:studies]).to match_array(studies.first(10))
   end
 
+  it "offers a CSV download of the studies" do
+    get action, params.merge(format: :csv)
+    csv = CSV.parse(response.body)
+    expect(csv.first).to match_array(Study.csv_headers)
+    expect(csv.length).to eq studies.length + 1
+  end
+
   describe "#set_study_scope" do
     it "sets study_scope" do
       get action, params

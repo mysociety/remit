@@ -2,11 +2,11 @@ class SearchController < ApplicationController
   include ListingStudies
 
   def index
-    # rubocop:disable Style/MultilineOperationIndentation
-    @studies = get_search_results.order(@ordering).
-                                  page(params[:page]).
-                                  per(10)
-    # rubocop:enable Style/MultilineOperationIndentation
+    @studies = get_search_results.order(@ordering)
+    respond_to do |format|
+      format.html { @studies = @studies.page(params[:page]).per(10) }
+      format.csv { respond_with_studies_csv(@studies) }
+    end
   end
 
   protected

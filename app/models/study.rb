@@ -195,6 +195,94 @@ class Study < ActiveRecord::Base
     Time.zone.today - 3.months
   end
 
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      csv << csv_headers
+
+      all.find_each do |study|
+        csv << study.csv_row
+      end
+    end
+  end
+
+  # Return the (fixed) set of column headers for a CSV of studies
+  def self.csv_headers
+    [
+      "Report ID",
+      "Study Title",
+      "Study Type",
+      "Other Study Type",
+      "Study Locations",
+      "Topics",
+      "Study Stage: Added",
+      "Study Stage: Protocol & ERB",
+      "Study Stage: Delivery",
+      "Study Stage: Completion",
+      "Study Stage: Withdrawn/Postponed",
+      "Concept Paper Date",
+      "Pre-approved Protocol",
+      "Protocol URL",
+      "ERB Reference",
+      "ERB Status",
+      "ERB Submitted",
+      "ERB Approved",
+      "ERB Expiry",
+      "Local ERB Submitted",
+      "Local ERB Approved",
+      "Local Collaborators",
+      "International Collaborators",
+      "Notes",
+      "Documents",
+      "Outputs: # Publications",
+      "Outputs: # Dissmination",
+      "Outputs: # Other Impact",
+      "Enabler/Barriers"
+    ]
+  end
+
+  # Return an array of values for a CSV row representing this study
+  def csv_row
+    stage_dates = stage_change_dates
+    [
+      reference_number,
+      title,
+      study_type.name,
+      other_study_type,
+      country_names,
+      study_topic_names,
+      formatted_date(created_at),
+      stage_dates[:protocol_change],
+      stage_dates[:delivery_change],
+      stage_dates[:completion_change],
+      stage_dates[:withdrawn_change],
+      formatted_date(concept_paper_date),
+      protocol_needed ? "Yes" : "No",
+      protocol_url,
+      erb_reference,
+      erb_status.present? ? erb_status.name : "",
+      formatted_date(erb_submitted),
+      formatted_date(erb_approved),
+      formatted_date(erb_approval_expiry),
+      formatted_date(local_erb_submitted),
+      formatted_date(local_erb_approved),
+      local_collaborators,
+      international_collaborators,
+      study_notes.count,
+      documents.count,
+      publications.count,
+      disseminations.count,
+      study_impacts.count,
+      study_enabler_barriers.count
+    ]
+  end
+
+  # Return a date field formatted in a specified way, dealing with possible
+  # nils. Hmm, this is more of a presentational concern...
+  def formatted_date(date, format = :medium_ordinal)
+    return if date.blank?
+    date.to_formatted_s(format)
+  end
+
   # Is this study archived?
   # Things get automatically archived after they've been completed for more
   # than a year
@@ -331,6 +419,36 @@ class Study < ActiveRecord::Base
       take
   end
 
+  # Return a set of dates for important stage changes in the life of this study
+  def stage_change_dates
+    # rubocop:disable Style/MultilineOperationIndentation
+    stage_changes = activities.where(key: "study.study_stage_changed").
+                               order(created_at: :desc)
+    # rubocop:enable Style/MultilineOperationIndentation
+    dates = {
+      protocol_change: nil,
+      delivery_change: nil,
+      completion_change: nil,
+      withdrawn_change: nil
+    }
+
+    stage_changes.each do |activity|
+      after = activity.parameters[:after]
+      created_at = activity.created_at.to_formatted_s(:medium_ordinal)
+      if after == :withdrawn_postponed && dates[:withdrawn_change].blank?
+        dates[:withdrawn_change] = created_at
+      elsif after == :completion && dates[:completion_change].blank?
+        dates[:completion_change] = created_at
+      elsif after == :delivery && dates[:delivery_change].blank?
+        dates[:delivery_change] = created_at
+      elsif after == :protocol_erb && dates[:protocol_change].blank?
+        dates[:protocol_change] = created_at
+      end
+    end
+
+    dates
+  end
+
   # Has the title ever changed for this study?
   def title_changed?
     activities.where(key: "study.title_changed").exists?
@@ -360,5 +478,16 @@ class Study < ActiveRecord::Base
   def user_can_manage?(user)
     return false if user.blank?
     user.is_admin || research_manager == user || principal_investigator == user
+  end
+
+  # Return the url to the most recent Protocol document
+  def protocol_url
+    protocol_doc_type = DocumentType.find_by_name("Protocol")
+    # rubocop:disable Style/MultilineOperationIndentation
+    protocol_doc = documents.where(document_type: protocol_doc_type).
+                             order(created_at: :desc).
+                             first
+    # rubocop:enable Style/MultilineOperationIndentation
+    return document_url(protocol_doc) unless protocol_doc.blank?
   end
 end

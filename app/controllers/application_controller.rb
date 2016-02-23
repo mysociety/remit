@@ -52,6 +52,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def respond_with_studies_csv(studies)
+    send_data studies.to_csv, filename: "studies-#{Time.zone.today}.csv"
+  end
+
   # Helper to return and render a 403
   def forbidden
     render(file: File.join(Rails.root, "public/403"),

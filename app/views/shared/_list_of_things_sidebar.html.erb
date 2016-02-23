@@ -75,7 +75,7 @@
           </p>
         </form>
     </div>
-    <a href="/export" class="list-of-things__secondary-action list-of-things__secondary-action--download">
-        Download this page as a CSV for Excel
-    </a>
+    <%= link_to "Download this page as a CSV for Excel",
+               url_for(params: request.query_parameters.merge(format: :csv)),
+               class: "list-of-things__secondary-action list-of-things__secondary-action--download" %>
 </div>

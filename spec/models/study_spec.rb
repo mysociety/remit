@@ -1083,4 +1083,73 @@ RSpec.describe Study, type: :model do
       expect(Study.visible).to eq [visible]
     end
   end
+
+  describe "#to_csv" do
+    let!(:simple_studies) { FactoryGirl.create_list(:study, 4) }
+    let(:cholera) { FactoryGirl.create(:cholera) }
+    let(:dengue) { FactoryGirl.create(:dengue) }
+    let(:study_with_everything) do
+      FactoryGirl.create(
+        :study,
+        study_type: StudyType.find_by_name("Other"),
+        other_study_type: "Other study type",
+        country_codes: %w(GB BD),
+        study_topics: [cholera, dengue],
+        protocol_needed: true,
+        erb_reference: "erb-reference",
+        erb_status: FactoryGirl.create(:accept),
+        erb_submitted: Time.zone.today,
+        erb_approved: Time.zone.today,
+        erb_approval_expiry: Time.zone.today,
+        local_erb_submitted: Time.zone.today,
+        local_erb_approved: Time.zone.today,
+        local_collaborators: "Local collaborators",
+        international_collaborators: "International collaborators")
+    end
+    let!(:protocol_doc) do
+      FactoryGirl.create(:document, study: study_with_everything)
+    end
+    let(:other_doc_type) { DocumentType.find_by_name("Other") }
+    let!(:other_documents) do
+      FactoryGirl.create_list(:document, 4, document_type: other_doc_type,
+                                            study: study_with_everything)
+    end
+    let!(:publications) do
+      FactoryGirl.create_list(:publication, 5, study: study_with_everything)
+    end
+    let!(:disseminations) do
+      FactoryGirl.create_list(:dissemination, 5, study: study_with_everything)
+    end
+    let!(:study_impacts) do
+      FactoryGirl.create_list(:study_impact, 5, study: study_with_everything)
+    end
+    let!(:enabler_barriers) do
+      FactoryGirl.create_list(
+        :study_enabler_barrier,
+        5,
+        study: study_with_everything)
+    end
+
+    before do
+      PublicActivity.enabled = true
+      # Give the study some stage history
+      study_with_everything.study_stage = :protocol_erb
+      study_with_everything.save!
+      study_with_everything.study_stage = :delivery
+      study_with_everything.save!
+      study_with_everything.study_stage = :completion
+      study_with_everything.save!
+      study_with_everything.study_stage = :withdrawn_postponed
+      study_with_everything.save!
+    end
+
+    after do
+      PublicActivity.enabled = false
+    end
+
+    it "includes all the studies" do
+      csv = CSV.parse(Study.to_csv)
+      expect(csv.length).to eq 6 # 5 studies + 1 for the header row
+    end
+  end
 end

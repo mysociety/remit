@@ -8,15 +8,18 @@ class StudiesController < ApplicationController
                                                      :progress_to_completion]
 
   def index
-    page = params[:page]
     # rubocop:disable Style/MultilineOperationIndentation
     @studies = get_filtered_studies.where(principal_investigator_id: @user.id).
-                                    order(@ordering).
-                                    page(page).
-                                    per(10)
+                                    order(@ordering)
     # rubocop:enable Style/MultilineOperationIndentation
-    @show_flagged = true
-    render "home/index"
+    respond_to do |format|
+      format.html do
+        @studies = @studies.page(params[:page]).per(10)
+        @show_flagged = true
+        render "home/index"
+      end
+      format.csv { respond_with_studies_csv(@studies) }
+    end
   end
 
   def show
