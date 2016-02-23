@@ -7,8 +7,7 @@ ActiveAdmin.register Study do
                 :international_collaborators, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
                 :feedback_and_suggestions, :expected_completion_date,
-                country_codes: [],
-                study_topic_ids: []
+                :hidden, country_codes: [], study_topic_ids: []
 
   menu priority: 1
 
@@ -58,6 +57,7 @@ ActiveAdmin.register Study do
       f.input :international_collaborators
       f.input :feedback_and_suggestions
       f.input :completed
+      f.input :hidden
     end
     f.actions
   end

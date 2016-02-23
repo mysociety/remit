@@ -121,5 +121,13 @@ RSpec.describe "StudyAdmin" do
       expect(page).to have_text "Study was successfully destroyed"
       expect(Study.find_by_title(study.title)).to be nil
     end
+
+    it "allows you to hide the study" do
+      click_link "Edit", href: edit_admin_study_path(study)
+      check "Hidden"
+      click_button "Update Study"
+      expect(page).to have_text "Study was successfully updated"
+      expect(study.reload.hidden).to be true
+    end
   end
 end
