@@ -45,5 +45,14 @@ RSpec.describe "UserAdmin" do
       expect(page).to have_text "User was successfully destroyed"
       expect(User.find_by_name("A New User")).to be nil
     end
+
+    it "allows you to approve the user" do
+      user.approved = false
+      click_link "Edit", href: edit_admin_user_path(user)
+      check "Approved"
+      click_button "Update User"
+      expect(page).to have_text "User was successfully updated"
+      expect(user.reload.approved).to be true
+    end
   end
 end

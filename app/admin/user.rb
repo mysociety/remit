@@ -1,10 +1,11 @@
 ActiveAdmin.register User do
   permit_params :name, :email, :is_admin, :msf_location_id, :external_location,
-                :password, :password_confirmation
+                :password, :password_confirmation, :approved
 
   menu priority: 2
 
   filter :is_admin
+  filter :approved
   filter :msf_location
   filter :created_at
 
@@ -30,6 +31,7 @@ ActiveAdmin.register User do
       f.input :password
       f.input :password_confirmation
       f.input :is_admin
+      f.input :approved
     end
     f.actions
   end
