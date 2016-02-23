@@ -806,7 +806,7 @@ CREATE TABLE users (
     external_location text,
     is_admin boolean DEFAULT false NOT NULL,
     invite_token character varying NOT NULL,
-    approved boolean DEFAULT false NOT NULL,
+    approved boolean DEFAULT false NOT NULL
 );
 
 
