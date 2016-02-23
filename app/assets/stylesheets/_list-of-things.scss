@@ -66,6 +66,16 @@
   }
 }
 
+.list-of-things__list__item--attention {
+  .list-of-things__list__item__title a {
+    color: $color-red;
+  }
+
+  .list-of-things__list__item__badge {
+    background-color: $color-red;
+  }
+}
+
 .list-of-things__list__item__badge {
   @extend .label;
   @extend .label-default;
@@ -74,16 +84,16 @@
   font-size: 0.875em; // ~14px
 }
 
-.list-of-things__list__item__badge--active {
-  background-color: $color-bright-orange;
+.list-of-things__list__item__badge--concept {
+  background-color: darken($color-light-blue, 20%);
 }
 
-.list-of-things__list__item__badge--completed {
+.list-of-things__list__item__badge--delivery {
   background-color: $color-bright-green;
 }
 
-.list-of-things__list__item__badge--protocol-review {
-  background-color: darken($color-light-blue, 20%);
+.list-of-things__list__item__badge--protocol_erb {
+  background-color: $color-bright-orange;
 }
 
 .list-of-things__list__item__title {

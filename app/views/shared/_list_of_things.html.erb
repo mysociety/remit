@@ -2,13 +2,8 @@
     <%= render partial: "shared/list_of_things_sorting" %>
     <div class="list-of-things__list">
       <% if @studies.each do |study| %>
-        <div class="list-of-things__list__item list-of-things__list__item--study">
-            <p class="list-of-things__list__item__badge list-of-things__list__item__badge--completed"><%= study.study_stage_label %></p>
-          <% if @show_flagged && study.flagged? %>
-            &nbsp;<span class="badge badge--red">
-                <span class="glyphicon glyphicon-flag"></span>
-            </span>
-          <% end %>
+        <div class="list-of-things__list__item list-of-things__list__item--study <% if @show_flagged && study.flagged? %>list-of-things__list__item--attention<% end %>">
+            <p class="list-of-things__list__item__badge list-of-things__list__item__badge--<%= study.study_stage %>"><%= study.study_stage_label %></p>
             <h2 class="list-of-things__list__item__title">
                 <a href="<%= study_path study %>"><%= study.title %></a>
             </h2>
