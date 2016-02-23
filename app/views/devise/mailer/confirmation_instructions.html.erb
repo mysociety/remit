@@ -3,3 +3,10 @@
 <p>You can confirm your account email through the link below:</p>
 
 <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<% unless @resource.approved? %>
+  <p>
+    Please note, your account still has to be approved by the site
+    administrators, you won't be able to log in until then.
+  </p>
+<% end %>
