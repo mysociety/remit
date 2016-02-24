@@ -7,7 +7,7 @@ Test Study longer than thirty characters to test truncation
 Reference number: ABC123 is approaching its ERB approval expiry date
 according to the information we have in the ReMIT database.
 
-The ERB approval expiry date is 2015-02-15.
+The ERB approval expiry date is 15th February 2015.
 
 You can see this study on ReMIT here:
 
