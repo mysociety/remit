@@ -3,7 +3,11 @@ require "biburi"
 class DoiNumberValidator < ActiveModel::Validator
   def validate(record)
     return if record.doi_number.blank?
-    result = BibURI.lookup(record.doi_number)
+    begin
+      result = BibURI.lookup(record.doi_number)
+    rescue
+      result = nil
+    end
     if result.blank?
       message = "we couldn't find that DOI number, can you check it " \
                 "for typos? If everything's correct you might have to put " \
