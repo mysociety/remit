@@ -45,13 +45,18 @@ module Remit
       config.x.send("#{key}=".to_sym, value)
     end
 
-    # Set default_url_options and default from email for ActionMailer
+    # Set default_url_options and default from email for ActionMailer and
+    # controllers
     if config.x.hostname.present? && config.x.port.present?
+      host_string = "#{config.x.hostname}:#{config.x.port}"
+      Rails.application.routes.default_url_options[:host] = host_string
       config.action_mailer.default_url_options = { host: config.x.hostname,
                                                    port: config.x.port }
     elsif config.x.hostname.present?
+      Rails.application.routes.default_url_options[:host] = config.x.hostname
       config.action_mailer.default_url_options = { host: config.x.hostname }
     else
+      Rails.application.routes.default_url_options[:host] = "localhost"
       config.action_mailer.default_url_options = { host: "localhost" }
     end
     ActionMailer::Base.default from: config.x.from_email
