@@ -43,16 +43,17 @@
                 <a href="<%= root_path %>" class="site-nav__logo">ReMIT</a>
                 <label class="site-nav__mobile-menu-toggle" for="toggle-mobile-menu">Menu</label>
                 <input type="checkbox" class="site-nav__mobile-menu-checkbox" id="toggle-mobile-menu">
-                <ul class="site-nav__list">
-                    <li><a href="<%= root_path %>">Studies</a></li>
-                    <li><a href="#">Publications</a></li>
-                  <% if user_signed_in? %>
-                    <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
-                    <li><a href="<%= edit_user_registration_path %>">Change your password</a></li>
-                  <% else %>
-                    <li><a href="<%= new_user_session_path %>">Sign In or Sign Up</a></li>
-                  <% end %>
-                </ul>
+                <% unless params[:token] %>
+                    <ul class="site-nav__list">
+                        <li><a href="<%= root_path %>">Studies</a></li>
+                      <% if user_signed_in? %>
+                        <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
+                        <li><a href="<%= edit_user_registration_path %>">Change your password</a></li>
+                      <% else %>
+                        <li><a href="<%= new_user_session_path %>">Sign In or Sign Up</a></li>
+                      <% end %>
+                    </ul>
+                <% end %>
             </div>
         </nav>
 
