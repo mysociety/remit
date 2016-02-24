@@ -2,6 +2,7 @@ ActiveAdmin.register Study do
   permit_params :study_stage, :title, :reference_number, :study_type_id,
                 :study_setting_id, :research_team, :concept_paper_date,
                 :protocol_needed, :pre_approved_protocol, :erb_status_id,
+                :erb_submitted, :erb_approved,
                 :erb_reference, :erb_approval_expiry, :local_erb_submitted,
                 :local_erb_approved, :completed, :local_collaborators,
                 :international_collaborators, :other_study_type,
@@ -50,6 +51,8 @@ ActiveAdmin.register Study do
       f.input :pre_approved_protocol
       f.input :erb_status
       f.input :erb_reference, as: :string
+      f.input :erb_submitted
+      f.input :erb_approved
       f.input :local_erb_submitted
       f.input :local_erb_approved
       f.input :erb_approval_expiry
