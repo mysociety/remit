@@ -1095,7 +1095,7 @@ RSpec.describe Study, type: :model do
         study_type: StudyType.find_by_name("Other"),
         other_study_type: "Other study type",
         country_codes: %w(GB BD),
-        study_topics: [cholera, dengue],
+        study_topics: [dengue, cholera],
         protocol_needed: true,
         created_at: today,
         concept_paper_date: today,
