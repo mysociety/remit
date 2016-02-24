@@ -251,10 +251,10 @@ class Study < ActiveRecord::Base
       country_names,
       study_topic_names,
       formatted_date(created_at),
-      stage_dates[:protocol_change],
-      stage_dates[:delivery_change],
-      stage_dates[:completion_change],
-      stage_dates[:withdrawn_change],
+      formatted_date(stage_dates[:protocol_change]),
+      formatted_date(stage_dates[:delivery_change]),
+      formatted_date(stage_dates[:completion_change]),
+      formatted_date(stage_dates[:withdrawn_change]),
       formatted_date(concept_paper_date),
       protocol_needed ? "Yes" : "No",
       protocol_url,
@@ -278,9 +278,9 @@ class Study < ActiveRecord::Base
 
   # Return a date field formatted in a specified way, dealing with possible
   # nils. Hmm, this is more of a presentational concern...
-  def formatted_date(date, format = :medium_ordinal)
-    return if date.blank?
-    date.to_formatted_s(format)
+  def formatted_date(value)
+    return "" if value.blank?
+    value.to_formatted_s(:medium_ordinal)
   end
 
   # Is this study archived?
@@ -434,15 +434,14 @@ class Study < ActiveRecord::Base
 
     stage_changes.each do |activity|
       after = activity.parameters[:after]
-      created_at = activity.created_at.to_formatted_s(:medium_ordinal)
-      if after == :withdrawn_postponed && dates[:withdrawn_change].blank?
-        dates[:withdrawn_change] = created_at
-      elsif after == :completion && dates[:completion_change].blank?
-        dates[:completion_change] = created_at
-      elsif after == :delivery && dates[:delivery_change].blank?
-        dates[:delivery_change] = created_at
-      elsif after == :protocol_erb && dates[:protocol_change].blank?
-        dates[:protocol_change] = created_at
+      if after == "withdrawn_postponed" && dates[:withdrawn_change].blank?
+        dates[:withdrawn_change] = activity.created_at
+      elsif after == "completion" && dates[:completion_change].blank?
+        dates[:completion_change] = activity.created_at
+      elsif after == "delivery" && dates[:delivery_change].blank?
+        dates[:delivery_change] = activity.created_at
+      elsif after == "protocol_erb" && dates[:protocol_change].blank?
+        dates[:protocol_change] = activity.created_at
       end
     end
 
@@ -488,6 +487,8 @@ class Study < ActiveRecord::Base
                              order(created_at: :desc).
                              first
     # rubocop:enable Style/MultilineOperationIndentation
-    return document_url(protocol_doc) unless protocol_doc.blank?
+    unless protocol_doc.blank?
+      return Rails.application.routes.url_helpers.document_url(protocol_doc)
+    end
   end
 end

@@ -1085,6 +1085,7 @@ RSpec.describe Study, type: :model do
   end
 
   describe "#to_csv" do
+    let(:today) { Time.zone.today }
     let!(:simple_studies) { FactoryGirl.create_list(:study, 4) }
     let(:cholera) { FactoryGirl.create(:cholera) }
     let(:dengue) { FactoryGirl.create(:dengue) }
@@ -1096,20 +1097,25 @@ RSpec.describe Study, type: :model do
         country_codes: %w(GB BD),
         study_topics: [cholera, dengue],
         protocol_needed: true,
+        created_at: today,
+        concept_paper_date: today,
         erb_reference: "erb-reference",
         erb_status: FactoryGirl.create(:accept),
-        erb_submitted: Time.zone.today,
-        erb_approved: Time.zone.today,
-        erb_approval_expiry: Time.zone.today,
-        local_erb_submitted: Time.zone.today,
-        local_erb_approved: Time.zone.today,
+        erb_submitted: today,
+        erb_approved: today,
+        erb_approval_expiry: today,
+        local_erb_submitted: today,
+        local_erb_approved: today,
         local_collaborators: "Local collaborators",
         international_collaborators: "International collaborators")
+    end
+    let!(:notes) do
+      FactoryGirl.create_list(:study_note, 5, study: study_with_everything)
     end
     let!(:protocol_doc) do
       FactoryGirl.create(:document, study: study_with_everything)
     end
-    let(:other_doc_type) { DocumentType.find_by_name("Other") }
+    let(:other_doc_type) { FactoryGirl.create(:other_doc_type) }
     let!(:other_documents) do
       FactoryGirl.create_list(:document, 4, document_type: other_doc_type,
                                             study: study_with_everything)
@@ -1150,6 +1156,43 @@ RSpec.describe Study, type: :model do
     it "includes all the studies" do
       csv = CSV.parse(Study.to_csv)
       expect(csv.length).to eq 6 # 5 studies + 1 for the header row
+    end
+
+    it "includes all the data" do
+      csv = CSV.parse(Study.to_csv)
+      todays_date = today.to_formatted_s(:medium_ordinal)
+      expected = [
+        study_with_everything.reference_number,
+        study_with_everything.title,
+        "Other",
+        "Other study type",
+        "United Kingdom and Bangladesh",
+        "Cholera and Dengue",
+        todays_date,
+        todays_date,
+        todays_date,
+        todays_date,
+        todays_date,
+        todays_date,
+        "Yes",
+        Rails.application.routes.url_helpers.document_url(protocol_doc),
+        "erb-reference",
+        "Accept",
+        todays_date,
+        todays_date,
+        todays_date,
+        todays_date,
+        todays_date,
+        "Local collaborators",
+        "International collaborators",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ]
+      expect(csv.last).to eq expected
     end
   end
 end
