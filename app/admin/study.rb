@@ -60,7 +60,8 @@ ActiveAdmin.register Study do
       f.input :international_collaborators
       f.input :feedback_and_suggestions
       f.input :completed
-      f.input :hidden
+      f.input :hidden, hint: "Check this box to hide the study from people " \
+                             "who aren't logged in"
     end
     f.actions
   end
