@@ -51,9 +51,11 @@ class User < ActiveRecord::Base
   belongs_to :msf_location, inverse_of: :users
   has_many :principal_investigator_studies,
            class_name: :Study,
+           foreign_key: :principal_investigator_id,
            inverse_of: :principal_investigator
   has_many :research_manager_studies,
            class_name: :Study,
+           foreign_key: :research_manager_id,
            inverse_of: :research_manager
   # E.g. when an admin user updates a study
   # These should not be destroyed when the user is deleted, because they're
