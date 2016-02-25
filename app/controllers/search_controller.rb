@@ -4,7 +4,10 @@ class SearchController < ApplicationController
   def index
     @studies = get_search_results.order(@ordering)
     respond_to do |format|
-      format.html { @studies = @studies.page(params[:page]).per(10) }
+      format.html do
+        @studies = @studies.page(params[:page]).per(10)
+        @show_quick_filters = current_user && current_user.is_admin
+      end
       format.csv { respond_with_studies_csv(@studies) }
     end
   end

@@ -16,6 +16,9 @@ class StudiesController < ApplicationController
       format.html do
         @studies = @studies.page(params[:page]).per(10)
         @show_flagged = true
+        if @user.is_admin || @user.research_manager_studies.any?
+          @show_quick_filters = true
+        end
         render "home/index"
       end
       format.csv { respond_with_studies_csv(@studies) }

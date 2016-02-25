@@ -1,4 +1,5 @@
 <div class="list-of-things__secondary">
+  <% if @show_quick_filters %>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--quick-filters">
         <h2>Quick filters</h2>
         <div class="quick-filters">
@@ -13,6 +14,7 @@
             </a>
         </div>
     </div>
+  <% end %>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
         <form method="get" action="">
           <p>
