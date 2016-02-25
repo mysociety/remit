@@ -93,6 +93,8 @@ class User < ActiveRecord::Base
   after_create :send_admin_approval_mail, unless: :approved?
   after_update :send_approval_mail, if: :approved_changed?
 
+  default_scope { order("name ASC") }
+
   def external_location_is_set_if_msf_location_is_external
     if msf_location == MsfLocation.external_location && external_location.blank?
       message = "You must describe the location if you choose " \
