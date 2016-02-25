@@ -463,7 +463,7 @@ class Study < ActiveRecord::Base
 
   def study_topic_names
     unless study_topics.empty?
-      study_topics.map(&:name).to_sentence
+      study_topics.order(:name).map(&:name).to_sentence
     end
   end
 
