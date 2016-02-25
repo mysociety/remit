@@ -160,6 +160,9 @@
                          for="impact_type_<%= impact_type.name.parameterize %>">
                          <%= impact_type.name %>
                   </label>
+                  <% if impact_type.description %>
+                    <p class="impact-type--description"><%= impact_type.description %></p>
+                  <% end %>
                   <textarea class="form-control houdini-target"
                             placeholder="Description&hellip;"
                             name="study_impact[descriptions][<%= impact_type.id %>]"><%= @study_impacts[impact_type.id].description if @study_impacts[impact_type.id].present? %></textarea>

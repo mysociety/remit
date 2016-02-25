@@ -125,3 +125,10 @@
   color: $color-alert-red;
   border-color: $color-alert-red;
 }
+
+.impact-type--description {
+  padding-left: 1.9em; // Align with the label above
+  font-size: 0.875em; // 14px
+  color: $color-dark-toffee;
+  line-height: 1.3em;
+}
