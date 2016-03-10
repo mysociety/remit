@@ -57,6 +57,7 @@ RSpec.describe User, type: :model do
       through(:received_study_invites).
       source(:study)
   end
+  it { is_expected.to have_many(:delivery_updates).inverse_of(:user) }
 
   # Validation
   describe "validations" do

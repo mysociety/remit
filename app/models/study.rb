@@ -90,6 +90,7 @@ class Study < ActiveRecord::Base
   has_many :sent_alerts, inverse_of: :study
   has_many :study_invites, inverse_of: :study
   has_many :invited_users, through: :study_invites
+  has_many :delivery_updates, inverse_of: :study
 
   validates :title, presence: true
   validates :reference_number, presence: true

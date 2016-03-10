@@ -76,6 +76,7 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_many(:sent_alerts) }
   it { is_expected.to have_many(:study_invites).inverse_of(:study) }
   it { is_expected.to have_many(:invited_users).through(:study_invites) }
+  it { is_expected.to have_many(:delivery_updates).inverse_of(:study) }
 
   # Validation
   it { is_expected.to validate_presence_of(:study_stage) }
