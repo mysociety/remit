@@ -21,6 +21,7 @@
 #  index_delivery_updates_on_study_id                               (study_id)
 #  index_delivery_updates_on_user_id                                (user_id)
 #
+# rubocop:enable Metrics/LineLength
 
 FactoryGirl.define do
   factory :delivery_update do

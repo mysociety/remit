@@ -2,11 +2,12 @@
 #
 # Table name: delivery_update_statuses
 #
-#  id          :integer          not null, primary key
-#  name        :string           not null
-#  description :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                         :integer          not null, primary key
+#  name                       :string           not null
+#  description                :text
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  good_medium_bad_or_neutral :enum             default("neutral"), not null
 #
 # Indexes
 #
@@ -14,6 +15,13 @@
 #
 
 class DeliveryUpdateStatus < ActiveRecord::Base
+  enum good_medium_bad_or_neutral: {
+    good: "good",
+    medium: "medium",
+    bad: "bad",
+    neutral: "neutral"
+  }
+
   has_many(:data_analysis_delivery_updates,
            inverse_of: :data_analysis_status,
            class_name: DeliveryUpdate)
@@ -25,4 +33,5 @@ class DeliveryUpdateStatus < ActiveRecord::Base
            class_name: DeliveryUpdate)
 
   validates :name, presence: true, uniqueness: true
+  validates :good_medium_bad_or_neutral, presence: true
 end

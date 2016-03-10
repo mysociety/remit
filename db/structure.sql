@@ -46,6 +46,18 @@ CREATE TYPE good_bad_neutral AS ENUM (
 
 
 --
+-- Name: good_medium_bad_neutral; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE good_medium_bad_neutral AS ENUM (
+    'good',
+    'medium',
+    'bad',
+    'neutral'
+);
+
+
+--
 -- Name: study_stage; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -147,7 +159,8 @@ CREATE TABLE delivery_update_statuses (
     name character varying NOT NULL,
     description text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    good_medium_bad_or_neutral good_medium_bad_neutral DEFAULT 'neutral'::good_medium_bad_neutral NOT NULL
 );
 
 
@@ -1969,3 +1982,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160223132202');
 INSERT INTO schema_migrations (version) VALUES ('20160309172826');
 
 INSERT INTO schema_migrations (version) VALUES ('20160309173302');
+
+INSERT INTO schema_migrations (version) VALUES ('20160310123338');

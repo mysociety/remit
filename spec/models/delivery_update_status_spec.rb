@@ -28,4 +28,17 @@ RSpec.describe DeliveryUpdateStatus, type: :model do
   # Validations
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_uniqueness_of(:name) }
+  it { is_expected.to validate_presence_of(:good_medium_bad_or_neutral) }
+
+  expected_enum_options = {
+    good: "good",
+    medium: "medium",
+    bad: "bad",
+    neutral: "neutral"
+  }
+
+  it do
+    is_expected.to define_enum_for(:good_medium_bad_or_neutral).
+      with(expected_enum_options)
+  end
 end
