@@ -139,6 +139,74 @@ ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
 
 
 --
+-- Name: delivery_update_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE delivery_update_statuses (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: delivery_update_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE delivery_update_statuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: delivery_update_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE delivery_update_statuses_id_seq OWNED BY delivery_update_statuses.id;
+
+
+--
+-- Name: delivery_updates; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE delivery_updates (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    data_analysis_status_id integer NOT NULL,
+    data_collection_status_id integer NOT NULL,
+    interpretation_and_write_up_status_id integer NOT NULL,
+    user_id integer NOT NULL,
+    comments text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: delivery_updates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE delivery_updates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: delivery_updates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE delivery_updates_id_seq OWNED BY delivery_updates.id;
+
+
+--
 -- Name: dissemination_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -848,6 +916,20 @@ ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY delivery_update_statuses ALTER COLUMN id SET DEFAULT nextval('delivery_update_statuses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates ALTER COLUMN id SET DEFAULT nextval('delivery_updates_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY dissemination_categories ALTER COLUMN id SET DEFAULT nextval('dissemination_categories_id_seq'::regclass);
 
 
@@ -991,6 +1073,22 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY activities
     ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_update_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY delivery_update_statuses
+    ADD CONSTRAINT delivery_update_statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT delivery_updates_pkey PRIMARY KEY (id);
 
 
 --
@@ -1192,6 +1290,48 @@ CREATE INDEX index_activities_on_related_content_type_and_related_content_id ON 
 --
 
 CREATE INDEX index_activities_on_trackable_id_and_trackable_type ON activities USING btree (trackable_id, trackable_type);
+
+
+--
+-- Name: index_delivery_update_statuses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE UNIQUE INDEX index_delivery_update_statuses_on_name ON delivery_update_statuses USING btree (name);
+
+
+--
+-- Name: index_delivery_updates_on_data_analysis_status_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_delivery_updates_on_data_analysis_status_id ON delivery_updates USING btree (data_analysis_status_id);
+
+
+--
+-- Name: index_delivery_updates_on_data_collection_status_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_delivery_updates_on_data_collection_status_id ON delivery_updates USING btree (data_collection_status_id);
+
+
+--
+-- Name: index_delivery_updates_on_interpretation_and_write_up_status_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_delivery_updates_on_interpretation_and_write_up_status_id ON delivery_updates USING btree (interpretation_and_write_up_status_id);
+
+
+--
+-- Name: index_delivery_updates_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_delivery_updates_on_study_id ON delivery_updates USING btree (study_id);
+
+
+--
+-- Name: index_delivery_updates_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_delivery_updates_on_user_id ON delivery_updates USING btree (user_id);
 
 
 --
@@ -1543,6 +1683,14 @@ ALTER TABLE ONLY study_invites
 
 
 --
+-- Name: fk_rails_2a4fa11b2b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT fk_rails_2a4fa11b2b FOREIGN KEY (data_analysis_status_id) REFERENCES delivery_update_statuses(id);
+
+
+--
 -- Name: fk_rails_2be0318c46; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1556,6 +1704,22 @@ ALTER TABLE ONLY documents
 
 ALTER TABLE ONLY disseminations
     ADD CONSTRAINT fk_rails_2cbe0621cc FOREIGN KEY (dissemination_category_id) REFERENCES dissemination_categories(id);
+
+
+--
+-- Name: fk_rails_2e29f4b837; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT fk_rails_2e29f4b837 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_3abf35384e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT fk_rails_3abf35384e FOREIGN KEY (study_id) REFERENCES studies(id);
 
 
 --
@@ -1703,11 +1867,27 @@ ALTER TABLE ONLY studies
 
 
 --
+-- Name: fk_rails_dc60ba7c37; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT fk_rails_dc60ba7c37 FOREIGN KEY (data_collection_status_id) REFERENCES delivery_update_statuses(id);
+
+
+--
 -- Name: fk_rails_dc8ad7f727; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY studies
     ADD CONSTRAINT fk_rails_dc8ad7f727 FOREIGN KEY (study_type_id) REFERENCES study_types(id);
+
+
+--
+-- Name: fk_rails_dea7b575a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_updates
+    ADD CONSTRAINT fk_rails_dea7b575a7 FOREIGN KEY (interpretation_and_write_up_status_id) REFERENCES delivery_update_statuses(id);
 
 
 --
@@ -1786,3 +1966,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160223095020');
 
 INSERT INTO schema_migrations (version) VALUES ('20160223132202');
 
+INSERT INTO schema_migrations (version) VALUES ('20160309172826');
+
+INSERT INTO schema_migrations (version) VALUES ('20160309173302');

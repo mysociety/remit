@@ -24,7 +24,7 @@
 #  external_location      :text
 #  is_admin               :boolean          default(FALSE), not null
 #  invite_token           :string           not null
-#  approved               :boolean          default(FALSE)
+#  approved               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -83,6 +83,7 @@ class User < ActiveRecord::Base
                                     inverse_of: :invited_user
   has_many :invited_studies, through: :received_study_invites,
                              source: :study
+  has_many :delivery_updates, inverse_of: :user
 
   has_secure_token :invite_token
 
