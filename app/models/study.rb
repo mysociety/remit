@@ -91,6 +91,9 @@ class Study < ActiveRecord::Base
   has_many :study_invites, inverse_of: :study
   has_many :invited_users, through: :study_invites
   has_many :delivery_updates, inverse_of: :study
+  has_many :delivery_update_invites, inverse_of: :study
+  has_many :delivery_update_invited_users, through: :delivery_update_invites,
+                                           source: :invited_user
 
   validates :title, presence: true
   validates :reference_number, presence: true

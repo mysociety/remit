@@ -31,6 +31,10 @@ RSpec.describe DeliveryUpdate, type: :model do
       class_name(:DeliveryUpdateStatus)
   end
   it { is_expected.to belong_to(:user).inverse_of(:delivery_updates) }
+  it do
+    is_expected.to have_many(:delivery_update_invites).
+      inverse_of(:delivery_update)
+  end
 
   # Validations
   it { is_expected.to validate_presence_of(:study) }
