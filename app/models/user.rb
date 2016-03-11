@@ -25,13 +25,15 @@
 #  is_admin               :boolean          default(FALSE), not null
 #  invite_token           :string           not null
 #  approved               :boolean          default(FALSE), not null
+#  delivery_update_token  :string
 #
 # Indexes
 #
-#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_msf_location_id       (msf_location_id)
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_delivery_update_token  (delivery_update_token) UNIQUE
+#  index_users_on_email                  (email) UNIQUE
+#  index_users_on_msf_location_id        (msf_location_id)
+#  index_users_on_reset_password_token   (reset_password_token) UNIQUE
 #
 
 class User < ActiveRecord::Base
@@ -85,7 +87,10 @@ class User < ActiveRecord::Base
                              source: :study
   has_many :delivery_updates, inverse_of: :user
 
+  # Secure token for being invited to add output to a study
   has_secure_token :invite_token
+  # Secure token for being invited to provide a delivery update to a study
+  has_secure_token :delivery_update_token
 
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external
