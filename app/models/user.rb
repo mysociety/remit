@@ -25,7 +25,7 @@
 #  is_admin               :boolean          default(FALSE), not null
 #  invite_token           :string           not null
 #  approved               :boolean          default(FALSE), not null
-#  delivery_update_token  :string
+#  delivery_update_token  :string           not null
 #
 # Indexes
 #
@@ -86,6 +86,12 @@ class User < ActiveRecord::Base
   has_many :invited_studies, through: :received_study_invites,
                              source: :study
   has_many :delivery_updates, inverse_of: :user
+  has_many :received_delivery_update_invites,
+           class_name: :DeliveryUpdateInvite,
+           inverse_of: :invited_user
+  has_many :invited_delivery_update_studies,
+           through: :received_delivery_update_invites,
+           source: :study
 
   # Secure token for being invited to add output to a study
   has_secure_token :invite_token

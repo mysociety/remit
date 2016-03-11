@@ -151,6 +151,40 @@ ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
 
 
 --
+-- Name: delivery_update_invites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE delivery_update_invites (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    invited_user_id integer NOT NULL,
+    inviting_user_id integer NOT NULL,
+    delivery_update_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: delivery_update_invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE delivery_update_invites_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: delivery_update_invites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE delivery_update_invites_id_seq OWNED BY delivery_update_invites.id;
+
+
+--
 -- Name: delivery_update_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -930,6 +964,13 @@ ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY delivery_update_invites ALTER COLUMN id SET DEFAULT nextval('delivery_update_invites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY delivery_update_statuses ALTER COLUMN id SET DEFAULT nextval('delivery_update_statuses_id_seq'::regclass);
 
 
@@ -1087,6 +1128,14 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY activities
     ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_update_invites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY delivery_update_invites
+    ADD CONSTRAINT delivery_update_invites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1304,6 +1353,34 @@ CREATE INDEX index_activities_on_related_content_type_and_related_content_id ON 
 --
 
 CREATE INDEX index_activities_on_trackable_id_and_trackable_type ON activities USING btree (trackable_id, trackable_type);
+
+
+--
+-- Name: index_delivery_update_invites_on_delivery_update_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_delivery_update_invites_on_delivery_update_id ON delivery_update_invites USING btree (delivery_update_id);
+
+
+--
+-- Name: index_delivery_update_invites_on_invited_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_delivery_update_invites_on_invited_user_id ON delivery_update_invites USING btree (invited_user_id);
+
+
+--
+-- Name: index_delivery_update_invites_on_inviting_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_delivery_update_invites_on_inviting_user_id ON delivery_update_invites USING btree (inviting_user_id);
+
+
+--
+-- Name: index_delivery_update_invites_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_delivery_update_invites_on_study_id ON delivery_update_invites USING btree (study_id);
 
 
 --
@@ -1696,6 +1773,22 @@ ALTER TABLE ONLY documents
 
 
 --
+-- Name: fk_rails_105fab0e5c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_update_invites
+    ADD CONSTRAINT fk_rails_105fab0e5c FOREIGN KEY (delivery_update_id) REFERENCES delivery_updates(id);
+
+
+--
+-- Name: fk_rails_16cbc9041f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_update_invites
+    ADD CONSTRAINT fk_rails_16cbc9041f FOREIGN KEY (invited_user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_24e0da1d15; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1752,6 +1845,14 @@ ALTER TABLE ONLY study_notes
 
 
 --
+-- Name: fk_rails_4c7f593262; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_update_invites
+    ADD CONSTRAINT fk_rails_4c7f593262 FOREIGN KEY (inviting_user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_4c9eefc8e4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1797,6 +1898,14 @@ ALTER TABLE ONLY study_impacts
 
 ALTER TABLE ONLY study_invites
     ADD CONSTRAINT fk_rails_66bb2fb821 FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
+-- Name: fk_rails_68c499eeaf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_update_invites
+    ADD CONSTRAINT fk_rails_68c499eeaf FOREIGN KEY (study_id) REFERENCES studies(id);
 
 
 --
@@ -1996,4 +2105,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160310123338');
 INSERT INTO schema_migrations (version) VALUES ('20160311151330');
 
 INSERT INTO schema_migrations (version) VALUES ('20160311152216');
+
+INSERT INTO schema_migrations (version) VALUES ('20160311153558');
 
