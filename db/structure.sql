@@ -889,7 +889,7 @@ CREATE TABLE users (
     is_admin boolean DEFAULT false NOT NULL,
     invite_token character varying NOT NULL,
     approved boolean DEFAULT false NOT NULL,
-    delivery_update_token character varying
+    delivery_update_token character varying NOT NULL
 );
 
 
@@ -1994,4 +1994,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160309173302');
 INSERT INTO schema_migrations (version) VALUES ('20160310123338');
 
 INSERT INTO schema_migrations (version) VALUES ('20160311151330');
+
+INSERT INTO schema_migrations (version) VALUES ('20160311152216');
 
