@@ -1,7 +1,5 @@
 require "rails_helper"
 require "support/study_activity_trackable_shared_examples"
-require "bibtex"
-require "biburi"
 
 RSpec.describe Publication, type: :model do
   # Columns
@@ -37,34 +35,42 @@ RSpec.describe Publication, type: :model do
 
   describe "doi number validation" do
     let(:successful_doi_result) do
-      BibTeX::Entry.new(title: "Test journal article",
-                        journal: "Test journal",
-                        year: "1953",
-                        author: "Test author et al")
+      ActiveSupport::JSON.encode(
+        message: {
+          title: ["Test journal article"],
+          publisher: "Test journal",
+          issued: { "date-parts" => [[1953, 12, 1]] },
+          author: [{ family: "Smith", given: "Jane" }]
+        }
+      )
     end
     let(:partial_doi_result) do
-      BibTeX::Entry.new(title: "Test journal article",
-                        journal: "Test journal",
-                        author: "Test author et al")
+      ActiveSupport::JSON.encode(
+        message: {
+          title: ["Test journal article"],
+          publisher: "Test journal",
+          author: [{ family: "Smith", given: "Jane" }]
+        }
+      )
     end
 
     it "skips validation if doi_number is empty" do
       publication = FactoryGirl.build(:publication, doi_number: nil)
-      expect(BibURI).not_to receive(:lookup)
+      expect(Net::HTTP).not_to receive(:get)
       publication.valid?
       expect(publication.errors).not_to have_key(:doi_number)
     end
 
     it "sets an error if the lookup fails" do
       publication = FactoryGirl.build(:publication, doi_number: "doi:1234")
-      expect(BibURI).to receive(:lookup).and_return(nil)
+      expect(Net::HTTP).to receive(:get).and_return(nil)
       publication.valid?
       expect(publication.errors).to have_key(:doi_number)
     end
 
     it "sets an error if the lookup returns partial results" do
       publication = FactoryGirl.build(:publication, doi_number: "doi:1234")
-      expect(BibURI).to receive(:lookup).and_return(partial_doi_result)
+      expect(Net::HTTP).to receive(:get).and_return(partial_doi_result)
       publication.valid?
       expect(publication.errors).to have_key(:doi_number)
       expect(publication.errors).to have_key(:publication_year)
@@ -72,7 +78,7 @@ RSpec.describe Publication, type: :model do
 
     it "doesn't set an error if the lookup succeeds" do
       publication = FactoryGirl.build(:publication, doi_number: "doi:1234")
-      expect(BibURI).to receive(:lookup).and_return(successful_doi_result)
+      expect(Net::HTTP).to receive(:get).and_return(successful_doi_result)
       publication.valid?
       expect(publication.errors).to be_empty
     end

@@ -1,5 +1,3 @@
-require "biburi"
-
 # == Schema Information
 #
 # Table name: publications

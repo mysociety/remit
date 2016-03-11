@@ -39,11 +39,15 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
   it "allows you to contribute a publication by DOI number" do
     # This is easier than setting up a whole VCR setup for this one api call
-    successful_doi_result = BibTeX::Entry.new(title: "Test journal article",
-                                              journal: "Test journal",
-                                              year: "1953",
-                                              author: "Test author et al")
-    expect(BibURI).to receive(:lookup).and_return(successful_doi_result)
+    successful_doi_result = ActiveSupport::JSON.encode(
+      message: {
+        title: ["Test journal article"],
+        publisher: "Test journal",
+        issued: { "date-parts" => [[1953, 12, 1]] },
+        author: [{ family: "Smith", given: "Jane" }]
+      }
+    )
+    expect(Net::HTTP).to receive(:get).and_return(successful_doi_result)
 
     choose("output-type-publication")
     fill_in "DOI", with: "doi:1234"
@@ -58,7 +62,7 @@ RSpec.shared_examples_for "Adding impact to a study" do
     expect(publication.user).to eq expected_user
     expect(publication.book_or_journal_title).to eq "Test journal"
     expect(publication.publication_year).to eq 1953
-    expect(publication.lead_author).to eq "Test author et al"
+    expect(publication.lead_author).to eq "Smith, Jane"
     expect(study).to have_latest_activity(key: "study.publication_added",
                                           owner: expected_user)
   end

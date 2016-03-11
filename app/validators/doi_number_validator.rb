@@ -61,6 +61,7 @@ class DoiNumberValidator < ActiveModel::Validator
     rescue
       # Return nothing
       Rails.logger.error($!.backtrace)
+      return nil
     end
   end
 end
