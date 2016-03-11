@@ -20,6 +20,12 @@ RSpec.describe User, type: :model do
     is_expected.to have_db_column(:approved).of_type(:boolean).
       with_options(null: false, default: false)
   end
+  it do
+    is_expected.to have_db_column(:delivery_update_token).of_type(:string)
+  end
+
+  # Indexes
+  it { is_expected.to have_db_index(:delivery_update_token).unique }
 
   # Associations
   it { is_expected.to belong_to(:msf_location).inverse_of(:users) }
