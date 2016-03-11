@@ -76,12 +76,15 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       context "when the study is archived" do
         let(:study) do
-          FactoryGirl.create(:study, study_stage: "completion",
-                                     completed: Time.zone.today - 366.days,
-                                     erb_status: accept_status)
+          FactoryGirl.create(
+            :study,
+            study_stage: "completion",
+            completed: Time.zone.today - (1.year + 1.day),
+            protocol_needed: false)
         end
 
         it "returns a timeline with multiple entries" do
+          expect(study.archived?).to be true
           expected_timeline = base_timeline
           expected_timeline[:concept][:state] = "done"
           expected_timeline[:protocol_erb][:state] = "done"
@@ -206,8 +209,10 @@ RSpec.describe ApplicationHelper, type: :helper do
           study.study_stage = "delivery"
           study.save!
           study.study_stage = "completion"
-          study.completed = Time.zone.today - 366.days
+          study.completed = Time.zone.today - (1.year + 1.day)
           study.save!
+
+          expect(study.archived?).to be true
 
           expected_timeline = base_timeline
           expected_timeline[:concept][:state] = "done"
