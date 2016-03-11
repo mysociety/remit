@@ -21,7 +21,8 @@ RSpec.describe User, type: :model do
       with_options(null: false, default: false)
   end
   it do
-    is_expected.to have_db_column(:delivery_update_token).of_type(:string)
+    is_expected.to have_db_column(:delivery_update_token).of_type(:string).
+      with_options(null: false)
   end
 
   # Indexes
