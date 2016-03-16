@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/study_listing_page_shared_examples"
+require "support/shared_examples/features/listing_studies"
 
 RSpec.describe "Homepage" do
   it "exists" do

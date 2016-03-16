@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/user_account_feature_helper"
+require "support/helpers/features/user_accounts"
 
 RSpec.describe "Study page" do
   let(:study) { FactoryGirl.create(:study) }

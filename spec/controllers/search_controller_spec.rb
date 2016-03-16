@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/study_listing_controller_shared_examples"
+require "support/shared_examples/controllers/concerns/listing_studies"
 
 RSpec.describe SearchController, type: :controller do
   describe "GET #index" do

@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/user_account_feature_helper"
+require "support/helpers/features/user_accounts"
 
 def click_label(text)
   find("label", text: text).click

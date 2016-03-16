@@ -1,6 +1,6 @@
 require "rails_helper"
-require "support/user_account_feature_helper"
-require "support/simple_model_admin_shared_examples"
+require "support/helpers/features/user_accounts"
+require "support/shared_examples/features/simple_model_admins"
 
 RSpec.describe "StudySettingAdmin" do
   let(:singular_resource_name) { "Study Setting" }

@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/activity_view_shared_examples"
+require "support/shared_examples/views/activities"
 
 RSpec.describe "public_activity/study/_created.html.erb", type: :view do
   let(:partial) { "public_activity/study/created" }

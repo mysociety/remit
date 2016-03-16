@@ -1,6 +1,6 @@
 require "rails_helper"
-require "support/user_account_feature_helper"
-require "support/study_listing_page_shared_examples"
+require "support/helpers/features/user_accounts"
+require "support/shared_examples/features/listing_studies"
 
 RSpec.describe "User studies page" do
   let(:user) { FactoryGirl.create(:user) }
