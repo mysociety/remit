@@ -1,6 +1,6 @@
 require "rails_helper"
 require "support/devise"
-require "support/study_management_access_control_shared_examples"
+require "support/shared_examples/controllers/study_management_access_control"
 
 RSpec.shared_examples_for "successful study invite POST" do
   let(:valid_data) do

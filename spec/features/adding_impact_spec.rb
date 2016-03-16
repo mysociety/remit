@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/user_account_feature_helper"
+require "support/helpers/features/user_accounts"
 require "support/matchers/have_latest_activity"
 require "support/matchers/match_activity"
 

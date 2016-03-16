@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/study_activity_trackable_shared_examples"
+require "support/shared_examples/models/concerns/study_activity_trackable"
 
 RSpec.describe StudyEnablerBarrier, type: :model do
   # Columns

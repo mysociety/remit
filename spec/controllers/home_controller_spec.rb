@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/study_listing_controller_shared_examples"
+require "support/shared_examples/controllers/concerns/listing_studies"
 require "support/devise"
 
 RSpec.describe HomeController, type: :controller do

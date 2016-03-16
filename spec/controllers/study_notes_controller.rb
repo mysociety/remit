@@ -1,6 +1,6 @@
 require "rails_helper"
-require "support/study_contribution_controller_shared_examples"
-require "support/study_management_access_control_shared_examples"
+require "support/shared_examples/controllers/study_contributions"
+require "support/shared_examples/controllers/study_management_access_control"
 
 RSpec.describe StudyNotesController, type: :controller do
   describe "POST #create" do

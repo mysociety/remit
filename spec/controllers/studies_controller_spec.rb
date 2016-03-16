@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/devise"
-require "support/study_listing_controller_shared_examples"
-require "support/study_management_access_control_shared_examples"
+require "support/shared_examples/controllers/concerns/listing_studies"
+require "support/shared_examples/controllers/study_management_access_control"
 
 RSpec.describe StudiesController, type: :controller do
   describe "GET #show" do

@@ -1,6 +1,6 @@
 # encoding: utf-8
 require "rails_helper"
-require "support/activity_view_shared_examples"
+require "support/shared_examples/views/activities"
 
 # rubocop:disable Metrics/LineLength
 RSpec.describe "public_activity/study/_research_manager_id_changed.html.erb", type: :view do

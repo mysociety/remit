@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/user_account_feature_helper"
+require "support/helpers/features/user_accounts"
 
 RSpec.describe "StudyAdmin" do
   let!(:amr_topic) { FactoryGirl.create(:amr_topic) }

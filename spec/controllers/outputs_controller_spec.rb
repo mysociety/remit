@@ -1,7 +1,9 @@
 require "rails_helper"
-require "support/study_contribution_controller_shared_examples"
-require "support/study_multiple_resources_controller_shared_examples"
-require "support/study_management_access_control_shared_examples"
+require "support/shared_examples/controllers/study_contributions"
+# rubocop:disable Metrics/LineLength
+require "support/shared_examples/controllers/concerns/creating_multiple_study_resources"
+# rubocop:enable Metrics/LineLength
+require "support/shared_examples/controllers/study_management_access_control"
 require "support/devise"
 
 RSpec.describe OutputsController, type: :controller do

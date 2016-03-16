@@ -1,5 +1,5 @@
 require "rails_helper"
-require "support/content_form_shared_examples"
+require "support/shared_examples/views/content_forms"
 
 RSpec.describe "studies/_study_actions.html.erb", type: :view do
   let(:study) { FactoryGirl.create(:study) }
