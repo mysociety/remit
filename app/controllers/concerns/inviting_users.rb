@@ -31,7 +31,7 @@ module InvitingUsers
   end
 
   def check_invite
-    @invited.present?
+    @invite.present?
   end
 
   def check_user_can_contribute_to_study
