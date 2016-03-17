@@ -212,6 +212,33 @@ RSpec.describe "studies/show.html.erb", type: :view do
     end
   end
 
+  describe "add delivery update link" do
+    let(:admin_user) { FactoryGirl.create(:admin_user) }
+    let(:normal_user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    let(:update_link) do
+      "Add delivery update for this study"
+    end
+    let!(:invite) do
+      FactoryGirl.create(:delivery_update_invite, study: study,
+                                                  invited_user: normal_user)
+    end
+
+    it "is shown to invited users" do
+      study.principal_investigator = normal_user
+      study.save!
+      sign_in normal_user
+      render
+      expect(rendered).to have_text(update_link)
+    end
+
+    it "isn't shown to other users" do
+      sign_in other_user
+      render
+      expect(rendered).not_to have_text(update_link)
+    end
+  end
+
   describe "documents sidebar" do
     let(:document_type) { FactoryGirl.create(:document_type) }
 
