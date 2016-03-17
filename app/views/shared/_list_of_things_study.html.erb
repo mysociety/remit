@@ -10,10 +10,6 @@
     <h2 class="list-of-things__list__item__title">
         <a href="<%= study_path study %>"><%= study.title %></a>
     </h2>
-    <% if @show_delivery_updates %>
-      <%= render partial: 'delivery_updates/info_box',
-                 locals: { delivery_update: study.latest_delivery_update } %>
-    <% end %>
     <dl class="dl-horizontal">
         <dt>Study details</dt>
         <dd>
@@ -36,4 +32,8 @@
         </dd>
       <% end %>
     </dl>
+    <% if @show_delivery_updates %>
+      <%= render partial: 'delivery_updates/info_box',
+                 locals: { delivery_update: study.latest_delivery_update } %>
+    <% end %>
 </div>

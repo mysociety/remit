@@ -35,8 +35,16 @@
   }
 }
 
+.list-of-things__list {
+  padding-top: 2em;
+}
+
 .list-of-things__list__item {
-  margin-top: 2em;
+  margin-bottom: 3em;
+
+  @media (min-width: $screen-lg-min) {
+    padding-right: 3em;
+  }
 
   .dl-horizontal {
     color: mix($color-white, $color-black, 40%);
@@ -169,5 +177,49 @@ a.list-of-things__secondary-action {
   & > :last-child {
     margin-bottom: 0;
   }
+}
+
+.delivery-update__time {
+  text-align: right;
+  font-size: 0.75em; // 12px
+  color: $color-light-grey;
+  margin: 0;
+}
+
+.delivery-update__details {
+  width: 100%;
+  margin: 1em 0 0.5em 0;
+  text-align: center;
+  border: 1px solid $color-silver-white;
+  border-collapse: collapse;
+  color: mix($color-white, $color-black, 40%);
+
+  th, td {
+    text-align: inherit;
+    border: 1px solid $color-silver-white;
+    border-width: 0 1px;
+  }
+
+  th {
+    font-weight: normal;
+    padding: 0.5em 1em 0 1em;
+  }
+
+  td {
+    font-weight: bold;
+    padding: 0 1em 0.5em 1em;
+  }
+}
+
+.delivery-update__status--good {
+  color: $color-bright-green;
+}
+
+.delivery-update__status--medium {
+  color: $color-bright-orange;
+}
+
+.delivery-update__status--bad {
+  color: $color-red;
 }
 
