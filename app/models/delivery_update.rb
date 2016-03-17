@@ -38,4 +38,9 @@ class DeliveryUpdate < ActiveRecord::Base
   validates :data_collection_status, presence: true
   validates :interpretation_and_write_up_status, presence: true
   validates :user, presence: true
+
+  def to_s
+    "#{created_at.to_formatted_s(:medium_ordinal)} " \
+    "Update on: #{study.reference_number}"
+  end
 end
