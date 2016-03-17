@@ -10,7 +10,7 @@ class DeliveryUpdatesController < ApplicationController
   def create
     build_delivery_update
     if @delivery_update.save
-      connect_update_to_invite
+      connect_update_to_invites
       set_success_message
     else
       set_error_message
@@ -26,10 +26,16 @@ class DeliveryUpdatesController < ApplicationController
     @delivery_update.user = current_user
   end
 
-  def connect_update_to_invite
-    if @invite.present?
-      @invite.delivery_update = @delivery_update
-      @invite.save
+  def connect_update_to_invites
+    # We don't want there to be any outstanding invites for this study if the
+    # user has just completed an update, so find them all (you can be invited
+    # multiple times) and make sure they all get the update attached.
+    invites = @study.outstanding_delivery_update_invites_for_user(current_user)
+    if invites.any?
+      invites.each do |invite|
+        invite.delivery_update = @delivery_update
+        invite.save
+      end
     end
   end
 

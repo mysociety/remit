@@ -500,4 +500,12 @@ class Study < ActiveRecord::Base
   def latest_delivery_update
     delivery_updates.order(created_at: :desc).first
   end
+
+  def outstanding_delivery_update_invites
+    delivery_update_invites.where("delivery_update_id IS NULL")
+  end
+
+  def outstanding_delivery_update_invites_for_user(user)
+    outstanding_delivery_update_invites.where(invited_user: user.id)
+  end
 end
