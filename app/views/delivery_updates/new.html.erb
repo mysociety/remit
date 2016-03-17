@@ -1,0 +1,62 @@
+<% content_for :page_title,
+               "Add delivery update #{truncate(@study.title, length: 50)}" %>
+
+<% @delivery_update ||= DeliveryUpdate.new %>
+
+<div class="site-main site-main--impacts">
+    <div class="container">
+
+        <h4 class="add-outputs__title">Add delivery update for:</h4>
+        <div class="add-outputs__study">
+            <div class="study-header">
+                <%= render partial: "studies/header_primary" %>
+            </div>
+        </div>
+
+      <%= form_for @delivery_update,
+                  url: study_delivery_updates_path(@study),
+                  html: { class: "add-outputs__form action-sheet" } do |f| %>
+        <% if @invite_token.present? %>
+          <input type="hidden" name="token" value="<%= @invite_token %>">
+        <% end %>
+
+        <div class="action-sheet__section action-sheet__section--last">
+          <div class="row">
+            <p class="col-sm-12">
+              Please provide an update on how your study is progressing in
+              each of the delivery areas, detailing any delays with a brief
+              comment.
+            </p>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <%= f.label :data_analysis_status, "Data analysis" %>
+              <%= f.collection_select :data_analysis_status_id, DeliveryUpdateStatus.all, :id, :name %>
+            </div>
+            <div class="col-sm-4">
+              <%= f.label :data_collection_status, "Data collection" %>
+              <%= f.collection_select :data_collection_status_id, DeliveryUpdateStatus.all, :id, :name %>
+            </div>
+            <div class="col-sm-4">
+              <%= f.label :interpretation_and_write_up_status, "Interpretation and write up" %>
+              <%= f.collection_select :interpretation_and_write_up_status_id, DeliveryUpdateStatus.all, :id, :name %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <%= f.label :comments %>
+              <%= f.text_area :comments, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-sheet__section action-sheet__section--last">
+          <div class="row">
+              <p class="col-xs-12">
+                  <button class="btn btn-success">Add delivery update</button>
+              </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+</div>

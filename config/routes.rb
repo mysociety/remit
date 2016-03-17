@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     put "progress_to_delivery"
     put "progress_to_completion"
     resources :study_invites, only: :create
+    resources :delivery_updates, only: [:new, :create]
   end
 
   resources :documents, only: :show
