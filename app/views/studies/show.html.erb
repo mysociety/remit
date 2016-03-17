@@ -76,6 +76,11 @@
                        Edit study details<br>(Admins only)
                     </a>
                   <% end  %>
+                  <% if @study.outstanding_delivery_update_invites_for_user(current_user).any? %>
+                    <a class="action action--admin"
+                       href="<%= new_study_delivery_update_path(@study) %>">
+                       Add delivery update<br>for this study</a>
+                  <% end %>
                 </div>
               <% end %>
                 <div class="study-main__secondary__section">
