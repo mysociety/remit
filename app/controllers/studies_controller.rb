@@ -19,6 +19,7 @@ class StudiesController < ApplicationController
         if @user.is_admin || @user.research_manager_studies.any?
           @show_quick_filters = true
         end
+        @show_delivery_updates = true
         render "home/index"
       end
       format.csv { respond_with_studies_csv(@studies) }
