@@ -495,4 +495,9 @@ class Study < ActiveRecord::Base
       return Rails.application.routes.url_helpers.document_url(protocol_doc)
     end
   end
+
+  # Return the most recent delivery update
+  def latest_delivery_update
+    delivery_updates.order(created_at: :desc).first
+  end
 end
