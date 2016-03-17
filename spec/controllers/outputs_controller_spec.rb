@@ -3,6 +3,7 @@ require "support/shared_examples/controllers/study_contributions"
 # rubocop:disable Metrics/LineLength
 require "support/shared_examples/controllers/concerns/creating_multiple_study_resources"
 # rubocop:enable Metrics/LineLength
+require "support/shared_examples/controllers/concerns/inviting_users"
 require "support/shared_examples/controllers/study_management_access_control"
 require "support/devise"
 
@@ -23,37 +24,18 @@ RSpec.describe OutputsController, type: :controller do
         end
       end
 
-      context "when someone's been invited via email" do
+      context "with tokens" do
         let!(:invited_user) { FactoryGirl.create(:user) }
-        let!(:study_invite) do
+        let!(:invite_token) { invited_user.invite_token }
+        let!(:invite) do
           FactoryGirl.create(:study_invite, study: study,
                                             invited_user: invited_user,
                                             inviting_user: pi)
         end
 
-        before do
-          sign_out :user
-        end
-
-        it "allows them in via their invite_token" do
-          get :new, study_id: study.id, token: invited_user.invite_token
-          expect(response).to have_http_status(:success)
-        end
-
-        context "but they visit with the wrong invite code" do
-          it "forbids access" do
-            bad_token = invited_user.invite_token[0...-2]
-            get :new, study_id: study.id, token: bad_token
-            expect(response).to have_http_status(:forbidden)
-          end
-        end
-
-        context "but they try to access another study" do
-          it "forbids access" do
-            other_study = FactoryGirl.create(:study)
-            get :new, study_id: other_study.id,
-                      token: invited_user.invite_token
-            expect(response).to have_http_status(:forbidden)
+        it_behaves_like "inviting users action" do
+          def trigger_action(study, token)
+            get :new, study_id: study.id, token: token
           end
         end
       end
