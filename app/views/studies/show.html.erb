@@ -59,13 +59,13 @@
                     <% end %>
                   <% if @study.study_stage == 'protocol_erb' %>
                     <%= link_to study_progress_to_delivery_path(@study),
-                                class: "action action--admin",
+                                class: "action action--next",
                                 method: :put do %>
                         This study is in <br>delivery
                     <% end %>
                   <% elsif @study.study_stage == 'delivery' %>
                     <%= link_to study_progress_to_completion_path(@study),
-                                class: "action action--admin",
+                                class: "action action--next",
                                 method: :put do %>
                         This study has <br>completed
                     <% end %>
@@ -77,7 +77,7 @@
                     </a>
                   <% end  %>
                   <% if @study.outstanding_delivery_update_invites_for_user(current_user).any? %>
-                    <a class="action action--admin"
+                    <a class="action action--status"
                        href="<%= new_study_delivery_update_path(@study) %>">
                        Add delivery update<br>for this study</a>
                   <% end %>
