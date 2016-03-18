@@ -41,4 +41,18 @@ RSpec.describe DeliveryUpdateStatus, type: :model do
     is_expected.to define_enum_for(:good_medium_bad_or_neutral).
       with(expected_enum_options)
   end
+
+  describe "#delayed_statuses" do
+    let(:good) { FactoryGirl.create(:progressing_fine) }
+    let(:medium) { FactoryGirl.create(:minor_problems) }
+    let(:bad) { FactoryGirl.create(:major_problems) }
+    let(:neutral) { FactoryGirl.create(:not_started) }
+    let(:neutral2) { FactoryGirl.create(:completed) }
+    let!(:delayed) { [medium, bad] }
+    let!(:not_delayed) { [good, neutral, neutral2] }
+
+    it "includes statuses which are medium or bad" do
+      expect(DeliveryUpdateStatus.delayed_statuses).to eq delayed
+    end
+  end
 end

@@ -1054,10 +1054,23 @@ RSpec.describe Study, type: :model do
                                  erb_status: accept,
                                  erb_approval_expiry: today - 1.day)
     end
+    let!(:delivery_delayed) { FactoryGirl.create(:study) }
+    let!(:delivery_delayed_update) do
+      FactoryGirl.create(
+        :delivery_update,
+        study: delivery_delayed,
+        data_analysis_status: FactoryGirl.create(:major_problems))
+    end
 
     describe "#flagged" do
-      it "includes delayed, overdue and expiring studies, without duplicates" do
-        expected = [response_overdue, expired, delayed, delayed_and_expired]
+      it "includes all flagged studies, without duplicates" do
+        expected = [
+          response_overdue,
+          expired,
+          delayed,
+          delayed_and_expired,
+          delivery_delayed
+        ]
         expect(Study.flagged).to match_array(expected)
       end
     end
@@ -1075,8 +1088,64 @@ RSpec.describe Study, type: :model do
       it "returns true for delayed and expired studies" do
         expect(delayed_and_expired.flagged?).to be true
       end
+      it "returns true for delivery delayed studies" do
+        expect(delivery_delayed.flagged?).to be true
+      end
       it "returns false otherwise" do
         expect(normal_study.flagged?).to be false
+      end
+    end
+  end
+
+  describe "delivery_delayed and delivery_delayed?" do
+    let!(:normal_study) { FactoryGirl.create(:study) }
+    let!(:all_ok_study) { FactoryGirl.create(:study) }
+    let!(:analysis_delayed) { FactoryGirl.create(:study) }
+    let!(:collection_delayed) { FactoryGirl.create(:study) }
+    let!(:interpretation_delayed) { FactoryGirl.create(:study) }
+    let(:major_problems) { FactoryGirl.create(:major_problems) }
+    let!(:analysis_delayed_update) do
+      FactoryGirl.create(
+        :delivery_update,
+        study: analysis_delayed,
+        data_analysis_status: major_problems)
+    end
+    let!(:collection_delayed_update) do
+      FactoryGirl.create(
+        :delivery_update,
+        study: collection_delayed,
+        data_analysis_status: major_problems)
+    end
+    let!(:interpretation_delayed_update) do
+      FactoryGirl.create(
+        :delivery_update,
+        study: interpretation_delayed,
+        data_analysis_status: major_problems)
+    end
+    let!(:all_ok_update) do
+      FactoryGirl.create(:delivery_update, study: all_ok_study)
+    end
+    let(:delayed) do
+      [analysis_delayed, collection_delayed, interpretation_delayed]
+    end
+    let(:not_delayed) { [all_ok_study, normal_study] }
+
+    describe "#delivery_delayed" do
+      it "should return studies where the update is delayed" do
+        expect(Study.delivery_delayed).to match_array(delayed)
+      end
+    end
+
+    describe "#delivery_delayed?" do
+      it "returns true for studies where the update is delayed" do
+        delayed.each do |study|
+          expect(study.delivery_delayed?).to be true
+        end
+      end
+      it "returns false for studies where the update is not delayed" do
+        not_delayed.each do |study|
+          expect(study.delivery_delayed?).to be false
+        end
       end
     end
   end

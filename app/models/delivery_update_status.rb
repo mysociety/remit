@@ -34,4 +34,9 @@ class DeliveryUpdateStatus < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
   validates :good_medium_bad_or_neutral, presence: true
+
+  # Which statuses are considered delayed?
+  def self.delayed_statuses
+    where(good_medium_bad_or_neutral: %w(medium bad))
+  end
 end

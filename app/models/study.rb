@@ -165,9 +165,27 @@ class Study < ActiveRecord::Base
     where(query, submitted.id, Study.erb_response_overdue_at)
   end
 
+  def self.delivery_delayed
+    # Studies whose most recent delivery update has one or more delays in it
+    delayed_status_ids = DeliveryUpdateStatus.delayed_statuses.pluck(:id)
+    delayed_update_sql = <<-SQL
+      delivery_updates.data_analysis_status_id IN (:delayed_status_ids)
+      OR
+      delivery_updates.data_collection_status_id IN (:delayed_status_ids)
+      OR delivery_updates.interpretation_and_write_up_status_id
+        IN (:delayed_status_ids)
+    SQL
+    joins(:delivery_updates).where(delayed_update_sql,
+                                   delayed_status_ids: delayed_status_ids)
+  end
+
   # Return the studies which will trigger a flag to PIs/RMs
   def self.flagged
-    (delayed_completing + erb_approval_expiring + erb_response_overdue).uniq
+    flagged = delayed_completing
+    flagged += erb_approval_expiring
+    flagged += erb_response_overdue
+    flagged += delivery_delayed
+    flagged.uniq
   end
 
   # Return studies in a particular country
@@ -297,7 +315,10 @@ class Study < ActiveRecord::Base
 
   # Does this study need flagging to the PI/RM for closer attention?
   def flagged?
-    delayed_completing? || erb_approval_expiring? || erb_response_overdue?
+    delayed_completing? || \
+      erb_approval_expiring? || \
+      erb_response_overdue? || \
+      delivery_delayed?
   end
 
   # Is the study delayed in completing?
@@ -317,6 +338,15 @@ class Study < ActiveRecord::Base
     submitted = ErbStatus.submitted_status
     return false unless erb_status == submitted && erb_submitted.present?
     erb_submitted < Study.erb_response_overdue_at
+  end
+
+  # Did the latest delivery update have any delays?
+  def delivery_delayed?
+    if latest_delivery_update.blank?
+      false
+    else
+      latest_delivery_update.delayed?
+    end
   end
 
   def other_study_type_is_set_when_study_type_is_other

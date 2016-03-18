@@ -43,4 +43,11 @@ class DeliveryUpdate < ActiveRecord::Base
     "#{created_at.to_formatted_s(:medium_ordinal)} " \
     "Update on: #{study.reference_number}"
   end
+
+  def delayed?
+    delayed_statuses = DeliveryUpdateStatus.delayed_statuses
+    delayed_statuses.include?(data_analysis_status) || \
+      delayed_statuses.include?(data_collection_status) || \
+      delayed_statuses.include?(interpretation_and_write_up_status)
+  end
 end
