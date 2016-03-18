@@ -107,6 +107,12 @@ class User < ActiveRecord::Base
 
   default_scope { order("name ASC") }
 
+  def self.pis_with_studies_in_delivery
+    joins(:principal_investigator_studies).
+      where(studies: { study_stage: :delivery }).
+      distinct
+  end
+
   def external_location_is_set_if_msf_location_is_external
     if msf_location == MsfLocation.external_location && external_location.blank?
       message = "You must describe the location if you choose " \

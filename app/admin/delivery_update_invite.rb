@@ -8,4 +8,13 @@ ActiveAdmin.register DeliveryUpdateInvite do
   filter :invited_user
   filter :inviting_user
   filter :created
+
+  index do
+    selectable_column
+    column :invited_user
+    column :study
+    column :inviting_user
+    column :created_at
+    actions
+  end
 end

@@ -27,4 +27,8 @@ class DeliveryUpdateInvite < ActiveRecord::Base
   validates :study, presence: true
   validates :invited_user, presence: true
   validates :inviting_user, presence: true
+
+  def self.incomplete
+    where("delivery_update_id IS NULL")
+  end
 end
