@@ -1,0 +1,15 @@
+Hi Test User,
+
+It's time to submit your delivery indicator reports on ReMIT.
+
+The following links will take you to the forms to complete your reports:
+
+STUDY1 - http://example.com/studies/1/delivery_updates/new
+STUDY2 - http://example.com/studies/2/delivery_updates/new
+STUDY3 - http://example.com/studies/3/delivery_updates/new
+
+on the Médecins Sans Frontières ReMIT website.
+
+Many thanks,
+
+MSF ReMIT team.

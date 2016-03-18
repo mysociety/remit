@@ -1,0 +1,16 @@
+<% message.subject = "It's time to submit your delivery indicator #{'report'.pluralize(@invites.count)} on ReMIT" %>
+Hi <%= @user.name %>,
+
+It's time to submit your delivery indicator <%= "report".pluralize(@invites.count) %> on ReMIT.
+
+The following <%= "link".pluralize(@invites.count) %> will take you to the <%= "form".pluralize(@invites.count) %> to complete your <%= "report".pluralize(@invites.count) %>:
+
+<% @invites.each do |invite| %>
+<%= invite.study.reference_number %> - <%= new_study_delivery_update_url(invite.study) %>
+<% end %>
+
+on the Médecins Sans Frontières ReMIT website.
+
+Many thanks,
+
+MSF ReMIT team.
