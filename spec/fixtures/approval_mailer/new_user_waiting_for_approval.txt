@@ -5,4 +5,4 @@ non-approved-user@example.com
 
 You can approve them here:
 
-http://example.com/admin/users/3/edit
+http://www.example.com/admin/users/3/edit

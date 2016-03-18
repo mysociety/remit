@@ -8,7 +8,7 @@ on the Médecins Sans Frontières ReMIT website.
 
 You can click this link:
 
-http://example.com/studies/1/outputs/new?token=invite-token
+http://www.example.com/studies/1/outputs/new?token=invite-token
 
 at any time and there you'll find forms to describe any disseminations or other impact this study has had.
 

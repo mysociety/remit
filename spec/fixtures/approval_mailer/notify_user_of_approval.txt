@@ -2,7 +2,7 @@ Welcome Test User!
 
 Your account on ReMIT has been approved, you can now sign in and browse the site:
 
-http://example.com/users/sign_in
+http://www.example.com/users/sign_in
 
 Many thanks,
 

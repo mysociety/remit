@@ -11,4 +11,4 @@ The protocol was submitted on 15th February 2015.
 
 You can see this study on ReMIT here:
 
-http://example.com/studies/1
+http://www.example.com/studies/1

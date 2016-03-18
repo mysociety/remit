@@ -15,7 +15,7 @@ development:
   from_email: 'do-not-reply@localhost'
 
 test:
-  hostname: example.com
+  hostname: www.example.com
   # What address will emails be sent from?
   from_email: 'do-not-reply@example.com'
 
