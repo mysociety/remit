@@ -30,15 +30,15 @@
           </div>
           <div class="row">
             <div class="col-sm-4">
-              <%= f.label :data_analysis_status, "Data analysis" %>
-              <%= f.collection_select :data_analysis_status_id, DeliveryUpdateStatus.all, :id, :name %>
-            </div>
-            <div class="col-sm-4">
-              <%= f.label :data_collection_status, "Data collection" %>
+              <%= f.label :data_collection_status_id, "Data collection" %>
               <%= f.collection_select :data_collection_status_id, DeliveryUpdateStatus.all, :id, :name %>
             </div>
             <div class="col-sm-4">
-              <%= f.label :interpretation_and_write_up_status, "Interpretation and write up" %>
+              <%= f.label :data_analysis_status_id, "Data analysis" %>
+              <%= f.collection_select :data_analysis_status_id, DeliveryUpdateStatus.all, :id, :name %>
+            </div>
+            <div class="col-sm-4">
+              <%= f.label :interpretation_and_write_up_status_id, "Interpretation and write up" %>
               <%= f.collection_select :interpretation_and_write_up_status_id, DeliveryUpdateStatus.all, :id, :name %>
             </div>
           </div>
