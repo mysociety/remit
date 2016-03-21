@@ -1061,6 +1061,10 @@ RSpec.describe Study, type: :model do
         study: delivery_delayed,
         data_analysis_status: FactoryGirl.create(:major_problems))
     end
+    before do
+      # FactoryGirl doesn't call callbacks when it creates things
+      delivery_delayed_update.save!
+    end
 
     describe "#flagged" do
       it "includes all flagged studies, without duplicates" do
@@ -1129,6 +1133,14 @@ RSpec.describe Study, type: :model do
       [analysis_delayed, collection_delayed, interpretation_delayed]
     end
     let(:not_delayed) { [all_ok_study, normal_study] }
+
+    before do
+      # FactoryGirl doesn't call callbacks when it creates things
+      analysis_delayed_update.save!
+      collection_delayed_update.save!
+      interpretation_delayed_update.save!
+      all_ok_update.save!
+    end
 
     describe "#delivery_delayed" do
       it "should return studies where the update is delayed" do
@@ -1268,6 +1280,27 @@ RSpec.describe Study, type: :model do
         "5"
       ]
       expect(csv.last).to eq expected
+    end
+  end
+
+  describe "#save_delivery_delayed" do
+    let!(:study) { FactoryGirl.create(:study) }
+    let!(:delayed_status) { FactoryGirl.create(:major_problems) }
+
+    it "saves the delayed status from the most recent update" do
+      expect(study.delivery_delayed).to be false # default with no update
+
+      FactoryGirl.create(:delivery_update, study: study)
+      expect(study.delivery_delayed).to be false # update is not delayed
+
+      update2 = FactoryGirl.create(:delivery_update,
+                                   data_analysis_status: delayed_status,
+                                   study: study)
+      expect(study.delivery_delayed).to be true # update is delayed
+
+      update2.destroy
+
+      expect(study.delivery_delayed).to be false # update is not delayed again
     end
   end
 end

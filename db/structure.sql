@@ -632,7 +632,8 @@ CREATE TABLE studies (
     expected_completion_date date,
     erb_submitted date,
     erb_approved date,
-    hidden boolean DEFAULT false
+    hidden boolean DEFAULT false,
+    delivery_delayed boolean DEFAULT false NOT NULL
 );
 
 
@@ -2107,4 +2108,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160311151330');
 INSERT INTO schema_migrations (version) VALUES ('20160311152216');
 
 INSERT INTO schema_migrations (version) VALUES ('20160311153558');
+
+INSERT INTO schema_migrations (version) VALUES ('20160321105450');
 

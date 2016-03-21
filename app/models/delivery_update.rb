@@ -39,6 +39,9 @@ class DeliveryUpdate < ActiveRecord::Base
   validates :interpretation_and_write_up_status, presence: true
   validates :user, presence: true
 
+  after_save :update_study
+  after_destroy :update_study
+
   def to_s
     "#{created_at.to_formatted_s(:medium_ordinal)} " \
     "Update on: #{study.reference_number}"
@@ -49,5 +52,11 @@ class DeliveryUpdate < ActiveRecord::Base
     delayed_statuses.include?(data_analysis_status) || \
       delayed_statuses.include?(data_collection_status) || \
       delayed_statuses.include?(interpretation_and_write_up_status)
+  end
+
+  def update_study
+    # We cache whether the most recent delivery_update was delayed on the
+    # study model, to make querying by it easier
+    study.save_delivery_delayed
   end
 end

@@ -84,4 +84,25 @@ RSpec.describe DeliveryUpdate, type: :model do
       end
     end
   end
+
+  describe "#update_study callback" do
+    let(:study) { FactoryGirl.create(:study) }
+
+    it "calls study.save_delivery_delayed when created" do
+      expect(study).to receive(:save_delivery_delayed)
+      FactoryGirl.create(:delivery_update, study: study)
+    end
+
+    it "calls study.save_delivery_delayed when updated" do
+      expect(study).to receive(:save_delivery_delayed).twice
+      delivery_update = FactoryGirl.create(:delivery_update, study: study)
+      delivery_update.save!
+    end
+
+    it "calls study.save_delivery_delayed when destroyed" do
+      expect(study).to receive(:save_delivery_delayed).twice
+      delivery_update = FactoryGirl.create(:delivery_update, study: study)
+      delivery_update.destroy
+    end
+  end
 end

@@ -31,6 +31,7 @@
 #  erb_submitted               :date
 #  erb_approved                :date
 #  hidden                      :boolean          default(FALSE)
+#  delivery_delayed            :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -167,16 +168,7 @@ class Study < ActiveRecord::Base
 
   def self.delivery_delayed
     # Studies whose most recent delivery update has one or more delays in it
-    delayed_status_ids = DeliveryUpdateStatus.delayed_statuses.pluck(:id)
-    delayed_update_sql = <<-SQL
-      delivery_updates.data_analysis_status_id IN (:delayed_status_ids)
-      OR
-      delivery_updates.data_collection_status_id IN (:delayed_status_ids)
-      OR delivery_updates.interpretation_and_write_up_status_id
-        IN (:delayed_status_ids)
-    SQL
-    joins(:delivery_updates).where(delayed_update_sql,
-                                   delayed_status_ids: delayed_status_ids)
+    where(delivery_delayed: true)
   end
 
   # Return the studies which will trigger a flag to PIs/RMs
@@ -338,15 +330,6 @@ class Study < ActiveRecord::Base
     submitted = ErbStatus.submitted_status
     return false unless erb_status == submitted && erb_submitted.present?
     erb_submitted < Study.erb_response_overdue_at
-  end
-
-  # Did the latest delivery update have any delays?
-  def delivery_delayed?
-    if latest_delivery_update.blank?
-      false
-    else
-      latest_delivery_update.delayed?
-    end
   end
 
   def other_study_type_is_set_when_study_type_is_other
@@ -537,5 +520,14 @@ class Study < ActiveRecord::Base
 
   def outstanding_delivery_update_invites_for_user(user)
     outstanding_delivery_update_invites.where(invited_user: user.id)
+  end
+
+  def save_delivery_delayed
+    if latest_delivery_update.present?
+      self.delivery_delayed = latest_delivery_update.delayed?
+    else
+      self.delivery_delayed = false
+    end
+    save!
   end
 end
