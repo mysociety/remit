@@ -587,8 +587,6 @@ CREATE TABLE studies (
     local_erb_submitted date,
     local_erb_approved date,
     completed date,
-    local_collaborators text,
-    international_collaborators text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     other_study_type text,
@@ -1965,4 +1963,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160321105450');
 INSERT INTO schema_migrations (version) VALUES ('20160321172127');
 
 INSERT INTO schema_migrations (version) VALUES ('20160321174435');
+
+INSERT INTO schema_migrations (version) VALUES ('20160321181326');
 

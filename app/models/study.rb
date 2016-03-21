@@ -2,35 +2,33 @@
 #
 # Table name: studies
 #
-#  id                          :integer          not null, primary key
-#  title                       :text             not null
-#  reference_number            :text             not null
-#  study_type_id               :integer          not null
-#  study_setting_id            :integer          not null
-#  research_team               :text
-#  concept_paper_date          :date
-#  protocol_needed             :boolean          not null
-#  pre_approved_protocol       :boolean
-#  erb_status_id               :integer
-#  erb_reference               :text
-#  erb_approval_expiry         :date
-#  local_erb_submitted         :date
-#  local_erb_approved          :date
-#  completed                   :date
-#  local_collaborators         :text
-#  international_collaborators :text
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  other_study_type            :text
-#  principal_investigator_id   :integer
-#  research_manager_id         :integer
-#  country_codes               :text
-#  study_stage                 :enum             default("concept"), not null
-#  expected_completion_date    :date
-#  erb_submitted               :date
-#  erb_approved                :date
-#  hidden                      :boolean          default(FALSE)
-#  delivery_delayed            :boolean          default(FALSE), not null
+#  id                        :integer          not null, primary key
+#  title                     :text             not null
+#  reference_number          :text             not null
+#  study_type_id             :integer          not null
+#  study_setting_id          :integer          not null
+#  research_team             :text
+#  concept_paper_date        :date
+#  protocol_needed           :boolean          not null
+#  pre_approved_protocol     :boolean
+#  erb_status_id             :integer
+#  erb_reference             :text
+#  erb_approval_expiry       :date
+#  local_erb_submitted       :date
+#  local_erb_approved        :date
+#  completed                 :date
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  other_study_type          :text
+#  principal_investigator_id :integer
+#  research_manager_id       :integer
+#  country_codes             :text
+#  study_stage               :enum             default("concept"), not null
+#  expected_completion_date  :date
+#  erb_submitted             :date
+#  erb_approved              :date
+#  hidden                    :boolean          default(FALSE)
+#  delivery_delayed          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -241,8 +239,6 @@ class Study < ActiveRecord::Base
       "ERB Expiry",
       "Local ERB Submitted",
       "Local ERB Approved",
-      "Local Collaborators",
-      "International Collaborators",
       "Notes",
       "Documents",
       "Outputs: # Publications",
@@ -276,8 +272,6 @@ class Study < ActiveRecord::Base
       formatted_date(erb_approval_expiry),
       formatted_date(local_erb_submitted),
       formatted_date(local_erb_approved),
-      local_collaborators,
-      international_collaborators,
       study_notes.count,
       documents.count,
       publications.count,

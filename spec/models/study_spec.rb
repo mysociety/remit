@@ -44,10 +44,6 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:local_erb_submitted).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_approved).of_type(:date) }
   it { is_expected.to have_db_column(:completed).of_type(:date) }
-  it { is_expected.to have_db_column(:local_collaborators).of_type(:text) }
-  it do
-    is_expected.to have_db_column(:international_collaborators).of_type(:text)
-  end
   it { is_expected.to have_db_column(:other_study_type).of_type(:text) }
   it do
     is_expected.to have_db_column(:principal_investigator_id).of_type(:integer)
@@ -1190,9 +1186,7 @@ RSpec.describe Study, type: :model do
         erb_approved: today,
         erb_approval_expiry: today,
         local_erb_submitted: today,
-        local_erb_approved: today,
-        local_collaborators: "Local collaborators",
-        international_collaborators: "International collaborators")
+        local_erb_approved: today)
     end
     let!(:notes) do
       FactoryGirl.create_list(:study_note, 5, study: study_with_everything)
@@ -1262,8 +1256,6 @@ RSpec.describe Study, type: :model do
         todays_date,
         todays_date,
         todays_date,
-        "Local collaborators",
-        "International collaborators",
         "5",
         "5",
         "5",
