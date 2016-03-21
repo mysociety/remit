@@ -6,7 +6,7 @@ It's time to submit your delivery indicator <%= "report".pluralize(@invites.coun
 The following <%= "link".pluralize(@invites.count) %> will take you to the <%= "form".pluralize(@invites.count) %> to complete your <%= "report".pluralize(@invites.count) %>:
 
 <% @invites.each do |invite| %>
-<%= invite.study.reference_number %> - <%= new_study_delivery_update_url(invite.study) %>
+<%= invite.study.reference_number %> - <%= new_study_delivery_update_url(invite.study) %>?token=<%= @user.delivery_update_token %>
 <% end %>
 
 on the Médecins Sans Frontières ReMIT website.

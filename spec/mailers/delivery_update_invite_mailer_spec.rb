@@ -2,7 +2,10 @@ require "rails_helper"
 
 RSpec.describe DeliveryUpdateInviteMailer, type: :mailer do
   describe "invite" do
-    let(:user) { FactoryGirl.create(:user, name: "Test User") }
+    let(:user) do
+      FactoryGirl.create(:user, name: "Test User",
+                                delivery_update_token: "TOKEN")
+    end
     let(:study1) do
       FactoryGirl.create(:study, principal_investigator: user,
                                  reference_number: "STUDY1",
