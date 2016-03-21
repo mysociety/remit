@@ -7,8 +7,8 @@ ActiveAdmin.register Study do
                 :local_erb_approved, :completed, :local_collaborators,
                 :international_collaborators, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
-                :feedback_and_suggestions, :expected_completion_date,
-                :hidden, country_codes: [], study_topic_ids: []
+                :expected_completion_date, :hidden,
+                country_codes: [], study_topic_ids: []
 
   menu priority: 1
 
@@ -58,7 +58,6 @@ ActiveAdmin.register Study do
       f.input :erb_approval_expiry
       f.input :local_collaborators
       f.input :international_collaborators
-      f.input :feedback_and_suggestions
       f.input :completed
       f.input :hidden, hint: "Check this box to hide the study from people " \
                              "who aren't logged in"

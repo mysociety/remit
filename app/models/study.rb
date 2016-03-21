@@ -25,7 +25,6 @@
 #  principal_investigator_id   :integer
 #  research_manager_id         :integer
 #  country_codes               :text
-#  feedback_and_suggestions    :text
 #  study_stage                 :enum             default("concept"), not null
 #  expected_completion_date    :date
 #  erb_submitted               :date
