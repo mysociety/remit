@@ -1,6 +1,5 @@
 <% @document ||= Document.new %>
 <% @study_note ||= StudyNote.new %>
-<% @study_enabler_barriers = {} if @study_enabler_barriers.nil? %>
 
 <ul class="study-main__actions__tabs">
     <li>
@@ -16,12 +15,6 @@
         <label class="btn btn-default houdini-label" for="add-note">
             <i class="glyphicon glyphicon-comment"></i>
             Note
-        </label>
-    </li>
-    <li>
-        <label class="btn btn-default houdini-label" for="add-enabler-barrier">
-            <i class="glyphicon glyphicon-exclamation-sign"></i>
-            Enabler/Barrier
         </label>
     </li>
 </ul>
@@ -89,50 +82,6 @@
             </p>
             <p class="col-sm-5 action-sheet__submit">
                 <button type="submit" class="btn btn-success">Add note</button>
-            </p>
-        </div>
-    </div>
-<% end %>
-
-<input class="houdini-input"
-       type="radio"
-       name="action-sheet-accordion"
-       <%= "checked" if @study_enabler_barriers_errors %>
-       id="add-enabler-barrier">
-
-<%= form_tag create_multiple_study_study_enabler_barriers_path(@study),
-             class: "action-sheet houdini-target" do %>
-    <div class="action-sheet__section">
-        <% EnablerBarrier.order(:name).each do |enabler_barrier| %>
-            <%= render partial: "shared/form_errors",
-                       locals: { resource: @study_enabler_barriers[enabler_barrier.id] } %>
-            <div class="row">
-                <div class="col-sm-12">
-                    <input type="checkbox"
-                           class="houdini-input houdini-input--visible"
-                           id="enabler_barrier_<%= enabler_barrier.name.parameterize %>"
-                           name="study_enabler_barrier[enabler_barrier_ids][<%= enabler_barrier.id %>]"
-                           value="<%= enabler_barrier.id %>"
-                           <%= "checked" if @study_enabler_barriers[enabler_barrier.id].present? %>>
-                    <label class="houdini-label"
-                           for="enabler_barrier_<%= enabler_barrier.name.parameterize %>">
-                           <%= enabler_barrier.name %>
-                    </label>
-                    <textarea class="form-control houdini-target"
-                              placeholder="Description&hellip;"
-                              name="study_enabler_barrier[descriptions][<%= enabler_barrier.id %>]"><%= @study_enabler_barriers[enabler_barrier.id].description if @study_enabler_barriers[enabler_barrier.id].present? %></textarea>
-                </div>
-            </div>
-        <% end %>
-    </div>
-    <div class="action-sheet__section action-sheet__section--last">
-        <div class="row">
-            <p class="col-sm-7 action-sheet__warning">
-                <strong>Remember:</strong><br>
-                This information will be publicly accessible
-            </p>
-            <p class="col-sm-5 action-sheet__submit">
-                <button type="submit" class="btn btn-success">Add enablers/barriers</button>
             </p>
         </div>
     </div>

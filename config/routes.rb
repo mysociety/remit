@@ -11,9 +11,6 @@ Rails.application.routes.draw do
     # publication, dissemination or study_impact
     get "outputs/new"
     post "outputs/create"
-    resources :study_enabler_barriers do
-      post :create_multiple, on: :collection
-    end
     put "progress_to_delivery"
     put "progress_to_completion"
     resources :study_invites, only: :create

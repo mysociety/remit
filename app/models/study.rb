@@ -82,7 +82,6 @@ class Study < ActiveRecord::Base
              class_name: :User,
              inverse_of: :research_manager_studies
   has_and_belongs_to_many :study_topics, inverse_of: :studies
-  has_many :study_enabler_barriers, inverse_of: :study
   has_many :study_impacts, inverse_of: :study
   has_many :disseminations, inverse_of: :study
   has_many :publications, inverse_of: :study
@@ -249,8 +248,7 @@ class Study < ActiveRecord::Base
       "Documents",
       "Outputs: # Publications",
       "Outputs: # Dissmination",
-      "Outputs: # Other Impact",
-      "Enabler/Barriers"
+      "Outputs: # Other Impact"
     ]
   end
 
@@ -285,8 +283,7 @@ class Study < ActiveRecord::Base
       documents.count,
       publications.count,
       disseminations.count,
-      study_impacts.count,
-      study_enabler_barriers.count
+      study_impacts.count
     ]
   end
 

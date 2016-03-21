@@ -392,38 +392,6 @@ ALTER SEQUENCE documents_id_seq OWNED BY documents.id;
 
 
 --
--- Name: enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE enabler_barriers (
-    id integer NOT NULL,
-    name text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    description text
-);
-
-
---
--- Name: enabler_barriers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE enabler_barriers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: enabler_barriers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE enabler_barriers_id_seq OWNED BY enabler_barriers.id;
-
-
---
 -- Name: erb_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -664,40 +632,6 @@ CREATE TABLE studies_study_topics (
     study_topic_id integer NOT NULL,
     study_id integer NOT NULL
 );
-
-
---
--- Name: study_enabler_barriers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE study_enabler_barriers (
-    id integer NOT NULL,
-    study_id integer NOT NULL,
-    enabler_barrier_id integer NOT NULL,
-    description text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    user_id integer
-);
-
-
---
--- Name: study_enabler_barriers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE study_enabler_barriers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: study_enabler_barriers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE study_enabler_barriers_id_seq OWNED BY study_enabler_barriers.id;
 
 
 --
@@ -1014,13 +948,6 @@ ALTER TABLE ONLY documents ALTER COLUMN id SET DEFAULT nextval('documents_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY enabler_barriers ALTER COLUMN id SET DEFAULT nextval('enabler_barriers_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY erb_statuses ALTER COLUMN id SET DEFAULT nextval('erb_statuses_id_seq'::regclass);
 
 
@@ -1057,13 +984,6 @@ ALTER TABLE ONLY sent_alerts ALTER COLUMN id SET DEFAULT nextval('sent_alerts_id
 --
 
 ALTER TABLE ONLY studies ALTER COLUMN id SET DEFAULT nextval('studies_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY study_enabler_barriers ALTER COLUMN id SET DEFAULT nextval('study_enabler_barriers_id_seq'::regclass);
 
 
 --
@@ -1188,14 +1108,6 @@ ALTER TABLE ONLY documents
 
 
 --
--- Name: enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY enabler_barriers
-    ADD CONSTRAINT enabler_barriers_pkey PRIMARY KEY (id);
-
-
---
 -- Name: erb_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1241,14 +1153,6 @@ ALTER TABLE ONLY sent_alerts
 
 ALTER TABLE ONLY studies
     ADD CONSTRAINT studies_pkey PRIMARY KEY (id);
-
-
---
--- Name: study_enabler_barriers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY study_enabler_barriers
-    ADD CONSTRAINT study_enabler_barriers_pkey PRIMARY KEY (id);
 
 
 --
@@ -1483,13 +1387,6 @@ CREATE INDEX index_documents_on_user_id ON documents USING btree (user_id);
 
 
 --
--- Name: index_enabler_barriers_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_enabler_barriers_on_name ON enabler_barriers USING btree (name);
-
-
---
 -- Name: index_erb_statuses_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1599,27 +1496,6 @@ CREATE INDEX index_studies_study_topics_on_study_id ON studies_study_topics USIN
 --
 
 CREATE INDEX index_studies_study_topics_on_study_topic_id ON studies_study_topics USING btree (study_topic_id);
-
-
---
--- Name: index_study_enabler_barriers_on_enabler_barrier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_study_enabler_barriers_on_enabler_barrier_id ON study_enabler_barriers USING btree (enabler_barrier_id);
-
-
---
--- Name: index_study_enabler_barriers_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_study_enabler_barriers_on_study_id ON study_enabler_barriers USING btree (study_id);
-
-
---
--- Name: index_study_enabler_barriers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_study_enabler_barriers_on_user_id ON study_enabler_barriers USING btree (user_id);
 
 
 --
@@ -1854,14 +1730,6 @@ ALTER TABLE ONLY delivery_update_invites
 
 
 --
--- Name: fk_rails_4c9eefc8e4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY study_enabler_barriers
-    ADD CONSTRAINT fk_rails_4c9eefc8e4 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
 -- Name: fk_rails_4f82512c3f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1915,14 +1783,6 @@ ALTER TABLE ONLY delivery_update_invites
 
 ALTER TABLE ONLY study_impacts
     ADD CONSTRAINT fk_rails_72e4b2d4a3 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_81b054efe8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY study_enabler_barriers
-    ADD CONSTRAINT fk_rails_81b054efe8 FOREIGN KEY (enabler_barrier_id) REFERENCES enabler_barriers(id);
 
 
 --
@@ -2030,14 +1890,6 @@ ALTER TABLE ONLY documents
 
 
 --
--- Name: fk_rails_eb4617db9d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY study_enabler_barriers
-    ADD CONSTRAINT fk_rails_eb4617db9d FOREIGN KEY (study_id) REFERENCES studies(id);
-
-
---
 -- Name: fk_rails_fd8844a90c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2110,4 +1962,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160311152216');
 INSERT INTO schema_migrations (version) VALUES ('20160311153558');
 
 INSERT INTO schema_migrations (version) VALUES ('20160321105450');
+
+INSERT INTO schema_migrations (version) VALUES ('20160321172127');
 

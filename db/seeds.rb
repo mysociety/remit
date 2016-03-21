@@ -189,15 +189,6 @@ ImpactType.create(
   ]
 )
 
-# Enablers/Barriers
-EnablerBarrier.create(
-  [
-    { name: "Enablers/barriers to study delivery" },
-    { name: "Enablers/barriers to dissemination or uptake of results" },
-    { name: "Enablers/barriers to patient recruitment" },
-  ]
-)
-
 # Statuses for DeliveryUpdates
 DeliveryUpdateStatus.create(
   [

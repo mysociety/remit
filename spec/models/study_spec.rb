@@ -68,7 +68,6 @@ RSpec.describe Study, type: :model do
   it { is_expected.to belong_to(:principal_investigator).class_name(:User) }
   it { is_expected.to belong_to(:research_manager).class_name(:User) }
   it { is_expected.to have_and_belong_to_many(:study_topics) }
-  it { is_expected.to have_many(:study_enabler_barriers) }
   it { is_expected.to have_many(:study_impacts) }
   it { is_expected.to have_many(:disseminations) }
   it { is_expected.to have_many(:publications) }
@@ -1216,12 +1215,6 @@ RSpec.describe Study, type: :model do
     let!(:study_impacts) do
       FactoryGirl.create_list(:study_impact, 5, study: study_with_everything)
     end
-    let!(:enabler_barriers) do
-      FactoryGirl.create_list(
-        :study_enabler_barrier,
-        5,
-        study: study_with_everything)
-    end
 
     before do
       PublicActivity.enabled = true
@@ -1272,7 +1265,6 @@ RSpec.describe Study, type: :model do
         todays_date,
         "Local collaborators",
         "International collaborators",
-        "5",
         "5",
         "5",
         "5",

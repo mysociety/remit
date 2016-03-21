@@ -51,7 +51,6 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_many(:disseminations).inverse_of(:user) }
   it { is_expected.to have_many(:study_impacts).inverse_of(:user) }
   it { is_expected.to have_many(:study_notes).inverse_of(:user) }
-  it { is_expected.to have_many(:study_enabler_barriers).inverse_of(:user) }
   it { is_expected.to have_many(:sent_alerts).inverse_of(:user) }
   it do
     is_expected.to have_many(:created_study_invites).inverse_of(:inviting_user)

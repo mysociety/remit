@@ -78,7 +78,6 @@ class User < ActiveRecord::Base
   has_many :disseminations, inverse_of: :user
   has_many :study_impacts, inverse_of: :user
   has_many :study_notes, inverse_of: :user
-  has_many :study_enabler_barriers, inverse_of: :user
   has_many :created_study_invites, class_name: :StudyInvite,
                                    inverse_of: :inviting_user
   has_many :received_study_invites, class_name: :StudyInvite,
