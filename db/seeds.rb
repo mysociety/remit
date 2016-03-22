@@ -192,8 +192,8 @@ ImpactType.create(
 # Statuses for DeliveryUpdates
 DeliveryUpdateStatus.create(
   [
-    { name: "Progressing fine", good_medium_bad_or_neutral: "good" },
     { name: "Not started", good_medium_bad_or_neutral: "neutral" },
+    { name: "Progressing fine", good_medium_bad_or_neutral: "good" },
     { name: "Minor problems or delays", good_medium_bad_or_neutral: "medium" },
     { name: "Major problems or delays", good_medium_bad_or_neutral: "bad" },
     { name: "Completed", good_medium_bad_or_neutral: "neutral" }
