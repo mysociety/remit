@@ -151,6 +151,38 @@ ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
 
 
 --
+-- Name: collaborators; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE collaborators (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: collaborators_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE collaborators_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: collaborators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE collaborators_id_seq OWNED BY collaborators.id;
+
+
+--
 -- Name: delivery_update_invites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -632,6 +664,38 @@ CREATE TABLE studies_study_topics (
 
 
 --
+-- Name: study_collaborators; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE study_collaborators (
+    id integer NOT NULL,
+    study_id integer NOT NULL,
+    collaborator_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: study_collaborators_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE study_collaborators_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: study_collaborators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE study_collaborators_id_seq OWNED BY study_collaborators.id;
+
+
+--
 -- Name: study_impacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -896,6 +960,13 @@ ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY collaborators ALTER COLUMN id SET DEFAULT nextval('collaborators_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY delivery_update_invites ALTER COLUMN id SET DEFAULT nextval('delivery_update_invites_id_seq'::regclass);
 
 
@@ -987,6 +1058,13 @@ ALTER TABLE ONLY studies ALTER COLUMN id SET DEFAULT nextval('studies_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY study_collaborators ALTER COLUMN id SET DEFAULT nextval('study_collaborators_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY study_impacts ALTER COLUMN id SET DEFAULT nextval('study_impacts_id_seq'::regclass);
 
 
@@ -1046,6 +1124,14 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY activities
     ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: collaborators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY collaborators
+    ADD CONSTRAINT collaborators_pkey PRIMARY KEY (id);
 
 
 --
@@ -1150,6 +1236,14 @@ ALTER TABLE ONLY sent_alerts
 
 ALTER TABLE ONLY studies
     ADD CONSTRAINT studies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: study_collaborators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY study_collaborators
+    ADD CONSTRAINT study_collaborators_pkey PRIMARY KEY (id);
 
 
 --
@@ -1496,6 +1590,27 @@ CREATE INDEX index_studies_study_topics_on_study_topic_id ON studies_study_topic
 
 
 --
+-- Name: index_study_collaborators_on_collaborator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_collaborators_on_collaborator_id ON study_collaborators USING btree (collaborator_id);
+
+
+--
+-- Name: index_study_collaborators_on_study_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_study_collaborators_on_study_id ON study_collaborators USING btree (study_id);
+
+
+--
+-- Name: index_study_collaborators_on_study_id_and_collaborator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_study_collaborators_on_study_id_and_collaborator_id ON study_collaborators USING btree (study_id, collaborator_id);
+
+
+--
 -- Name: index_study_impacts_on_impact_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1671,6 +1786,14 @@ ALTER TABLE ONLY study_invites
 
 
 --
+-- Name: fk_rails_288a35645b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_collaborators
+    ADD CONSTRAINT fk_rails_288a35645b FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
 -- Name: fk_rails_2a4fa11b2b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1796,6 +1919,14 @@ ALTER TABLE ONLY studies_study_topics
 
 ALTER TABLE ONLY study_impacts
     ADD CONSTRAINT fk_rails_84b1d4daed FOREIGN KEY (study_id) REFERENCES studies(id);
+
+
+--
+-- Name: fk_rails_85cdabbd40; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY study_collaborators
+    ADD CONSTRAINT fk_rails_85cdabbd40 FOREIGN KEY (collaborator_id) REFERENCES collaborators(id);
 
 
 --
@@ -1965,4 +2096,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160321172127');
 INSERT INTO schema_migrations (version) VALUES ('20160321174435');
 
 INSERT INTO schema_migrations (version) VALUES ('20160321181326');
+
+INSERT INTO schema_migrations (version) VALUES ('20160322074054');
 
