@@ -1,3 +1,8 @@
+.add-outputs__thanks {
+  color: $color-dark-blue;
+  margin-bottom: 1em;
+}
+
 .add-outputs__title {
   color: $color-dark-blue;
   margin-bottom: 1em;
@@ -24,6 +29,20 @@
 
   .study-header__details__value {
     margin-bottom: 0;
+  }
+}
+
+// Can be a link on the "There are X more studies you need to update" page!
+a.add-outputs__study {
+  display: block;
+
+  &:hover, &:focus {
+    background-color: lighten($color-dark-blue, 10%);
+    color: $color-white;
+
+    .site-header__title h1 {
+      text-decoration: underline;
+    }
   }
 }
 

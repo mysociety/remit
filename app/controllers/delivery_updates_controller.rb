@@ -49,35 +49,16 @@ class DeliveryUpdatesController < ApplicationController
   end
 
   def set_success_message
-    msg = "Delivery update created successfully.<br><br>"
     if pending_updates.any?
-      msg += pending_updates_message(pending_updates)
+      @invites = pending_updates
     else
-      msg += "You don't have any more studies you need to update!"
+      @invites = []
     end
-    flash.now[:notice] = msg.html_safe
-  end
-
-  def pending_updates_message(pending_updates)
-    msg = "You've also got the following studies you need to update:"
-    pending_updates.each do |invite|
-      msg += "<br><a href=\"#{pending_invite_link(invite)}\">" \
-             "#{invite.study.title.truncate(30)}</a>"
-    end
-    msg
   end
 
   def set_error_message
     flash.now[:alert] = "Sorry, looks like we're missing something, can you " \
                         "double check?"
-  end
-
-  def pending_invite_link(invite)
-    if @invite_token
-      "#{new_study_delivery_update_path(invite.study)}?token=#{@invite_token}"
-    else
-      "#{new_study_delivery_update_path(invite.study)}"
-    end
   end
 
   def pending_updates

@@ -11,7 +11,7 @@
         <h4 class="add-outputs__title">Add dissemination or impact for:</h4>
         <div class="add-outputs__study">
             <div class="study-header">
-                <%= render partial: "studies/header_primary" %>
+                <%= render partial: "studies/header_primary", :locals => {:study => @study} %>
             </div>
         </div>
 
