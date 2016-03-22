@@ -6,6 +6,11 @@ require "support/shared_examples/controllers/study_management_access_control"
 RSpec.describe DeliveryUpdatesController, type: :controller do
   let(:pi) { FactoryGirl.create(:user) }
   let(:study) { FactoryGirl.create(:study, principal_investigator: pi) }
+  let!(:not_started) { FactoryGirl.create(:not_started) }
+  let(:status) do
+    DeliveryUpdateStatus.find_by_name("Progressing fine") || \
+      FactoryGirl.create(:delivery_update_status)
+  end
 
   describe "#new" do
     before do
@@ -20,6 +25,51 @@ RSpec.describe DeliveryUpdatesController, type: :controller do
     it "sets @study" do
       get :new, study_id: study.id
       expect(assigns[:study]).to eq study
+    end
+
+    context "when there's no previous update" do
+      it "sets @selected_data_analysis_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_data_analysis_status]).to be_nil
+      end
+
+      it "sets @selected_data_collection_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_data_collection_status]).to be_nil
+      end
+
+      it "sets @selected_write_up_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_write_up_status]).to be_nil
+      end
+    end
+
+    context "when there's a previous update" do
+      let!(:previous_update) do
+        FactoryGirl.create(:delivery_update,
+                           study: study,
+                           data_analysis_status: not_started,
+                           data_collection_status: not_started,
+                           interpretation_and_write_up_status: not_started)
+      end
+
+      it "sets @selected_data_analysis_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_data_analysis_status]).to(
+          eq(previous_update.data_analysis_status.id))
+      end
+
+      it "sets @selected_data_collection_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_data_collection_status]).to(
+          eq(previous_update.data_collection_status.id))
+      end
+
+      it "sets @selected_write_up_status" do
+        get :new, study_id: study.id
+        expect(assigns[:selected_write_up_status]).to(
+          eq(previous_update.interpretation_and_write_up_status.id))
+      end
     end
 
     describe "access control" do
@@ -46,7 +96,6 @@ RSpec.describe DeliveryUpdatesController, type: :controller do
   end
 
   describe "#create" do
-    let(:status) { FactoryGirl.create(:delivery_update_status) }
     let(:valid_attributes) do
       {
         study_id: study.id,
@@ -146,6 +195,96 @@ RSpec.describe DeliveryUpdatesController, type: :controller do
         post :create, invalid_attributes
         expect(flash[:alert]).to eq "Sorry, looks like we're missing " \
                                     "something, can you double check?"
+      end
+
+      context "when there's no previous update" do
+        it "sets @selected_data_analysis_status from the supplied data" do
+          attributes = valid_attributes.clone
+          attributes[:delivery_update][:data_collection_status_id] = nil
+          post :create, attributes
+          expect(assigns[:selected_data_analysis_status]).to(
+            eq(status.id))
+        end
+
+        it "sets @selected_data_collection_status from the supplied data" do
+          attributes = valid_attributes.clone
+          attributes[:delivery_update][:data_analysis_status_id] = nil
+          post :create, attributes
+          expect(assigns[:selected_data_collection_status]).to(
+            eq(status.id))
+        end
+
+        it "sets @selected_write_up_status from the supplied data" do
+          attributes = valid_attributes.clone
+          attributes[:delivery_update][:data_collection_status_id] = nil
+          post :create, attributes
+          expect(assigns[:selected_write_up_status]).to(
+            eq(status.id))
+        end
+      end
+
+      context "when there's a previous update" do
+        let!(:previous_update) do
+          FactoryGirl.create(:delivery_update,
+                             study: study,
+                             data_analysis_status: not_started,
+                             data_collection_status: not_started,
+                             interpretation_and_write_up_status: not_started)
+        end
+
+        context "and the user has made a selection" do
+          it "sets @selected_data_analysis_status from the user" do
+            attributes = valid_attributes.clone
+            attributes[:delivery_update][:data_collection_status_id] = nil
+            post :create, attributes
+            expect(assigns[:selected_data_analysis_status]).to(
+              eq(status.id))
+          end
+
+          it "sets @selected_data_collection_status from the user" do
+            attributes = valid_attributes.clone
+            attributes[:delivery_update][:data_analysis_status_id] = nil
+            post :create, attributes
+            expect(assigns[:selected_data_collection_status]).to(
+              eq(status.id))
+          end
+
+          it "sets @selected_write_up_status from the users" do
+            attributes = valid_attributes.clone
+            attributes[:delivery_update][:data_collection_status_id] = nil
+            post :create, attributes
+            expect(assigns[:selected_write_up_status]).to(
+              eq(status.id))
+          end
+        end
+
+        context "and the user hasn't made a selection" do
+          it "sets @selected_data_analysis_status from the previous" do
+            attributes = valid_attributes.clone
+            attributes[:delivery_update][:data_analysis_status_id] = nil
+            post :create, attributes
+            expect(assigns[:selected_data_analysis_status]).to(
+              eq(previous_update.data_analysis_status.id))
+          end
+
+          it "sets @selected_data_collection_status from the previous" do
+            attributes = valid_attributes.clone
+            attributes[:delivery_update][:data_collection_status_id] = nil
+            post :create, attributes
+            expect(assigns[:selected_data_collection_status]).to(
+              eq(previous_update.data_collection_status.id))
+          end
+
+          it "sets @selected_write_up_status from the previous" do
+            attributes = valid_attributes.clone
+            # rubocop:disable Metrics/LineLength
+            attributes[:delivery_update][:interpretation_and_write_up_status_id] = nil
+            # rubocop:enable Metrics/LineLength
+            post :create, attributes
+            expect(assigns[:selected_write_up_status]).to(
+              eq(previous_update.interpretation_and_write_up_status.id))
+          end
+        end
       end
     end
 

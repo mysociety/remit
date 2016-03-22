@@ -34,15 +34,21 @@
             <div class="row">
               <div class="col-sm-4">
                 <%= f.label :data_collection_status_id, "Data collection" %>
-                <%= f.collection_select :data_collection_status_id, DeliveryUpdateStatus.all, :id, :name %>
+                <%= f.collection_select :data_collection_status_id,
+                                        DeliveryUpdateStatus.all, :id, :name,
+                                        { selected: @selected_data_analysis_status } %>
               </div>
               <div class="col-sm-4">
                 <%= f.label :data_analysis_status_id, "Data analysis" %>
-                <%= f.collection_select :data_analysis_status_id, DeliveryUpdateStatus.all, :id, :name %>
+                <%= f.collection_select :data_analysis_status_id,
+                                        DeliveryUpdateStatus.all, :id, :name,
+                                        { selected: @selected_data_collection_status } %>
               </div>
               <div class="col-sm-4">
                 <%= f.label :interpretation_and_write_up_status_id, "Interpretation and write up" %>
-                <%= f.collection_select :interpretation_and_write_up_status_id, DeliveryUpdateStatus.all, :id, :name %>
+                <%= f.collection_select :interpretation_and_write_up_status_id,
+                                        DeliveryUpdateStatus.all, :id, :name,
+                                        { selected: @selected_write_up_status } %>
               </div>
             </div>
             <div class="row">

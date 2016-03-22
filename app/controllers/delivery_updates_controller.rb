@@ -5,10 +5,12 @@ class DeliveryUpdatesController < ApplicationController
   before_action :check_user_can_contribute_to_study, only: [:new, :create]
 
   def new
+    set_selected_statuses
   end
 
   def create
     build_delivery_update
+    set_selected_statuses
     if @delivery_update.save
       connect_update_to_invites
       set_pending_invites
@@ -19,6 +21,61 @@ class DeliveryUpdatesController < ApplicationController
   end
 
   private
+
+  def set_selected_statuses
+    set_previous_update
+    data_analysis_status = nil
+    data_collection_status = nil
+    write_up_status = nil
+    if @delivery_update
+      if @delivery_update.data_analysis_status.present?
+        data_analysis_status = @delivery_update.data_analysis_status
+      end
+      if @delivery_update.data_collection_status.present?
+        data_collection_status = @delivery_update.data_collection_status
+      end
+      if @delivery_update.interpretation_and_write_up_status.present?
+        write_up_status = @delivery_update.interpretation_and_write_up_status
+      end
+    end
+    set_selected_data_analysis_status(data_analysis_status)
+    set_selected_data_collection_status(data_collection_status)
+    set_selected_write_up_status(write_up_status)
+  end
+
+  def set_selected_data_analysis_status(current_status)
+    @selected_data_analysis_status = nil
+    if @previous_update && current_status.blank?
+      previous_status = @previous_update.data_analysis_status
+      @selected_data_analysis_status = previous_status.id
+    elsif current_status.present?
+      @selected_data_analysis_status = current_status.id
+    end
+  end
+
+  def set_selected_data_collection_status(current_status)
+    @selected_data_collection_status = nil
+    if @previous_update && current_status.blank?
+      previous_status = @previous_update.data_collection_status
+      @selected_data_collection_status = previous_status.id
+    elsif current_status.present?
+      @selected_data_collection_status = current_status.id
+    end
+  end
+
+  def set_selected_write_up_status(current_status)
+    @selected_write_up_status = nil
+    if @previous_update && current_status.blank?
+      previous_status = @previous_update.interpretation_and_write_up_status
+      @selected_write_up_status = previous_status.id
+    elsif current_status.present?
+      @selected_write_up_status = current_status.id
+    end
+  end
+
+  def set_previous_update
+    @previous_update = @study.latest_delivery_update
+  end
 
   def build_delivery_update
     @delivery_update = DeliveryUpdate.new(delivery_update_params)
