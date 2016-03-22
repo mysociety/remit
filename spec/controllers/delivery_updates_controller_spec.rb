@@ -103,53 +103,17 @@ RSpec.describe DeliveryUpdatesController, type: :controller do
                                                       study: study3)
         end
 
-        it "sets a flash message with links to update each study" do
+        it "sets @pending_invites" do
           post :create, valid_attributes
-          expected_message = "Delivery update created successfully.<br><br>" \
-                             "You've also got the following studies you need" \
-                             " to update:<br><a href=\"" \
-                             "#{new_study_delivery_update_path(study2)}\">" \
-                             "#{study2.title.truncate(30)}</a>" \
-                             "<br><a href=\"" \
-                             "#{new_study_delivery_update_path(study3)}\">" \
-                             "#{study3.title.truncate(30)}</a>"
-          expect(flash[:notice]).to eq expected_message
-        end
-
-        context "and the user is using an invite token" do
-          let!(:study_invite) do
-            FactoryGirl.create(:delivery_update_invite, invited_user: pi,
-                                                        study: study)
-          end
-
-          before do
-            sign_out :user
-          end
-
-          it "includes their invite_token in the flash message links" do
-            attributes = valid_attributes.merge(token: pi.delivery_update_token)
-            post :create, attributes
-            expected_message = "Delivery update created successfully.<br><br>" \
-                               "You've also got the following studies you " \
-                               "need to update:<br><a href=\"" \
-                               "#{new_study_delivery_update_path(study2)}?" \
-                               "token=#{pi.delivery_update_token}\">" \
-                               "#{study2.title.truncate(30)}</a>" \
-                               "<br><a href=\"" \
-                               "#{new_study_delivery_update_path(study3)}?" \
-                               "token=#{pi.delivery_update_token}\">" \
-                               "#{study3.title.truncate(30)}</a>"
-            expect(flash[:notice]).to eq expected_message
-          end
+          expect(assigns[:pending_invites]).to(
+            match_array([study2_invite, study3_invite]))
         end
       end
 
       context "when the user has no more studies to update" do
-        it "sets a flash message to say the user is all done" do
+        it "sends @pending_invites to an empty array" do
           post :create, valid_attributes
-          expect(flash[:notice]).to eq "Delivery update created successfully." \
-                                       "<br><br>You don't have any more " \
-                                       "studies you need to update!"
+          expect(assigns[:pending_invites]).to be_empty
         end
       end
 
