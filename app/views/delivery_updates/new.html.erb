@@ -93,11 +93,13 @@
           <% end %>
         <% else %>
           <p>You don't have more updates to complete.</p>
-          <p>
-            <%= link_to "Back to your studies",
-                         user_studies_path(current_user),
-                         class: "btn btn-primary" %>
-          </p>
+          <% if current_user.present? %>
+            <p>
+              <%= link_to "Back to your studies",
+                           user_studies_path(user_id: current_user.id),
+                           class: "btn btn-primary" %>
+            </p>
+          <% end %>
         <% end %>
       <% end %>
     </div>
