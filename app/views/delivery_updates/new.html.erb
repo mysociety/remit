@@ -79,21 +79,26 @@
             <h4 class="add-outputs__title">There are <%= @pending_invites.size %> more studies you need to update:</h4>
           <% end %>
 
-            <% @pending_invites.each do |invite| %>
-              <% if @invite_token %>
-                <% invite_link = "#{new_study_delivery_update_path(invite.study)}?token=#{@invite_token}" %>
-              <% else %>
-                <% invite_link = new_study_delivery_update_path(invite.study) %>
-              <% end %>
-              <a class="add-outputs__study" href="<%= invite_link %>">
-                  <div class="study-header">
-                      <%= render partial: "studies/header_primary", :locals => {:study => invite.study, :no_links => true} %>
-                  </div>
-              </a>
+          <% @pending_invites.each do |invite| %>
+            <% if @invite_token %>
+              <% invite_link = "#{new_study_delivery_update_path(invite.study)}?token=#{@invite_token}" %>
+            <% else %>
+              <% invite_link = new_study_delivery_update_path(invite.study) %>
+            <% end %>
+            <a class="add-outputs__study" href="<%= invite_link %>">
+              <div class="study-header">
+                <%= render partial: "studies/header_primary", :locals => {:study => invite.study, :no_links => true} %>
+              </div>
+            </a>
           <% end %>
+        <% else %>
+          <p>You don't have more updates to complete.</p>
+          <p>
+            <%= link_to "Back to your studies",
+                         user_studies_path(current_user),
+                         class: "btn btn-primary" %>
+          </p>
         <% end %>
-
       <% end %>
-
     </div>
 </div>
