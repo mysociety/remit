@@ -20,6 +20,7 @@ ActiveAdmin.register Study do
   filter :principal_investigator
   filter :research_manager
   filter :concept_paper_date
+  filter :collaborators
 
   scope :all, default: true
   Study::STUDY_STAGE_LABELS.each do |stage, label|
