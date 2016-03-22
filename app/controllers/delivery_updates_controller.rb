@@ -11,7 +11,7 @@ class DeliveryUpdatesController < ApplicationController
     build_delivery_update
     if @delivery_update.save
       connect_update_to_invites
-      set_success_message
+      set_pending_invites
     else
       set_error_message
     end
@@ -48,11 +48,11 @@ class DeliveryUpdatesController < ApplicationController
     # rubocop:enable Metrics/LineLength
   end
 
-  def set_success_message
-    if pending_updates.any?
-      @invites = pending_updates
+  def set_pending_invites
+    if pending_invites.any?
+      @pending_invites = pending_invites
     else
-      @invites = []
+      @pending_invites = []
     end
   end
 
@@ -61,7 +61,7 @@ class DeliveryUpdatesController < ApplicationController
                         "double check?"
   end
 
-  def pending_updates
+  def pending_invites
     # Check for any other updates they should be creating
     pending_updates_sql = <<-SQL
       invited_user_id = ?

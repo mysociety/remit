@@ -66,14 +66,14 @@
 
         <h3 class="add-outputs__thanks">Thank you for your delivery update!</h3>
 
-        <% if @invites.any? %>
-          <% if @invites.size == 1 %>
+        <% if @pending_invites.any? %>
+          <% if @pending_invites.size == 1 %>
             <h4 class="add-outputs__title">There is one more study you need to update:</h4>
           <% else %>
-            <h4 class="add-outputs__title">There are <%= @invites.size %> more studies you need to update:</h4>
+            <h4 class="add-outputs__title">There are <%= @pending_invites.size %> more studies you need to update:</h4>
           <% end %>
 
-            <% @invites.each do |invite| %>
+            <% @pending_invites.each do |invite| %>
               <% if @invite_token %>
                 <% invite_link = "#{new_study_delivery_update_path(invite.study)}?token=#{@invite_token}" %>
               <% else %>
