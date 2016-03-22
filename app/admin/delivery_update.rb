@@ -3,7 +3,7 @@ ActiveAdmin.register DeliveryUpdate do
                 :data_collection_status_id,
                 :interpretation_and_write_up_status_id, :user_id, :comments
 
-  menu priority: 3
+  menu parent: "Delivery updates"
 
   filter :study
   filter :user

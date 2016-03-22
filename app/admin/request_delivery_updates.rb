@@ -1,4 +1,6 @@
 ActiveAdmin.register_page "Request delivery updates" do
+  menu parent: "Delivery updates"
+
   page_action :send_requests, method: :post do
     User.pis_with_studies_in_delivery.each do |user|
       invites = []

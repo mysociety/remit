@@ -2,7 +2,7 @@ ActiveAdmin.register DeliveryUpdateInvite do
   permit_params :study_id, :invited_user_id, :inviting_user_id,
                 :delivery_update_id
 
-  menu priority: 3
+  menu parent: "Delivery updates"
 
   filter :study
   filter :invited_user
