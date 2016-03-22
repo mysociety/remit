@@ -1210,6 +1210,7 @@ RSpec.describe Study, type: :model do
     let!(:study_impacts) do
       FactoryGirl.create_list(:study_impact, 5, study: study_with_everything)
     end
+    let!(:collaborators) { FactoryGirl.create_list(:collaborator, 5) }
 
     before do
       PublicActivity.enabled = true
@@ -1221,6 +1222,10 @@ RSpec.describe Study, type: :model do
       study_with_everything.study_stage = :completion
       study_with_everything.save!
       study_with_everything.study_stage = :withdrawn_postponed
+      study_with_everything.save!
+
+      # Add the collaborators
+      study_with_everything.collaborators = collaborators
       study_with_everything.save!
     end
 
@@ -1258,6 +1263,7 @@ RSpec.describe Study, type: :model do
         todays_date,
         todays_date,
         todays_date,
+        collaborators.map(&:name).to_sentence,
         "5",
         "5",
         "5",
