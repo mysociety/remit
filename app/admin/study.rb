@@ -4,11 +4,12 @@ ActiveAdmin.register Study do
                 :protocol_needed, :pre_approved_protocol, :erb_status_id,
                 :erb_submitted, :erb_approved,
                 :erb_reference, :erb_approval_expiry, :local_erb_submitted,
-                :local_erb_approved, :completed, :local_collaborators,
-                :international_collaborators, :other_study_type,
+                :local_erb_approved, :completed, :other_study_type,
                 :principal_investigator_id, :research_manager_id,
                 :expected_completion_date, :hidden,
-                country_codes: [], study_topic_ids: []
+                country_codes: [], study_topic_ids: [],
+                collaborator_ids: [],
+                collaborator_attributes: [:id, :name, :description]
 
   menu priority: 1
 
@@ -19,6 +20,7 @@ ActiveAdmin.register Study do
   filter :principal_investigator
   filter :research_manager
   filter :concept_paper_date
+  filter :collaborators
 
   scope :all, default: true
   Study::STUDY_STAGE_LABELS.each do |stage, label|
@@ -56,11 +58,10 @@ ActiveAdmin.register Study do
       f.input :local_erb_submitted
       f.input :local_erb_approved
       f.input :erb_approval_expiry
-      f.input :local_collaborators
-      f.input :international_collaborators
       f.input :completed
       f.input :hidden, hint: "Check this box to hide the study from people " \
                              "who aren't logged in"
+      f.input :collaborators
     end
     f.actions
   end

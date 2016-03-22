@@ -44,10 +44,6 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:local_erb_submitted).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_approved).of_type(:date) }
   it { is_expected.to have_db_column(:completed).of_type(:date) }
-  it { is_expected.to have_db_column(:local_collaborators).of_type(:text) }
-  it do
-    is_expected.to have_db_column(:international_collaborators).of_type(:text)
-  end
   it { is_expected.to have_db_column(:other_study_type).of_type(:text) }
   it do
     is_expected.to have_db_column(:principal_investigator_id).of_type(:integer)
@@ -80,6 +76,8 @@ RSpec.describe Study, type: :model do
     is_expected.to have_many(:delivery_update_invited_users).
       through(:delivery_update_invites)
   end
+  it { is_expected.to have_many(:study_collaborators).inverse_of(:study) }
+  it { is_expected.to have_many(:collaborators).through(:study_collaborators) }
 
   # Validation
   it { is_expected.to validate_presence_of(:study_stage) }
@@ -1190,9 +1188,7 @@ RSpec.describe Study, type: :model do
         erb_approved: today,
         erb_approval_expiry: today,
         local_erb_submitted: today,
-        local_erb_approved: today,
-        local_collaborators: "Local collaborators",
-        international_collaborators: "International collaborators")
+        local_erb_approved: today)
     end
     let!(:notes) do
       FactoryGirl.create_list(:study_note, 5, study: study_with_everything)
@@ -1214,6 +1210,7 @@ RSpec.describe Study, type: :model do
     let!(:study_impacts) do
       FactoryGirl.create_list(:study_impact, 5, study: study_with_everything)
     end
+    let!(:collaborators) { FactoryGirl.create_list(:collaborator, 5) }
 
     before do
       PublicActivity.enabled = true
@@ -1225,6 +1222,10 @@ RSpec.describe Study, type: :model do
       study_with_everything.study_stage = :completion
       study_with_everything.save!
       study_with_everything.study_stage = :withdrawn_postponed
+      study_with_everything.save!
+
+      # Add the collaborators
+      study_with_everything.collaborators = collaborators
       study_with_everything.save!
     end
 
@@ -1262,8 +1263,7 @@ RSpec.describe Study, type: :model do
         todays_date,
         todays_date,
         todays_date,
-        "Local collaborators",
-        "International collaborators",
+        collaborators.map(&:name).to_sentence,
         "5",
         "5",
         "5",
