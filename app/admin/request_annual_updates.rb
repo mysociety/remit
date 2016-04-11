@@ -1,4 +1,6 @@
 ActiveAdmin.register_page "Request annual updates" do
+  menu parent: "Study Invites"
+
   page_action :send_requests, method: :post do
     # We're going to create lots of invites, but they send an email on save
     # and we only want to send one email per user, so turn off the callbacks
