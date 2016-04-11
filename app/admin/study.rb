@@ -21,6 +21,7 @@ ActiveAdmin.register Study do
   filter :research_manager
   filter :concept_paper_date
   filter :collaborators
+  filter :hidden
 
   scope :all, default: true
   Study::STUDY_STAGE_LABELS.each do |stage, label|
