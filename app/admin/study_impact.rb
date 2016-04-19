@@ -7,4 +7,13 @@ ActiveAdmin.register StudyImpact do
   filter :user
   filter :impact_type_id
   filter :created_at
+
+  index do
+    selectable_column
+    column :impact_type
+    column :study
+    column :user
+    column :created_at
+    actions
+  end
 end

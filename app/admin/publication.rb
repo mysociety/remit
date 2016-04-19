@@ -21,4 +21,14 @@ ActiveAdmin.register Publication do
     end
     f.actions
   end
+
+  index do
+    selectable_column
+    column :article_title
+    column :book_or_journal_title
+    column :study
+    column :user
+    column :created_at
+    actions
+  end
 end

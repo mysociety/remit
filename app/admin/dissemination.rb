@@ -8,4 +8,13 @@ ActiveAdmin.register Dissemination do
   filter :user
   filter :created_at
   filter :dissemination_category
+
+  index do
+    selectable_column
+    column :dissemination_category
+    column :study
+    column :user
+    column :created_at
+    actions
+  end
 end

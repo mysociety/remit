@@ -5,6 +5,15 @@ ActiveAdmin.register StudyInvite do
 
   filter :study
   filter :inviting_user
-  filter :invited_user_id
+  filter :invited_user
   filter :created_at
+
+  index do
+    selectable_column
+    column :invited_user
+    column :study
+    column :inviting_user
+    column :created_at
+    actions
+  end
 end

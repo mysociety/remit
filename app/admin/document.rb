@@ -21,12 +21,11 @@ ActiveAdmin.register Document do
 
   index do
     selectable_column
-    column :document_type
     column :document_file_name
-    column :user
+    column :document_type
     column :study
+    column :user
     column :created_at
-    column :updated_at
     actions
   end
 end
