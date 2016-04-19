@@ -21,5 +21,8 @@
       </tr>
     </tbody>
   </table>
+  <% unless delivery_update.comments.blank? %>
+    <p><%= delivery_update.comments %></p>
+  <% end %>
   <p class="delivery-update__time">Delivery status updated <%= time_ago_in_words(delivery_update.created_at) %> ago</p>
 <% end %>
