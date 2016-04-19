@@ -8,4 +8,15 @@ ActiveAdmin.register DeliveryUpdate do
   filter :study
   filter :user
   filter :created
+
+  index do
+    selectable_column
+    column :study
+    column :user
+    column :data_collection_status
+    column :data_analysis_status
+    column :interpretation_and_write_up_status
+    column :created_at
+    actions
+  end
 end
