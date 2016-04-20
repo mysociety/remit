@@ -6,6 +6,14 @@ ActiveAdmin.register DeliveryUpdate do
   menu parent: "Delivery updates"
 
   filter :study
+  filter(
+    :study_study_stage,
+    as: :select,
+    collection: Study::STUDY_STAGE_OPTIONS.dup.except("Archived"),
+    label: "Study Stage")
+  filter :data_collection_status
+  filter :data_analysis_status
+  filter :interpretation_and_write_up_status
   filter :user
   filter :created
 
