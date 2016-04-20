@@ -13,7 +13,11 @@ ActiveAdmin.register Study do
 
   menu priority: 1
 
-  filter :study_stage
+  filter(
+    :study_stage,
+    as: :select,
+    collection: Study::STUDY_STAGE_OPTIONS.dup.except("Archived"),
+    label: "Study Stage")
   filter :study_topics
   filter :study_type
   filter :erb_status
@@ -24,9 +28,12 @@ ActiveAdmin.register Study do
   filter :hidden
 
   scope :all, default: true
-  Study::STUDY_STAGE_LABELS.each do |stage, label|
-    scope label, stage
-  end
+  scope "Active", :active
+  scope "Archived", :archived
+  scope "ERB Overdue", :erb_approval_expiring
+  scope "ERB Expiring", :erb_approval_expiring
+  scope "Delivery Delayed", :delivery_delayed
+  scope "Delayed Completing", :delayed_completing
 
   form do |f|
     f.inputs "Details" do
