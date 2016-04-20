@@ -9,16 +9,19 @@ RSpec.describe DeliveryUpdateInviteMailer, type: :mailer do
     let(:study1) do
       FactoryGirl.create(:study, principal_investigator: user,
                                  reference_number: "STUDY1",
+                                 title: "Study 1 Title",
                                  id: 1)
     end
     let(:study2) do
       FactoryGirl.create(:study, principal_investigator: user,
                                  reference_number: "STUDY2",
+                                 title: "Study 2 Title",
                                  id: 2)
     end
     let(:study3) do
       FactoryGirl.create(:study, principal_investigator: user,
                                  reference_number: "STUDY3",
+                                 title: "Study 3 Title",
                                  id: 3)
     end
     let!(:invite1) do
