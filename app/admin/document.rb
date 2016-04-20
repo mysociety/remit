@@ -23,7 +23,12 @@ ActiveAdmin.register Document do
     selectable_column
     column :document_file_name
     column :document_type
-    column :study
+    column "Study Ref" do |instance|
+      instance.study.reference_number
+    end
+    column "Study Title" do |instance|
+      instance.study.title
+    end
     column :user
     column :created_at
     actions

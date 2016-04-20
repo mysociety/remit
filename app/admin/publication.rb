@@ -26,7 +26,12 @@ ActiveAdmin.register Publication do
     selectable_column
     column :article_title
     column :book_or_journal_title
-    column :study
+    column "Study Ref" do |instance|
+      instance.study.reference_number
+    end
+    column "Study Title" do |instance|
+      instance.study.title
+    end
     column :user
     column :created_at
     actions

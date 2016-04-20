@@ -12,7 +12,12 @@ ActiveAdmin.register Dissemination do
   index do
     selectable_column
     column :dissemination_category
-    column :study
+    column "Study Ref" do |instance|
+      instance.study.reference_number
+    end
+    column "Study Title" do |instance|
+      instance.study.title
+    end
     column :user
     column :created_at
     actions

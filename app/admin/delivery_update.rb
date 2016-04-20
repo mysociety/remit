@@ -11,7 +11,12 @@ ActiveAdmin.register DeliveryUpdate do
 
   index do
     selectable_column
-    column :study
+    column "Study Ref" do |instance|
+      instance.study.reference_number
+    end
+    column "Study Title" do |instance|
+      instance.study.title
+    end
     column :user
     column :data_collection_status
     column :data_analysis_status

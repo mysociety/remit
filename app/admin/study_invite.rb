@@ -11,7 +11,12 @@ ActiveAdmin.register StudyInvite do
   index do
     selectable_column
     column :invited_user
-    column :study
+    column "Study Ref" do |instance|
+      instance.study.reference_number
+    end
+    column "Study Title" do |instance|
+      instance.study.title
+    end
     column :inviting_user
     column :created_at
     actions
