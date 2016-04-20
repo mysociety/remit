@@ -78,7 +78,10 @@ RSpec.shared_examples_for "study listing controller" do
         if params[:user_id].blank?
           expected_studies = Study.all.last(10)
         else
-          pi_studies = Study.where(principal_investigator_id: params[:user_id])
+          sql = <<-SQL
+            principal_investigator_id = ? OR research_manager_id = ?
+          SQL
+          pi_studies = Study.where(sql, params[:user_id], params[:user_id])
           expected_studies = pi_studies.last(10)
         end
         expect(assigns[:studies]).to match_array expected_studies

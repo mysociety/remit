@@ -9,7 +9,10 @@ class StudiesController < ApplicationController
 
   def index
     # rubocop:disable Style/MultilineOperationIndentation
-    @studies = get_filtered_studies.where(principal_investigator_id: @user.id).
+    sql = <<-SQL
+      principal_investigator_id = ? OR research_manager_id = ?
+    SQL
+    @studies = get_filtered_studies.where(sql, @user.id, @user.id).
                                     order(@ordering)
     # rubocop:enable Style/MultilineOperationIndentation
     respond_to do |format|
