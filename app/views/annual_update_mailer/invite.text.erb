@@ -1,0 +1,19 @@
+<% message.subject = "It's time to submit your annual #{'update'.pluralize(@studies.count)} on ReMIT" %>
+Hi <%= @user.name %>,
+
+It's time to submit your annual <%= "update".pluralize(@studies.count) %> on ReMIT.
+
+You can access all your studies on your dashboard:
+
+<%= user_studies_url(@user) %>
+
+Or, if you want to go straight to adding impact directly, you can use these
+links:
+
+<% @invites.each do |invite| %>
+<%= invite.study.reference_number %> - <%= "#{study_outputs_new_url(invite.study)}?token=#{@user.invite_token}" %>
+<% end %>
+
+Many thanks,
+
+MSF ReMIT team.

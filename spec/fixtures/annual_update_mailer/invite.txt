@@ -1,0 +1,17 @@
+Hi Test User,
+
+It's time to submit your annual updates on ReMIT.
+
+You can access all your studies on your dashboard:
+
+http://www.example.com/users/999/studies
+
+Or, if you want to go straight to adding impact directly, you can use these
+links:
+
+ABC123 - http://www.example.com/studies/1/outputs/new?token=invite-token
+ABC124 - http://www.example.com/studies/2/outputs/new?token=invite-token
+
+Many thanks,
+
+MSF ReMIT team.

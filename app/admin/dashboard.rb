@@ -7,6 +7,9 @@ ActiveAdmin.register_page "Dashboard" do
   action_item :request_delivery_updates do
     link_to "Request delivery updates", admin_request_delivery_updates_path
   end
+  action_item :request_delivery_updates do
+    link_to "Request annual updates", admin_request_annual_updates_path
+  end
 
   content title: proc { I18n.t("active_admin.dashboard") } do
     columns do
