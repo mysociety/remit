@@ -43,4 +43,10 @@ Rails.application.configure do
 
   # Allow people coming from vagrant host to access the web console
   config.web_console.whitelisted_ips = "10.0.2.2"
+
+  # Use mailcatcher if the config says so
+  if config.x.mailcatcher
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = { address: "localhost", port: 1025 }
+  end
 end

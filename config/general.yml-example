@@ -13,13 +13,16 @@ development:
   port: 3000
   # What address will emails be sent from?
   from_email: 'do-not-reply@localhost'
+  # Should we use mailcatcher?
+  mailcatcher: true
 
 test:
   hostname: www.example.com
-  # What address will emails be sent from?
   from_email: 'do-not-reply@example.com'
+  mailcatcher: false
 
 production:
   # Change these in production
   hostname: localhost
   from_email: 'do-not-reply@localhost'
+  mailcatcher: false

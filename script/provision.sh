@@ -41,6 +41,11 @@ echo "CREATE ROLE remit WITH PASSWORD 'password' CREATEDB LOGIN" | sudo -u postg
 cd /vagrant
 bundle install
 
+# Install mailcatcher (we don't want to install this on a dev vhost, hence why
+# it's not in the Gemfile)
+sudo gem install --no-rdoc --no-ri --version "< 3" mime-types
+sudo gem install --no-rdoc --no-ri --conservative mailcatcher
+
 # Setup the site config files
 # cp config/carrierwave.yml-example config/carrierwave.yml
 # cp config/exception_notification.yml-example config/exception_notification.yml

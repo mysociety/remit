@@ -40,4 +40,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.cpus = 2
   end
 
+  # Start mailcatcher every time we start the VM
+  config.vm.provision "shell", run: "always" do |s|
+    s.inline = <<-SHELL
+      mailcatcher --http-ip 0.0.0.0
+    SHELL
+  end
+
 end
