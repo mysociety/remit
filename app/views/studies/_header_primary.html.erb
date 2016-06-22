@@ -4,7 +4,13 @@
 
 <div class="study-header__primary">
     <div class="site-header__title">
-        <h1><%= study.title %></h1>
+        <h1>
+          <% if no_links %>
+            <%= study.title %>
+          <% else %>
+            <%= link_to study.title, study_path(study) %>
+          <% end %>
+        </h1>
     </div>
 
     <div class="study-header__details">
