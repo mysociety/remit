@@ -53,8 +53,17 @@
   }
 }
 
+.action-sheet__section--first {
+  border-bottom: 1px solid $color-mid-toffee;
+}
+
 .action-sheet__section--last {
   border-top: 1px solid $color-mid-toffee;
+}
+
+.action-sheet__title {
+  color: $color-dark-toffee;
+  font-weight: normal;
 }
 
 .action-sheet__warning {
