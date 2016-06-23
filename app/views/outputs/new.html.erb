@@ -70,7 +70,7 @@
                  value="publication"
                  <%= "checked" if @publication.errors.any?%>>
           <label for="output-type-publication" class="output-type-label houdini-label">
-              Publication
+              <span class="output-type-label__title">Publication</span>
               <span class="output-type-label__description">
                 Any kind of academic publication, news article, etc
               </span>
@@ -137,7 +137,7 @@
                  value="dissemination"
                  <%= "checked" if @dissemination.errors.any? %>>
           <label for="output-type-dissemination" class="output-type-label houdini-label">
-              Other dissemination
+              <span class="output-type-label__title">Other dissemination</span>
               <span class="output-type-label__description">
                 Any other kind of dissemination of the study's outcomes.
                 Including feeding back to the field.
@@ -184,7 +184,7 @@
                  value="study_impact"
                  <%= "checked" if @study_impacts_errors %>>
           <label for="output-type-other" class="output-type-label houdini-label">
-              Impact
+              <span class="output-type-label__title">Impact</span>
               <span class="output-type-label__description">
                 Any impact that the study has had, e.g. on policy, patients,
                 etc.
