@@ -17,6 +17,42 @@
 
         <!--<a class="add-outputs__add-study"><strong>Add another study</strong> sharing the same impacts</a>-->
 
+        <% unless @users_outputs.blank? %>
+          <div class="add-outputs__existing-outputs">
+              <h4 class="add-outputs__title">You've already added the following output to this study:</h4>
+              <% unless @users_publications.blank? %>
+                <h5>Publications</h5>
+                <ul class="existing-outputs__list">
+                <% @users_publications.each do |publication| %>
+                  <li><%= truncate publication.article_title, length: 140 %></li>
+                <% end %>
+                </ul>
+              <% end %>
+              <% unless @users_disseminations.blank? %>
+                <h5>Disseminations</h5>
+                <ul class="existing-outputs__list">
+                <% @users_disseminations.each do |dissemination| %>
+                  <li>
+                    <%= dissemination.dissemination_category.name %> Dissemination:
+                    <%= truncate dissemination.details, length: 100 %>
+                  </li>
+                <% end %>
+                </ul>
+              <% end %>
+              <% unless @users_impacts.blank? %>
+                <h5>Impact</h5>
+                <ul class="existing-outputs__list">
+                <% @users_impacts.each do |impact| %>
+                  <li>
+                    <%= impact.impact_type.name %> Impact:
+                    <%= truncate impact.description, length: 120 %>
+                  </li>
+                <% end %>
+                </ul>
+              <% end %>
+          </div>
+        <% end %>
+
       <%= form_tag study_outputs_create_path(@study),
                class: "add-outputs__form action-sheet" do %>
         <% if @invite_token.present? %>
