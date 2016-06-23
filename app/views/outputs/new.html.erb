@@ -68,6 +68,9 @@
                  <%= "checked" if @publication.errors.any?%>>
           <label for="output-type-publication" class="output-type-label houdini-label">
               Publication
+              <span class="output-type-label__description">
+                Any kind of academic publication, news article, etc
+              </span>
           </label>
 
           <div class="action-sheet__section action-sheet__section--child houdini-target">
@@ -132,6 +135,10 @@
                  <%= "checked" if @dissemination.errors.any? %>>
           <label for="output-type-dissemination" class="output-type-label houdini-label">
               Other dissemination
+              <span class="output-type-label__description">
+                Any other kind of dissemination of the study's outcomes.
+                Including feeding back to the field.
+              </span>
           </label>
 
           <div class="action-sheet__section action-sheet__section--child houdini-target">
@@ -175,6 +182,10 @@
                  <%= "checked" if @study_impacts_errors %>>
           <label for="output-type-other" class="output-type-label houdini-label">
               Impact
+              <span class="output-type-label__description">
+                Any impact that the study has had, e.g. on policy, patients,
+                etc.
+              </span>
           </label>
 
           <div class="action-sheet__section action-sheet__section--child houdini-target">

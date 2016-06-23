@@ -87,6 +87,14 @@
   margin: 0;
 }
 
+.output-type-label__description {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 0.7em; // 14px
+  color: $color-dark-toffee;
+  font-weight: normal;
+}
+
 .manual-publication-details-link {
   display: block;
   margin: 0.5em 0 0 0;
