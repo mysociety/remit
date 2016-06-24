@@ -131,8 +131,7 @@ RSpec.describe OutputsController, type: :controller do
           output_type: "dissemination",
           dissemination: {
             dissemination_category_id: dissemination_category.id,
-            details: "Test dissemination",
-            fed_back_to_field: "Some description"
+            details: "Test dissemination"
           }
         }
       end

@@ -15,7 +15,6 @@ RSpec.describe "DisseminationAdmin" do
   it "allows you to create a new dissemination" do
     click_link "New Dissemination"
     fill_in "Details", with: "A test dissemination"
-    fill_in "Fed back to field", with: "Some description"
     select category.name, from: "Dissemination category"
     select study.title, from: "Study"
     select user.name, from: "User"
@@ -26,7 +25,6 @@ RSpec.describe "DisseminationAdmin" do
     expect(dissemination.study).to eq study
     expect(dissemination.user).to eq user
     expect(dissemination.dissemination_category).to eq category
-    expect(dissemination.fed_back_to_field).to eq "Some description"
   end
 
   context "with an existing dissemination" do

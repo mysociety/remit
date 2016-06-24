@@ -67,13 +67,10 @@ RSpec.shared_examples_for "Adding impact to a study" do
                                           owner: expected_user)
   end
 
-  it "allows you to contribute a dissemination that hasn't been fed back" do
+  it "allows you to contribute a dissemination" do
     choose("output-type-dissemination")
     select dissemination_category.name, from: "Dissemination category"
     fill_in "Describe the dissemination", with: "A test dissemination"
-    fed_back_label = "How have you fed back to people in the country or " \
-                     "region where the study was conducted?"
-    fill_in fed_back_label, with: "Some description"
     click_button "Add output"
 
     dissemination = Dissemination.find_by_details("A test dissemination")
@@ -81,15 +78,14 @@ RSpec.shared_examples_for "Adding impact to a study" do
     expect(page).to have_text "Dissemination created successfully"
 
     expect(dissemination).not_to be nil
-    expect(dissemination.fed_back_to_field).to eq "Some description"
     expect(dissemination.study).to eq study
     expect(dissemination.user).to eq expected_user
     expect(study).to have_latest_activity(key: "study.dissemination_added",
                                           owner: expected_user)
   end
 
-  it "allows you to add an other category without js" do
-    details = "A test fed back dissemination"
+  it "allows you to add an other category dissemination without js" do
+    details = "A test dissemination"
     other_category = "Some other category"
 
     choose("output-type-dissemination")
@@ -98,9 +94,6 @@ RSpec.shared_examples_for "Adding impact to a study" do
     fill_in "If 'Other', describe the category in a couple of words",
             with: other_category
     fill_in "Describe the dissemination", with: details
-    fed_back_label = "How have you fed back to people in the country or " \
-                     "region where the study was conducted?"
-    fill_in fed_back_label, with: "Some description"
     click_button "Add output"
 
     dissemination = Dissemination.find_by_details(details)
@@ -109,7 +102,6 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     expect(dissemination).not_to be nil
     expect(dissemination.other_dissemination_category).to eq other_category
-    expect(dissemination.fed_back_to_field).to eq "Some description"
     expect(dissemination.study).to eq study
     expect(dissemination.user).to eq expected_user
     expect(study).to have_latest_activity(key: "study.dissemination_added",

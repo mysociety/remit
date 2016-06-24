@@ -73,7 +73,7 @@ class OutputsController < ApplicationController
 
   def dissemination_params
     params.require(:dissemination).permit(:dissemination_category_id,
-                                          :details, :fed_back_to_field,
+                                          :details,
                                           :other_dissemination_category)
   end
 
