@@ -153,6 +153,51 @@ RSpec.shared_examples_for "study listing controller" do
       expect(assigns[:studies].last).to eq @study1
     end
   end
+
+  context "searching by various fields" do
+    before do
+      Study.destroy_all
+      topic = StudyTopic.find_by_name("Brucellosis") ||
+              FactoryGirl.create(:brucellosis)
+      @study = FactoryGirl.create(
+        :study,
+        reference_number: "OCA12-34",
+        country_codes: ["ZW"],
+        title: "water sanitation study",
+        study_topics: [topic],
+        principal_investigator_id: params[:user_id])
+    end
+
+    it "allows searching by title" do
+      get action, params.merge(q: "sanitation")
+      expect(assigns[:studies]).to include @study
+    end
+
+    it "allows searching by PI name" do
+      # Not all calling specs will have set a user
+      unless params[:user_id]
+        @study.principal_investigator = FactoryGirl.create(:user)
+        @study.save!
+      end
+      get action, params.merge(q: @study.principal_investigator.name)
+      expect(assigns[:studies]).to include @study
+    end
+
+    it "allows searching by topic" do
+      get action, params.merge(q: "brucellosis")
+      expect(assigns[:studies]).to include @study
+    end
+
+    it "allows searching by country" do
+      get action, params.merge(q: "zimbabwe")
+      expect(assigns[:studies]).to include @study
+    end
+
+    it "allows searching by reference number" do
+      get action, params.merge(q: "OCA12-34")
+      expect(assigns[:studies]).to include @study
+    end
+  end
 end
 
 RSpec.shared_examples_for "hidden study listing controller" do

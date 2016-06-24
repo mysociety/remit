@@ -3,13 +3,13 @@
     <div class="list-of-things__secondary-action list-of-things__secondary-action--quick-filters">
         <h2>Quick filters</h2>
         <div class="quick-filters">
-            <a href="/search?scope=delayed_completing" class="quick-filters__filter quick-filters__filter--impact">
+            <a href="<%= root_path %>?scope=delayed_completing" class="quick-filters__filter quick-filters__filter--impact">
                 Studies delayed completing
             </a>
-            <a href="/search?scope=erb_response_overdue" class="quick-filters__filter quick-filters__filter--pending">
+            <a href="<%= root_path %>?scope=erb_response_overdue" class="quick-filters__filter quick-filters__filter--pending">
                 Studies whose ERB response is overdue
             </a>
-            <a href="/search?scope=erb_approval_expiring" class="quick-filters__filter quick-filters__filter--expiring">
+            <a href="<%= root_path %>?scope=erb_approval_expiring" class="quick-filters__filter quick-filters__filter--expiring">
                 Studies with ERB approval expiring
             </a>
         </div>

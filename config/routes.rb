@@ -24,6 +24,4 @@ Rails.application.routes.draw do
   resources :users, only: []  do
     resources :studies, only: :index
   end
-
-  get "/search", to: "search#index"
 end

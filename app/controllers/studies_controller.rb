@@ -8,13 +8,11 @@ class StudiesController < ApplicationController
                                                      :progress_to_completion]
 
   def index
-    # rubocop:disable Style/MultilineOperationIndentation
     sql = <<-SQL
       principal_investigator_id = ? OR research_manager_id = ?
     SQL
-    @studies = get_filtered_studies.where(sql, @user.id, @user.id).
-                                    order(@ordering)
-    # rubocop:enable Style/MultilineOperationIndentation
+    filtered_studies = get_filtered_studies.where(sql, @user.id, @user.id)
+    @studies = get_search_results(filtered_studies).order(@ordering)
     respond_to do |format|
       format.html do
         @studies = @studies.page(params[:page]).per(10)
