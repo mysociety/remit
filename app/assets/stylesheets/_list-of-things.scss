@@ -74,15 +74,20 @@
   }
 }
 
-.list-of-things__list__item--attention {
-  .list-of-things__list__item__title a {
-    color: $color-red;
-  }
-
+.list-of-things__list__item--major {
   .list-of-things__list__item__badge {
     background-color: $color-red;
   }
 }
+
+.list-of-things__list__item--minor {
+  .list-of-things__list__item__badge {
+    background-color: $color-bright-orange;
+  }
+}
+
+// There's an option to style .list-of-things__list__item--fine here too, but
+// for now it's left to take the normal colour.
 
 .list-of-things__list__item__badge {
   @extend .label;
