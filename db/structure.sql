@@ -327,7 +327,6 @@ CREATE TABLE disseminations (
     dissemination_category_id integer NOT NULL,
     study_id integer NOT NULL,
     details text NOT NULL,
-    fed_back_to_field text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     other_dissemination_category text,
@@ -2098,4 +2097,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160321174435');
 INSERT INTO schema_migrations (version) VALUES ('20160321181326');
 
 INSERT INTO schema_migrations (version) VALUES ('20160322074054');
+
+INSERT INTO schema_migrations (version) VALUES ('20160624154831');
 
