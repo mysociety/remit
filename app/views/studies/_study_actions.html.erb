@@ -42,6 +42,14 @@
                                         html: { class: "form-control" } %>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="action-sheet__warning">
+                    Allowed file types are
+                    <%= Document::ALLOWED_CONTENT_TYPES.map{|t| ".#{Document::CONTENT_TYPE_LABELS[t][:extension]}" }.to_sentence %>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="action-sheet__section action-sheet__section--last">
         <div class="row">
