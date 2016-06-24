@@ -5,6 +5,8 @@ ActiveAdmin.register Publication do
   menu priority: 3
 
   filter :study
+  filter :lead_author
+  filter :publication_year
   filter :created_at
 
   form do |f|
