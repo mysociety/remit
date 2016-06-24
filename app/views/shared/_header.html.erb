@@ -2,7 +2,11 @@
     <div class="container">
         <div class="site-header__title">
             <h1>
-                <%= pluralize total_active_studies, "active study" %>,
+                <% if @include_archived %>
+                    <%= pluralize total_not_withdrawn_studies, "study" %> (<%= Study.archived.count %> archived),
+                <% else %>
+                    <%= pluralize total_not_archived_or_withdrawn_studies, "study" %>,
+                <% end %>
                 in <%= pluralize total_locations, "location" %>
             </h1>
             <h2>

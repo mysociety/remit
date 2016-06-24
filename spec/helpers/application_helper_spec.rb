@@ -290,12 +290,27 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe "#total_active_studies" do
-    it "returns the total number of active studies" do
-      FactoryGirl.create_list(:study, 5, study_stage: :delivery,
+  describe "#total_not_archived_or_withdrawn_studies" do
+    it "returns the total number of non archived or withdrawn studies" do
+      FactoryGirl.create_list(:study, 5, study_stage: :completion,
+                                         protocol_needed: false,
+                                         completed: 2.years.ago)
+      FactoryGirl.create_list(:study, 5, study_stage: :withdrawn_postponed,
                                          protocol_needed: false)
       FactoryGirl.create_list(:study, 5)
-      expect(total_active_studies).to eq 5
+      expect(total_not_archived_or_withdrawn_studies).to eq 5
+    end
+  end
+
+  describe "#total_not_withdrawn_studies" do
+    it "returns the total number of non withdrawn studies" do
+      FactoryGirl.create_list(:study, 5, study_stage: :completion,
+                                         protocol_needed: false,
+                                         completed: 2.years.ago)
+      FactoryGirl.create_list(:study, 5, study_stage: :withdrawn_postponed,
+                                         protocol_needed: false)
+      FactoryGirl.create_list(:study, 5)
+      expect(total_not_withdrawn_studies).to eq 10
     end
   end
 

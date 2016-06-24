@@ -35,7 +35,7 @@ RSpec.shared_examples_for "study listing page" do
 
   it "shows study and location counts" do
     visit(path)
-    expect(page).to have_text "3 active studies"
+    expect(page).to have_text "3 studies"
     expect(page).to have_text "3 locations"
     expect(page).to have_text "3 studies with recorded impact"
   end

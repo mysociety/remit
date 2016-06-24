@@ -62,8 +62,12 @@ module ApplicationHelper
     end
   end
 
-  def total_active_studies
-    Study.active.count
+  def total_not_archived_or_withdrawn_studies
+    Study.not_archived_or_withdrawn.count
+  end
+
+  def total_not_withdrawn_studies
+    Study.not_withdrawn.count
   end
 
   def total_locations
