@@ -16,10 +16,11 @@
     </div>
   <% end %>
     <div class="list-of-things__secondary-action list-of-things__secondary-action--filters">
+        <h2>Show only studies in…</h2>
         <form method="get" action="">
           <p>
-              <label>Stage:</label>
-              <select name="study_stage">
+              <label for="sidebar-study_stage" class="sr-only">Stage:</label>
+              <select name="study_stage" id="sidebar-study_stage">
                   <option value="">All stages</option>
                   <% Study::STUDY_STAGE_LABELS.each do |k, v| %>
                     <% unless k == :archived || k == :withdrawn_postponed %>
@@ -31,8 +32,8 @@
               </select>
           </p>
           <p>
-              <label>Location:</label>
-              <select name="country">
+              <label for="sidebar-country" class="sr-only">Location:</label>
+              <select name="country" id="sidebar-country">
                   <option value="">All locations</option>
                   <% @countries.keys.sort.each do |name| %>
                     <% code = @countries[name] %>
@@ -41,8 +42,8 @@
               </select>
           </p>
           <p>
-              <label>Topic:</label>
-              <select name="study_topic">
+              <label for="sidebar-study_topic" class="sr-only">Topic:</label>
+              <select name="study_topic" id="sidebar-study_topic">
                   <option value="">All topics</option>
                   <% @study_topics.each do |t| %>
                     <option value="<%= t.name.downcase %>" <%= "selected" if t.name.downcase == @study_topic %>><%= t.name %></option>
@@ -50,8 +51,8 @@
               </select>
           </p>
           <p>
-              <label>Methodology:</label>
-              <select name="study_type">
+              <label for="sidebar-study_type" class="sr-only">Methodology:</label>
+              <select name="study_type" id="sidebar-study_type">
                   <option value="">All methodologies</option>
                   <% @study_types.each do |t| %>
                     <option value="<%= t.name.downcase %>" <%= "selected" if t.name.downcase == @study_type %>><%= t.name %></option>
@@ -65,14 +66,14 @@
                        value="1"
                        name="include_archived"
                        <%= "checked" if @include_archived %>>
-                Include archived studies?
+                Include archived studies
               </label>
           </p>
-          <p>
+          <p style="margin-bottom: 0;">
             <input type="hidden" name="q" value="<%= @q %>" />
             <input type="hidden" name="order" value="<%= params[:order] %>" />
-            <button type="submit" class="btn btn-success">Filter</button>
-            <a href="<%= request.path %>" class="btn btn-default">Clear</a>
+            <button type="submit" class="btn btn-success pull-right">Filter studies</button>
+            <a href="<%= request.path %>" class="btn btn-default">Clear filters</a>
           </p>
         </form>
     </div>
