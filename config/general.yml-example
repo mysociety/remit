@@ -15,14 +15,17 @@ development:
   from_email: 'do-not-reply@localhost'
   # Should we use mailcatcher?
   mailcatcher: true
+  # What address should we direct people to contact?
+  contact_email: 'remit@msf.org'
 
 test:
   hostname: www.example.com
   from_email: 'do-not-reply@example.com'
   mailcatcher: false
+  contact_email: 'remit@msf.org'
 
 production:
-  # Change these in production
-  hostname: localhost
-  from_email: 'do-not-reply@localhost'
-  mailcatcher: false
+  hostname: localhost # Change this in production
+  from_email: 'do-not-reply@localhost' # Change this in production
+  mailcatcher: false # Change this in production
+  contact_email: 'remit@msf.org' # Change this in production
