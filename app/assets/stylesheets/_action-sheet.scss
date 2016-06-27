@@ -96,6 +96,10 @@
   margin: 0;
 }
 
+.output-type-input[disabled] + .output-type-label {
+    opacity: 0.5;
+}
+
 .output-type-label__description {
   display: block;
   margin-top: 0.5em;
