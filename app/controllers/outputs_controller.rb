@@ -6,7 +6,7 @@ class OutputsController < ApplicationController
 
   before_action :set_study_from_study_id, only: [:new, :create]
   before_action :check_user_can_contribute_to_study, only: [:new, :create]
-  before_action :set_existing_outputs, only: [:new, :create]
+  before_action :set_existing_outputs, only: [:create]
 
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
@@ -48,7 +48,7 @@ class OutputsController < ApplicationController
                           "you double check?"
     else
       # All good!
-      flash.now[:notice] = "#{@study_impacts.count} " \
+      flash.now[:success] = "#{@study_impacts.count} " \
                            "#{'Impact'.pluralize(@study_impacts.count)} " \
                            "added successfully"
       @users_impacts += @study_impacts.values
@@ -70,7 +70,7 @@ class OutputsController < ApplicationController
     @dissemination.study = @study
     @dissemination.user = current_user
     if @dissemination.save
-      flash.now[:notice] = "#{@dissemination.dissemination_category.name} " \
+      flash.now[:success] = "#{@dissemination.dissemination_category.name} " \
                            "Dissemination added successfully"
       @users_disseminations << @dissemination
       # We're rendering the form for people to create another publication, so
@@ -95,7 +95,7 @@ class OutputsController < ApplicationController
     @publication.user = current_user
     if @publication.save
       title = truncate(@publication.article_title, length: 50)
-      flash.now[:notice] = "Publication \"#{title}\" added successfully"
+      flash.now[:success] = "Publication \"#{title}\" added successfully"
       @users_publications << @publication
       # We're rendering the form for people to create another publication, so
       # we clear out @publication to avoid duplicate data

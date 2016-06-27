@@ -68,9 +68,14 @@ a.add-outputs__study {
   color: $color-dark-grey;
 }
 
+.add-outputs__title {
+  margin-top: 0;
+}
+
 .existing-outputs__list {
   list-style: none;
   padding-left: 1em;
+  margin-bottom: 0;
 }
 
 .add-outputs__form {

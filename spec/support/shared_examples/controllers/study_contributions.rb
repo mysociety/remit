@@ -14,7 +14,7 @@ RSpec.shared_examples_for "study contribution controller" do
 
     it "sets a flash notice" do
       post :create, valid_attributes
-      expect(flash[:notice]).to eq expected_success_message
+      expect(flash[:success]).to eq expected_success_message
     end
 
     it "assigns the user to the resource" do

@@ -30,6 +30,14 @@
         </div>
       <% end %>
 
+      <% if success %>
+        <div class="site-alert alert alert-success">
+            <div class="container">
+                <%= success %>
+            </div>
+        </div>
+      <% end %>
+
       <% if alert %>
         <div class="site-alert alert alert-danger">
             <div class="container">
