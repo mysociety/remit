@@ -326,6 +326,36 @@ class Study < ActiveRecord::Base
     erb_submitted < Study.erb_response_overdue_at
   end
 
+  # Exactly how delayed is this study's delivery?
+  # Used to know whether to highlight the delay as "minor" or "major"
+  def delivery_delayed_status
+    if delivery_delayed?
+      if latest_delivery_update.majorly_delayed?
+        return "major"
+      else
+        return "minor"
+      end
+    else
+      # Just in case we're called on a non-delayed study
+      return "fine"
+    end
+  end
+
+  # Exactly how bad is whatever we're flagging this study for?
+  # (see #flagged? for what constitutes being flagged).
+  def flagged_status
+    if flagged?
+      if delivery_delayed?
+        return delivery_delayed_status
+      else
+        return "major"
+      end
+    else
+      # Just in case we're called on a non-flagged study
+      return "fine"
+    end
+  end
+
   def other_study_type_is_set_when_study_type_is_other
     if study_type == StudyType.other_study_type && other_study_type.blank?
       message = "You must describe the study type if you choose " \

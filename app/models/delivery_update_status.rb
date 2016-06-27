@@ -39,4 +39,14 @@ class DeliveryUpdateStatus < ActiveRecord::Base
   def self.delayed_statuses
     where(good_medium_bad_or_neutral: %w(medium bad))
   end
+
+  # Which statuses are considered "major" delays
+  def self.major_delayed_statuses
+    where(good_medium_bad_or_neutral: "bad")
+  end
+
+  # Which statuses are considered "minor" delays
+  def self.minor_delayed_statuses
+    where(good_medium_bad_or_neutral: "medium")
+  end
 end

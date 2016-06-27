@@ -54,6 +54,20 @@ class DeliveryUpdate < ActiveRecord::Base
       delayed_statuses.include?(interpretation_and_write_up_status)
   end
 
+  def majorly_delayed?
+    major_statuses = DeliveryUpdateStatus.major_delayed_statuses
+    major_statuses.include?(data_analysis_status) || \
+      major_statuses.include?(data_collection_status) || \
+      major_statuses.include?(interpretation_and_write_up_status)
+  end
+
+  def minorly_delayed?
+    minor_statuses = DeliveryUpdateStatus.minor_delayed_statuses
+    minor_statuses.include?(data_analysis_status) || \
+      minor_statuses.include?(data_collection_status) || \
+      minor_statuses.include?(interpretation_and_write_up_status)
+  end
+
   def update_study
     # We cache whether the most recent delivery_update was delayed on the
     # study model, to make querying by it easier
