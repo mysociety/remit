@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   # Configure Devise's permitted params
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  add_flash_types :success
+
   # Authenticate the currently logged in user for access to the the admin
   # site. ActiveAdmin calls this
   # (it's set in config/initializers/active_admin.rb) from a before_filter to
