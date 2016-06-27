@@ -53,8 +53,18 @@
   }
 }
 
+.action-sheet__section--first {
+  border-bottom: 1px solid $color-mid-toffee;
+}
+
 .action-sheet__section--last {
   border-top: 1px solid $color-mid-toffee;
+}
+
+.action-sheet__title {
+  color: $color-dark-toffee;
+  font-weight: normal;
+  margin: 0;
 }
 
 .action-sheet__warning {
@@ -85,6 +95,18 @@
   display: block;
   padding: 0.5em 1.5em 0.5em 4em;
   margin: 0;
+}
+
+.output-type-input[disabled] + .output-type-label {
+    opacity: 0.5;
+}
+
+.output-type-label__description {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 0.7em; // 14px
+  color: $color-dark-toffee;
+  font-weight: normal;
 }
 
 .manual-publication-details-link {

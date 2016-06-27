@@ -89,7 +89,9 @@ RSpec.describe OutputsController, type: :controller do
       end
       let(:association) { study.publications }
       let(:resource_name) { :publication }
-      let(:expected_success_message) { "Publication created successfully" }
+      let(:expected_success_message) do
+        "Publication \"Article title\" added successfully"
+      end
       let(:action) { :create }
       let(:expected_error_template) { "outputs/new" }
 
@@ -146,7 +148,9 @@ RSpec.describe OutputsController, type: :controller do
       end
       let(:association) { study.disseminations }
       let(:resource_name) { :dissemination }
-      let(:expected_success_message) { "Dissemination created successfully" }
+      let(:expected_success_message) do
+        "#{dissemination_category.name} Dissemination added successfully"
+      end
       let(:expected_error_template) { "outputs/new" }
 
       it_behaves_like "study contribution controller"
@@ -221,7 +225,7 @@ RSpec.describe OutputsController, type: :controller do
         end
         let(:association) { study.study_impacts }
         let(:resource_name) { :study_impacts }
-        let(:expected_success_message) { "1 Impact created successfully" }
+        let(:expected_success_message) { "1 Impact added successfully" }
         let(:expected_empty_alert) do
           "Sorry, you have to select at least one type of impact"
         end
@@ -294,7 +298,7 @@ RSpec.describe OutputsController, type: :controller do
         end
         let(:association) { study.study_impacts }
         let(:resource_name) { :study_impacts }
-        let(:expected_success_message) { "2 Impacts created successfully" }
+        let(:expected_success_message) { "2 Impacts added successfully" }
         let(:valid_id) { programme_impact.id }
         let(:invalid_id) { msf_policy_impact.id }
         let(:action) { :create }

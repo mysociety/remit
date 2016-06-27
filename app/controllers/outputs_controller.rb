@@ -1,9 +1,12 @@
 class OutputsController < ApplicationController
   include CreatingMultipleStudyResources
   include InvitingUsers
+  # For truncate
+  include ActionView::Helpers::TextHelper
 
   before_action :set_study_from_study_id, only: [:new, :create]
   before_action :check_user_can_contribute_to_study, only: [:new, :create]
+  before_action :set_existing_outputs, only: [:create]
 
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
@@ -45,9 +48,13 @@ class OutputsController < ApplicationController
                           "you double check?"
     else
       # All good!
-      flash[:notice] = "#{@study_impacts.count} " \
-                       "#{'Impact'.pluralize(@study_impacts.count)} created " \
-                       "successfully"
+      flash.now[:success] = "#{@study_impacts.count} " \
+                           "#{'Impact'.pluralize(@study_impacts.count)} " \
+                           "added successfully"
+      @users_impacts += @study_impacts.values
+      # We're rendering the form for people to create more impacts, so
+      # we clear out @study_impacts to avoid duplicate data
+      @study_impacts = {}
     end
     render "new"
   end
@@ -63,7 +70,12 @@ class OutputsController < ApplicationController
     @dissemination.study = @study
     @dissemination.user = current_user
     if @dissemination.save
-      flash[:notice] = "Dissemination created successfully"
+      flash.now[:success] = "#{@dissemination.dissemination_category.name} " \
+                           "Dissemination added successfully"
+      @users_disseminations << @dissemination
+      # We're rendering the form for people to create another publication, so
+      # we clear out @publication to avoid duplicate data
+      @dissemination = Dissemination.new
     else
       flash.now[:alert] = "Sorry, looks like we're missing something, can " \
                           "you double check?"
@@ -82,7 +94,12 @@ class OutputsController < ApplicationController
     @publication.study = @study
     @publication.user = current_user
     if @publication.save
-      flash[:notice] = "Publication created successfully"
+      title = truncate(@publication.article_title, length: 50)
+      flash.now[:success] = "Publication \"#{title}\" added successfully"
+      @users_publications << @publication
+      # We're rendering the form for people to create another publication, so
+      # we clear out @publication to avoid duplicate data
+      @publication = Publication.new
     else
       flash.now[:alert] = "Sorry, looks like we're missing something, can " \
                           "you double check?"
@@ -102,5 +119,14 @@ class OutputsController < ApplicationController
 
   def set_invite
     @invite = StudyInvite.where(study: @study, invited_user: @invited_user)
+  end
+
+  def set_existing_outputs
+    @users_impacts = current_user.study_impacts.where(study: @study)
+    @users_disseminations = current_user.disseminations.where(study: @study)
+    @users_publications = current_user.publications.where(study: @study)
+    @users_outputs = @users_impacts + \
+                     @users_disseminations + \
+                     @users_publications
   end
 end

@@ -31,7 +31,7 @@ RSpec.shared_examples_for "successful study invite POST" do
   end
 
   it "sets a flash message" do
-    expect(flash[:notice]).to eq "#{invite_email} was invited " \
+    expect(flash[:success]).to eq "#{invite_email} was invited " \
                                  "successfully. They'll receive an email " \
                                  "with instructions on how to contribute."
   end

@@ -13,7 +13,7 @@ RSpec.shared_examples_for(
 
     it "sets a flash notice" do
       post action, valid_attributes
-      expect(flash[:notice]).to eq expected_success_message
+      expect(flash[:success]).to eq expected_success_message
     end
 
     it "assigns the user to the resource" do
@@ -86,7 +86,7 @@ RSpec.shared_examples_for(
 
     it "sets a flash notice" do
       post action, valid_attributes
-      expect(flash[:notice]).to eq expected_success_message
+      expect(flash[:success]).to eq expected_success_message
     end
 
     it "assigns the user to the resources" do

@@ -22,7 +22,7 @@ class StudyInvitesController < ApplicationController
                           "invite. Can you try again?"
       return render "studies/show"
     end
-    redirect_to @study, notice: "#{@invited_user.email} was invited " \
+    redirect_to @study, success: "#{@invited_user.email} was invited " \
                                 "successfully. They'll receive an email " \
                                 "with instructions on how to contribute."
   end

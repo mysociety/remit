@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
     @document.study = @study
     @document.user = current_user
     if @document.save
-      redirect_to @study, notice: "Document created successfully"
+      redirect_to @study, success: "Document created successfully"
     else
       flash[:alert] = "Sorry, looks like we're missing something, can you " \
                       "double check?"

@@ -7,7 +7,7 @@ class StudyNotesController < ApplicationController
     @study_note.study = @study
     @study_note.user = current_user
     if @study_note.save
-      redirect_to @study, notice: "Note created successfully"
+      redirect_to @study, success: "Note created successfully"
     else
       flash[:alert] = "Sorry, looks like we're missing something, can you " \
                       "double check?"

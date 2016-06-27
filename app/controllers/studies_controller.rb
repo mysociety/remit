@@ -45,7 +45,7 @@ class StudiesController < ApplicationController
       @study.study_stage = "delivery"
       @study.save!
     end
-    flash[:notice] = "Study stage updated successfully"
+    flash[:success] = "Study stage updated successfully"
     redirect_to study_path(@study)
   rescue
     flash[:alert] = "Sorry, we couldn't update the study, please try again"
@@ -57,7 +57,7 @@ class StudiesController < ApplicationController
       @study.completed = Time.zone.today
       @study.save!
     end
-    flash[:notice] = "Study stage updated successfully"
+    flash[:success] = "Study stage updated successfully"
     redirect_to study_path(@study)
   rescue
     flash[:alert] = "Sorry, we couldn't update the study, please try again"

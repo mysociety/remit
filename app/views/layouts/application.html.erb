@@ -22,19 +22,11 @@
         <![endif]-->
     </head>
     <body>
-      <% if notice %>
-        <div class="site-alert alert alert-info">
-            <div class="container">
-                <%= notice %>
-            </div>
-        </div>
-      <% end %>
-
-      <% if alert %>
-        <div class="site-alert alert alert-danger">
-            <div class="container">
-                <%= alert %>
-            </div>
+      <% flash.each do |type, message| %>
+        <div class="site-alert alert <%= bootstrap_class_for(type) %>">
+          <div class="container">
+            <%= message %>
+          </div>
         </div>
       <% end %>
 

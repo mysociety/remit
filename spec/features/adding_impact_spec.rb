@@ -28,7 +28,8 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     publication = Publication.find_by_article_title("A test article")
 
-    expect(page).to have_text "Publication created successfully"
+    expect(page).to have_text "Publication \"A test article\" added " \
+                              "successfully"
 
     expect(publication).not_to be nil
     expect(publication.study).to eq study
@@ -55,7 +56,8 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     publication = Publication.find_by_article_title("Test journal article")
 
-    expect(page).to have_text "Publication created successfully"
+    expect(page).to have_text "Publication \"Test journal article\" " \
+                              "added successfully"
 
     expect(publication).not_to be nil
     expect(publication.study).to eq study
@@ -75,7 +77,8 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     dissemination = Dissemination.find_by_details("A test dissemination")
 
-    expect(page).to have_text "Dissemination created successfully"
+    expect(page).to have_text "#{dissemination_category.name} Dissemination" \
+                              " added successfully"
 
     expect(dissemination).not_to be nil
     expect(dissemination.study).to eq study
@@ -98,7 +101,9 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     dissemination = Dissemination.find_by_details(details)
 
-    expect(page).to have_text "Dissemination created successfully"
+    category_name = DisseminationCategory.other_internal_category.name
+    expect(page).to have_text "#{category_name} Dissemination added " \
+                              "successfully"
 
     expect(dissemination).not_to be nil
     expect(dissemination.other_dissemination_category).to eq other_category
@@ -117,7 +122,7 @@ RSpec.shared_examples_for "Adding impact to a study" do
 
     impact = StudyImpact.find_by_description("Test MSF policy impact")
 
-    expect(page).to have_text "1 Impact created successfully"
+    expect(page).to have_text "1 Impact added successfully"
 
     expect(impact).not_to be nil
     expect(impact.study).to eq study
@@ -141,7 +146,7 @@ RSpec.shared_examples_for "Adding impact to a study" do
     msf_impact = StudyImpact.find_by_description("Test MSF policy impact")
     program_impact = StudyImpact.find_by_description("Test program impact")
 
-    expect(page).to have_text "2 Impacts created successfully"
+    expect(page).to have_text "2 Impacts added successfully"
 
     expect(msf_impact).not_to be nil
     expect(msf_impact.study).to eq study
