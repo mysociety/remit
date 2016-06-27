@@ -24,10 +24,6 @@
       font-size: 0.875em;
       vertical-align: baseline;
       margin-right: 0.3em;
-
-      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-        display: none;
-      }
     }
   }
 
