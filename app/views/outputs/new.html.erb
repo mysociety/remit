@@ -56,7 +56,7 @@
       <%= form_tag study_outputs_create_path(@study),
                class: "add-outputs__form action-sheet" do %>
         <div class="action-sheet__section action-sheet__section--first">
-          <h4 class="action-sheet__title">Choose <strong>one</strong> from the following options:</h4>
+          <h4 class="action-sheet__title">Add <strong>one</strong> output at a time:</h4>
         </div>
         <% if @invite_token.present? %>
           <input type="hidden" name="token" value="<%= @invite_token %>">
