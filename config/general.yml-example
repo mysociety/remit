@@ -25,7 +25,8 @@ test:
   contact_email: 'remit@msf.org'
 
 production:
-  hostname: localhost # Change this in production
-  from_email: 'do-not-reply@localhost' # Change this in production
-  mailcatcher: false # Change this in production
-  contact_email: 'remit@msf.org' # Change this in production
+  # Change these in production
+  hostname: localhost
+  from_email: 'do-not-reply@localhost'
+  mailcatcher: false
+  contact_email: 'remit@msf.org'
