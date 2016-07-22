@@ -15,3 +15,4 @@
 //= require bootstrap-sprockets
 //= require bootstrap-select/bootstrap-select
 //= require forms
+//= require tooltips

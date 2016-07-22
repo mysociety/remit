@@ -20,6 +20,20 @@ RSpec.describe "home/index.html.erb", type: :view do
     end
   end
 
+  it "shows the study stage labels" do
+    @studies.each do |study|
+      expect(rendered).to match(/#{Regexp.escape(study.study_stage_label)}/)
+    end
+  end
+
+  it "shows the study stage descriptions" do
+    @studies.each do |study|
+      expect(rendered).to(
+        match(/title="#{Regexp.escape(study.study_stage_description)}"/)
+      )
+    end
+  end
+
   it "shows the study types" do
     @studies.each do |study|
       expect(rendered).to match(/#{Regexp.escape(study.study_type.name)}/)

@@ -59,6 +59,22 @@ class Study < ActiveRecord::Base
   # Options for dropdowns have to be label => value
   STUDY_STAGE_OPTIONS = STUDY_STAGE_LABELS.invert.freeze
 
+  # Tooltips for the stage labels
+  STUDY_STAGE_DESCRIPTIONS = {
+    concept: "This stage is all concept papers that have been approved by " \
+             "a medical manager",
+    protocol_erb: "This stage is for all protocols that have been approved " \
+                  "by a medical manager and (if not exempt) submitted to " \
+                  "the MSF Ethics Review Board",
+    delivery: "This stage encompasses all phases of a study being " \
+              "&lsquo;in progress&rsquo; i.e. data collection, data " \
+              "analysis and write up.",
+    completion: "A study is considered completed after the first study " \
+                "report has been written up.",
+    withdrawn_postponed: "",
+    archived: "",
+  }.freeze
+
   after_save :log_changes
 
   enum study_stage: {
@@ -439,6 +455,14 @@ class Study < ActiveRecord::Base
       STUDY_STAGE_LABELS[:archived]
     else
       STUDY_STAGE_LABELS[study_stage.to_sym]
+    end
+  end
+
+  def study_stage_description
+    if archived?
+      STUDY_STAGE_DESCRIPTIONS[:archived]
+    else
+      STUDY_STAGE_DESCRIPTIONS[study_stage.to_sym]
     end
   end
 

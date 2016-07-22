@@ -4,7 +4,10 @@
             list-of-things__list__item--<%= study.flagged_status %>
           <% end %>">
     <p class="list-of-things__list__item__badge
-              list-of-things__list__item__badge--<%= study.study_stage %>">
+              list-of-things__list__item__badge--<%= study.study_stage %>"
+       title="<%= study.study_stage_description.html_safe %>"
+       data-toggle="tooltip"
+       data-placement="right">
       <%= study.study_stage_label %>
     </p>
     <h2 class="list-of-things__list__item__title">
