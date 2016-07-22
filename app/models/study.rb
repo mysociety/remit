@@ -212,7 +212,7 @@ class Study < ActiveRecord::Base
 
   # What's the cutoff date for studies being archived
   def self.archive_date
-    Time.zone.today - 1.year
+    Time.zone.today - 5.years
   end
 
   def self.erb_approval_expiry_warning_at

@@ -633,7 +633,7 @@ RSpec.describe Study, type: :model do
   end
 
   describe "archiving studies" do
-    let(:archive_date) { Time.zone.today - 1.year }
+    let(:archive_date) { Time.zone.today - 5.years }
     let!(:on_archive_date) do
       FactoryGirl.create(:study, study_stage: :completion,
                                  completed: archive_date,
@@ -722,7 +722,7 @@ RSpec.describe Study, type: :model do
   end
 
   describe "#not_archived_or_withdrawn" do
-    let(:archive_date) { Time.zone.today - 1.year }
+    let(:archive_date) { Time.zone.today - 5.years }
     let!(:on_archive_date) do
       FactoryGirl.create(:study, study_stage: :completion,
                                  completed: archive_date,

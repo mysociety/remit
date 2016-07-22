@@ -79,7 +79,7 @@ RSpec.describe ApplicationHelper, type: :helper do
           FactoryGirl.create(
             :study,
             study_stage: "completion",
-            completed: Time.zone.today - (1.year + 1.day),
+            completed: Time.zone.today - (5.years + 1.day),
             protocol_needed: false)
         end
 
@@ -209,7 +209,7 @@ RSpec.describe ApplicationHelper, type: :helper do
           study.study_stage = "delivery"
           study.save!
           study.study_stage = "completion"
-          study.completed = Time.zone.today - (1.year + 1.day)
+          study.completed = Time.zone.today - (5.years + 1.day)
           study.save!
 
           expect(study.archived?).to be true
@@ -294,7 +294,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     it "returns the total number of non archived or withdrawn studies" do
       FactoryGirl.create_list(:study, 5, study_stage: :completion,
                                          protocol_needed: false,
-                                         completed: 2.years.ago)
+                                         completed: 6.years.ago)
       FactoryGirl.create_list(:study, 5, study_stage: :withdrawn_postponed,
                                          protocol_needed: false)
       FactoryGirl.create_list(:study, 5)
@@ -306,7 +306,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     it "returns the total number of non withdrawn studies" do
       FactoryGirl.create_list(:study, 5, study_stage: :completion,
                                          protocol_needed: false,
-                                         completed: 2.years.ago)
+                                         completed: 6.years.ago)
       FactoryGirl.create_list(:study, 5, study_stage: :withdrawn_postponed,
                                          protocol_needed: false)
       FactoryGirl.create_list(:study, 5)
