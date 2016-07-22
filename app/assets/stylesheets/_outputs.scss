@@ -90,3 +90,14 @@ a.add-outputs__study {
     margin-top: 1em !important; // because labels are bigger
   }
 }
+
+// Patients impact checkbox has a huge description, so the label/checkbox
+// need some tweaking to line up correctly.
+#impact_type_patients {
+  // To bring the checkbox inline with the top of the label
+  vertical-align: 67px;
+}
+.other-impact-type label {
+  // So that multi-line labels can "float" alongside the checkbox still
+  max-width: 95%;
+}

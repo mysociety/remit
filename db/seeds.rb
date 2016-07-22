@@ -181,10 +181,28 @@ DisseminationCategory.create(
 # Types of impact
 ImpactType.create(
   [
-    { name: "Programmes" },
-    { name: "Patients", description: "e.g. morbidity/mortality" },
+    {
+      name: "Programmes",
+      description: "e.g. Decisions to open/close programmes; adoptions of " \
+                   "new models of care"
+    },
+    {
+      name: "Patients",
+      description: "Few studies will show this. Only include here if a " \
+                   "direct effect of the research on patients has been " \
+                   "shown e.g. do not include a retrospective analysis of a" \
+                   " mental health programme and include the benefits for " \
+                   "patients as these are the benefits of the programme " \
+                   "rather than the analysis. Do include direct effects of " \
+                   "new drugs in trials, or if research that changed policy" \
+                   " has led to measured morbidity/mortality changes."
+    },
     { name: "MSF Policy" },
-    { name: "External Policy" },
+    {
+      name: "External Policy",
+      description: "e.g. Ministry of Health approves use of new regimen in" \
+      " children"
+    },
     { name: "Other", description: "e.g. training materials" },
   ]
 )
