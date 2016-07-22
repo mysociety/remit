@@ -399,7 +399,8 @@ CREATE TABLE documents (
     document_content_type character varying,
     document_file_size integer,
     document_updated_at timestamp without time zone,
-    user_id integer
+    user_id integer,
+    description text
 );
 
 
@@ -2099,4 +2100,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160321181326');
 INSERT INTO schema_migrations (version) VALUES ('20160322074054');
 
 INSERT INTO schema_migrations (version) VALUES ('20160624154831');
+
+INSERT INTO schema_migrations (version) VALUES ('20160722133713');
 

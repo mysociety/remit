@@ -12,6 +12,7 @@
 #  document_file_size    :integer
 #  document_updated_at   :datetime
 #  user_id               :integer
+#  description           :text
 #
 # Indexes
 #

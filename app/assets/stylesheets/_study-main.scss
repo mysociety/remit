@@ -266,7 +266,8 @@ label.action {
   }
 }
 
-.file__details {
+.file__details,
+.file__description {
   display: block;
   font-size: 0.875em;
   color: $color-dark-grey;

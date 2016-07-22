@@ -1,5 +1,6 @@
 ActiveAdmin.register Document do
-  permit_params :document_type_id, :study_id, :document, :user_id
+  permit_params :document_type_id, :study_id, :document, :user_id,
+                :description
 
   menu priority: 3
 
@@ -15,6 +16,7 @@ ActiveAdmin.register Document do
       f.input :study
       f.input :user
       f.input :document, as: :file
+      f.input :description
     end
     f.actions
   end
@@ -22,6 +24,7 @@ ActiveAdmin.register Document do
   index do
     selectable_column
     column :document_file_name
+    column :description
     column :document_type
     column "Study Ref" do |instance|
       instance.study.reference_number

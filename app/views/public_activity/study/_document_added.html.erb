@@ -8,6 +8,9 @@
         <span class="file__name">
             <%= a.related_content.document_file_name %>
         </span>
+        <span class="file__description">
+            <%= a.related_content.description %>
+        </span>
         <span class="file__details">
             <%= number_to_human_size(a.related_content.document_file_size) %>
         </span>

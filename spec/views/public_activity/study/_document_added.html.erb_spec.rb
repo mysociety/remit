@@ -5,7 +5,9 @@ require "support/shared_examples/views/activities"
 RSpec.describe "public_activity/study/_document_added.html.erb", type: :view do
   let(:partial) { "public_activity/study/document_added" }
   let(:study) { FactoryGirl.create(:study) }
-  let(:document) { FactoryGirl.create(:document, study: study) }
+  let(:document) do
+    FactoryGirl.create(:document, study: study, description: "Test")
+  end
   let(:user) { FactoryGirl.create(:user) }
   let(:activity_without_owner) do
     study.create_activity :document_added,
@@ -22,6 +24,7 @@ RSpec.describe "public_activity/study/_document_added.html.erb", type: :view do
   let(:expected_title) { "#{document.document_type.name} added" }
   let(:expected_description) do
     "#{document.document_file_name} " \
+    "#{document.description} " \
     "#{number_to_human_size(document.document_file_size)}"
   end
   let(:expected_description_class) { ".file--pdf" }

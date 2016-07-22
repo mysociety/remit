@@ -12,6 +12,7 @@ RSpec.describe Document, type: :model do
       with_options(null: false)
   end
   it { is_expected.to have_db_column(:user_id).of_type(:integer) }
+  it { is_expected.to have_db_column(:description).of_type(:text) }
 
   it { should have_attached_file(:document) }
 
