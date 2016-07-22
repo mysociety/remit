@@ -16,7 +16,6 @@
 # Indexes
 #
 #  index_publications_on_study_id  (study_id)
-#  index_publications_on_token     (token)
 #  index_publications_on_user_id   (user_id)
 #
 

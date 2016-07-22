@@ -16,7 +16,6 @@
 #
 #  index_disseminations_on_dissemination_category_id  (dissemination_category_id)
 #  index_disseminations_on_study_id                   (study_id)
-#  index_disseminations_on_token                      (token)
 #  index_disseminations_on_user_id                    (user_id)
 #
 

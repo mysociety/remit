@@ -14,7 +14,6 @@
 #
 #  index_study_impacts_on_impact_type_id  (impact_type_id)
 #  index_study_impacts_on_study_id        (study_id)
-#  index_study_impacts_on_token           (token)
 #  index_study_impacts_on_user_id         (user_id)
 #
 
