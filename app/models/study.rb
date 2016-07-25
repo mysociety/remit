@@ -29,6 +29,7 @@
 #  erb_approved              :date
 #  hidden                    :boolean          default(FALSE)
 #  delivery_delayed          :boolean          default(FALSE), not null
+#  exemption_approved_by     :text
 #
 # Indexes
 #

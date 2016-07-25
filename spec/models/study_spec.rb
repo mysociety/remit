@@ -43,6 +43,10 @@ RSpec.describe Study, type: :model do
   it { is_expected.to have_db_column(:erb_approved).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_submitted).of_type(:date) }
   it { is_expected.to have_db_column(:local_erb_approved).of_type(:date) }
+  it do
+    is_expected.to have_db_column(:exemption_approved_by).of_type(:text).
+      with_options(null: true)
+  end
   it { is_expected.to have_db_column(:completed).of_type(:date) }
   it { is_expected.to have_db_column(:other_study_type).of_type(:text) }
   it do
