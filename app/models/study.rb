@@ -223,6 +223,32 @@ class Study < ActiveRecord::Base
     Time.zone.today - 3.months
   end
 
+  # Return the most recent internal reference number.
+  # These are essentially an incrementing number, with some extra fluff like
+  # the operating centre (currently we only support one, OCA, e.g Operating
+  # Centre Amsterdam) and (god knows why) a two digit year padded to three.
+  def self.current_reference_number
+    latest_query = where(
+      "reference_number like ?",
+      "OCA#{current_reference_number_year}-%"
+    )
+    # We might not have any studies for the current year
+    if latest_query.exists?
+      latest_query.
+        order("reference_number DESC").
+        first.reference_number.split("-").last.to_i
+    else
+      0
+    end
+  end
+
+  # Return the year string that should be used to check for the most recent
+  # reference number
+  def self.current_reference_number_year
+    two_digit_year = Time.zone.today.strftime("%y")
+    two_digit_year.rjust(3, "0")
+  end
+
   def self.to_csv
     CSV.generate(headers: true) do |csv|
       csv << csv_headers

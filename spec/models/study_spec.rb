@@ -1294,4 +1294,36 @@ RSpec.describe Study, type: :model do
       expect(study.delivery_delayed).to be false # update is not delayed again
     end
   end
+
+  describe "#current_reference_number" do
+    context "when there are no studies in the current year" do
+      it "returns zero" do
+        expect(Study.current_reference_number).to eq(0)
+      end
+    end
+
+    context "when there are studies in the current year" do
+      let(:two_digit_year) { Time.zone.today.strftime("%y") }
+      let(:padded_year) { two_digit_year.rjust(3, "0") }
+
+      before do
+        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-1")
+        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-2")
+        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-3")
+      end
+
+      it "returns the current reference number" do
+        expect(Study.current_reference_number).to eq(3)
+      end
+    end
+  end
+
+  describe "#current_reference_number_year" do
+    let(:two_digit_year) { Time.zone.today.strftime("%y") }
+    let(:padded_year) { two_digit_year.rjust(3, "0") }
+
+    it "returns the current year padded with a zero" do
+      expect(Study.current_reference_number_year).to eq(padded_year)
+    end
+  end
 end

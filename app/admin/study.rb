@@ -35,44 +35,9 @@ ActiveAdmin.register Study do
   scope "Delivery Delayed", :delivery_delayed
   scope "Delayed Completing", :delayed_completing
 
-  form do |f|
-    f.inputs "Details" do
-      f.input :title, as: :string
-      f.input :reference_number, as: :string
-      f.input :study_stage, as: :select,
-                            collection: Study::STUDY_STAGE_OPTIONS
-      f.input :study_topics, input_html: { size: 10 }
-      f.input :study_type
-      f.input :other_study_type, as: :string
-      f.input :study_setting
-      f.input(
-        :country_codes,
-        label: "Countries",
-        as: :country,
-        include_blank: true,
-        priority_countries: %w(BD CD ET HT NG SS UZ ZW),
-        input_html: { multiple: true, size: 10 })
-      f.input :principal_investigator
-      f.input :research_manager
-      f.input :research_team
-      f.input :concept_paper_date
-      f.input :expected_completion_date
-      f.input :protocol_needed
-      f.input :pre_approved_protocol
-      f.input :erb_status
-      f.input :erb_reference, as: :string
-      f.input :erb_submitted
-      f.input :erb_approved
-      f.input :local_erb_submitted
-      f.input :local_erb_approved
-      f.input :erb_approval_expiry
-      f.input :completed
-      f.input :hidden, hint: "Check this box to hide the study from people " \
-                             "who aren't logged in"
-      f.input :collaborators
-    end
-    f.actions
-  end
+  # We use a custom form partial so that we can include some helpful info
+  # for the reference number auto-generation
+  form partial: "form"
 
   index do
     selectable_column
