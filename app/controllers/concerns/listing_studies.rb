@@ -40,13 +40,12 @@ module ListingStudies
       end
     end
 
-    # These indicate the current filter in use, if any, and will be
+    # These indicate the current filter(s) in use, if any, and will be
     # set appropriately by get_filtered_studies
-    @study_type = nil
-    @study_stage = nil
-    @study_topic = nil
-    @study_setting = nil
-    @country = nil
+    @selected_study_types = []
+    @selected_study_stages = []
+    @selected_study_topics = []
+    @selected_countries = []
   end
 
   def set_ordering
@@ -68,32 +67,38 @@ module ListingStudies
     end
 
     unless params[:study_type].blank?
-      study_type_sql = 'lower("study_types"."name") = ?'
+      downcased_study_types = params[:study_type].map(&:downcase)
+      study_type_sql = 'lower("study_types"."name") IN (?)'
       # rubocop:disable Style/MultilineOperationIndentation
       studies = studies.joins(:study_type).
-                        where(study_type_sql, params[:study_type].downcase)
+                        where(study_type_sql, downcased_study_types)
       # rubocop:enable Style/MultilineOperationIndentation
-      @study_type = params[:study_type].downcase
+      @selected_study_types = downcased_study_types
     end
 
     unless params[:study_topic].blank?
-      study_topic_sql = 'lower("study_topics"."name") = ?'
+      downcased_study_topics = params[:study_topic].map(&:downcase)
+      study_topic_sql = 'lower("study_topics"."name") IN (?)'
       # rubocop:disable Style/MultilineOperationIndentation
       studies = studies.joins(:study_topics).
-                        where(study_topic_sql, params[:study_topic].downcase)
+                        where(study_topic_sql, downcased_study_topics)
       # rubocop:enable Style/MultilineOperationIndentation
-      @study_topic = params[:study_topic].downcase
+      @selected_study_topics = downcased_study_topics
     end
 
-    unless params[:country].blank? ||
-           ISO3166::Country.new(params[:country]).nil?
-      studies = studies.in_country(params[:country])
-      @country = params[:country]
+    unless params[:country].blank?
+      valid_countries = params[:country].reject do |c|
+        ISO3166::Country.new(c).nil?
+      end
+      unless valid_countries.blank?
+        studies = studies.in_countries(valid_countries)
+        @selected_countries = valid_countries
+      end
     end
 
     unless params[:study_stage].blank?
       studies = studies.where(study_stage: params[:study_stage])
-      @study_stage = params[:study_stage].downcase
+      @selected_study_stages = params[:study_stage].map(&:downcase)
     end
 
     studies

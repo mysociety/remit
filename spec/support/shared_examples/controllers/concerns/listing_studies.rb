@@ -65,12 +65,17 @@ RSpec.shared_examples_for "study listing controller" do
                                  study_stage: :completion,
                                  protocol_needed: false)
     end
+    let(:modelling_delivery_study) do
+      FactoryGirl.create(:study, study_type: modelling_type,
+                                 study_stage: :delivery,
+                                 protocol_needed: false)
+    end
 
     context "when no filters are applied" do
       it "sets nil filter values" do
         get action, params
-        expect(assigns[:study_type]).to be nil
-        expect(assigns[:study_stage]).to be nil
+        expect(assigns[:selected_study_types]).to eq []
+        expect(assigns[:selected_study_stages]).to eq []
       end
 
       it "shows all studies" do
@@ -89,14 +94,17 @@ RSpec.shared_examples_for "study listing controller" do
     end
 
     context "when filters are applied" do
+      # These specs use two filters at a time to make the expected results
+      # smaller and easier to deal with (there's loads of other studies
+      # created higher up)
       let(:extra_params) do
-        { study_type: "modelling", study_stage: "completion" }
+        { study_type: ["modelling"], study_stage: ["completion"] }
       end
 
       it "sets correct filter values" do
         get action, params.merge(extra_params)
-        expect(assigns[:study_type]).to eq "modelling"
-        expect(assigns[:study_stage]).to eq "completion"
+        expect(assigns[:selected_study_types]).to eq ["modelling"]
+        expect(assigns[:selected_study_stages]).to eq ["completion"]
       end
 
       it "shows only matching studies" do
@@ -107,6 +115,36 @@ RSpec.shared_examples_for "study listing controller" do
         end
         get action, params.merge(extra_params)
         expect(assigns[:studies]).to match_array [modelling_completion_study]
+      end
+    end
+
+    context "when multiple filters are applied" do
+      # These specs use two filters at a time to make the expected results
+      # smaller and easier to deal with (there's loads of other studies
+      # created higher up)
+      let(:extra_params) do
+        { study_type: ["modelling"], study_stage: %w(completion delivery) }
+      end
+
+      it "sets correct filter values" do
+        get action, params.merge(extra_params)
+        expect(assigns[:selected_study_stages]).to match_array(
+          %w(completion delivery)
+        )
+      end
+
+      it "shows only matching studies" do
+        unless params[:user_id].blank?
+          pid = params[:user_id]
+          modelling_completion_study.principal_investigator_id = pid
+          modelling_completion_study.save
+          modelling_delivery_study.principal_investigator_id = pid
+          modelling_delivery_study.save
+        end
+        get action, params.merge(extra_params)
+        expect(assigns[:studies]).to match_array(
+          [modelling_completion_study, modelling_delivery_study]
+        )
       end
     end
 

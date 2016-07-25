@@ -6,10 +6,10 @@
         <option value="created" <%= "selected" if params[:order] == "created" %>>most recently created</option>
     </select>
     <input type="hidden" name="q" value="<%= @q %>" />
-    <input type="hidden" name="study_stage" value="<%= @study_stage %>" />
-    <input type="hidden" name="country" value="<%= @country %>" />
-    <input type="hidden" name="study_type" value="<%= @study_type %>" />
-    <input type="hidden" name="study_topic" value="<%= @study_topic %>" />
+    <input type="hidden" name="study_stage[]" value="<%= @selected_study_stages %>" />
+    <input type="hidden" name="country[]" value="<%= @selected_countries %>" />
+    <input type="hidden" name="study_type[]" value="<%= @selected_study_types %>" />
+    <input type="hidden" name="study_topic[]" value="<%= @selected_study_topics %>" />
     <input type="hidden" name="include_archived" value="<%= "1" if @include_archived %>" />
     <button type="submit" class="btn btn-success">
         Go

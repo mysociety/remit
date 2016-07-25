@@ -197,7 +197,15 @@ class Study < ActiveRecord::Base
 
   # Return studies in a particular country
   def self.in_country(code)
+    # country_codes is a comma-separated list, hence the wildcards
     where("country_codes LIKE ?", "%#{code}%")
+  end
+
+  # Return studies in one of a list of country codes
+  def self.in_countries(codes)
+    # XXX - This uses PostgreSQL-specific regex features
+    codes_regex = codes.join("|")
+    where("country_codes ~* ?", "#{codes_regex}")
   end
 
   # Return the count of studies with some kind of recorded impact
