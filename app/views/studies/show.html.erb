@@ -22,7 +22,7 @@
                 </div>
                 <div class="study-main__timeline timeline">
                     <ol reversed>
-                        <%= render_activities @study.activities.reverse,
+                        <%= render_activities @study.activities.order(created_at: :desc),
                                               layout: :timeline %>
                     </ol>
                 </div>
