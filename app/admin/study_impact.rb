@@ -17,6 +17,7 @@ ActiveAdmin.register StudyImpact do
     column "Study Title" do |instance|
       instance.study.title
     end
+    column :description
     column :user
     column :created_at
     actions
