@@ -6,7 +6,6 @@ class OutputsController < ApplicationController
 
   before_action :set_study_from_study_id, only: [:new, :create]
   before_action :check_user_can_contribute_to_study, only: [:new, :create]
-  before_action :set_existing_outputs, only: [:create]
 
   ALLOWED_RESOURCE_TYPES = %w(study_impact dissemination publication).freeze
 
@@ -21,6 +20,8 @@ class OutputsController < ApplicationController
     end
     if ALLOWED_RESOURCE_TYPES.include? resource_type
       send("create_#{resource_type}")
+      set_existing_outputs
+      render "new"
     else
       raise ActionController::RoutingError.new("Not Found")
     end
@@ -51,12 +52,10 @@ class OutputsController < ApplicationController
       flash.now[:success] = "#{@study_impacts.count} " \
                            "#{'Impact'.pluralize(@study_impacts.count)} " \
                            "added successfully"
-      @users_impacts += @study_impacts.values
       # We're rendering the form for people to create more impacts, so
       # we clear out @study_impacts to avoid duplicate data
       @study_impacts = {}
     end
-    render "new"
   end
 
   def study_impact_params
@@ -72,15 +71,13 @@ class OutputsController < ApplicationController
     if @dissemination.save
       flash.now[:success] = "#{@dissemination.dissemination_category.name} " \
                            "Dissemination added successfully"
-      @users_disseminations << @dissemination
-      # We're rendering the form for people to create another publication, so
-      # we clear out @publication to avoid duplicate data
+      # We're rendering the form for people to create another dissemination,
+      # so we clear out @disseminatin to avoid duplicate data
       @dissemination = Dissemination.new
     else
       flash.now[:alert] = "Sorry, looks like we're missing something, can " \
                           "you double check?"
     end
-    render "new"
   end
 
   def dissemination_params
@@ -96,7 +93,6 @@ class OutputsController < ApplicationController
     if @publication.save
       title = truncate(@publication.article_title, length: 50)
       flash.now[:success] = "Publication \"#{title}\" added successfully"
-      @users_publications << @publication
       # We're rendering the form for people to create another publication, so
       # we clear out @publication to avoid duplicate data
       @publication = Publication.new
@@ -104,7 +100,6 @@ class OutputsController < ApplicationController
       flash.now[:alert] = "Sorry, looks like we're missing something, can " \
                           "you double check?"
     end
-    render "new"
   end
 
   def publication_params
