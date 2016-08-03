@@ -5,6 +5,7 @@ ActiveAdmin.register Study do
                 :erb_submitted, :erb_approved,
                 :erb_reference, :erb_approval_expiry, :local_erb_submitted,
                 :local_erb_approved, :exemption_approved_by,
+                :amendments_sent_to_erb,
                 :completed, :other_study_type, :principal_investigator_id,
                 :research_manager_id, :expected_completion_date, :hidden,
                 country_codes: [], study_topic_ids: [],

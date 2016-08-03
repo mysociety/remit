@@ -30,6 +30,7 @@
 #  hidden                    :boolean          default(FALSE)
 #  delivery_delayed          :boolean          default(FALSE), not null
 #  exemption_approved_by     :text
+#  amendments_sent_to_erb    :boolean          default(FALSE)
 #
 # Indexes
 #

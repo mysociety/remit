@@ -40,6 +40,8 @@
     f.input :local_erb_approved
     f.input :erb_approval_expiry
     f.input :exemption_approved_by, as: :string
+    f.input :amendments_sent_to_erb, hint: "Check this box if amendments " \
+                                           "have been send to an ERB."
     f.input :completed
     f.input :hidden, hint: "Check this box to hide the study from people " \
                            "who aren't logged in"

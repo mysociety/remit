@@ -59,6 +59,10 @@ RSpec.describe Study, type: :model do
     is_expected.to have_db_column(:hidden).of_type(:boolean).
       with_options(default: false)
   end
+  it do
+    is_expected.to have_db_column(:amendments_sent_to_erb).of_type(:boolean).
+      with_options(default: false)
+  end
 
   # Associations
   it { is_expected.to belong_to(:study_type) }
