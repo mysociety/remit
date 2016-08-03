@@ -496,10 +496,14 @@ class Study < ActiveRecord::Base
 
   def study_stage_description
     if archived?
-      STUDY_STAGE_DESCRIPTIONS[:archived]
+      Study.description_for_stage(:archived)
     else
-      STUDY_STAGE_DESCRIPTIONS[study_stage.to_sym]
+      Study.description_for_stage(study_stage)
     end
+  end
+
+  def self.description_for_stage(stage)
+    STUDY_STAGE_DESCRIPTIONS[stage.to_sym]
   end
 
   # When did this study enter the stage it's currently in?
