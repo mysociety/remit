@@ -6,6 +6,9 @@
       if ($referenceNumberField.val() === '') {
         var prefix = 'OCA' + window.ReMIT.currentReferenceNumberYear + '-';
         var nextNumber = window.ReMIT.currentReferenceNumber + 1;
+        if(nextNumber < 10) {
+          nextNumber = '0' + nextNumber.toString();
+        }
         $referenceNumberField.val(prefix + nextNumber);
       }
     }
