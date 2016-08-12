@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.2'
+gem 'rails', '4.2.7.1'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -47,6 +47,9 @@ gem "paperclip", "~> 4.3"
 
 # Backported Rails 5 has_secure_token
 gem 'has_secure_token'
+
+# Pin mime-types to less than v3 because it requires ruby >= 2.0
+gem "mime-types", "< 3"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
