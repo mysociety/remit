@@ -36,13 +36,24 @@ RSpec.describe AnnualUpdateMailer, type: :mailer do
 
     let(:mail) { AnnualUpdateMailer.invite(user, invites) }
 
+    before do
+      # Mock the current time, so that we can have a fixed deadline in our
+      # email specs
+      travel_to Time.zone.new(2016, 8, 1, 0, 0, 0)
+    end
+
+    after do
+      travel_back
+    end
+
     it "sends to the users email address" do
       expect(mail.to.first).to eq user.email
     end
 
     it "sets the subject" do
-      expected_subject = "It's time to submit your annual updates on ReMIT"
-      expect(mail.subject).to eq expected_subject
+      expect(mail.subject).to eq("It's time to update MSF-OCA's Research " \
+                                 "Management and Impact Tool (ReMIT) on " \
+                                 "the impact of your research")
     end
 
     it "has the right body" do

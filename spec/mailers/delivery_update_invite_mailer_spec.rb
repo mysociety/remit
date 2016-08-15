@@ -39,9 +39,20 @@ RSpec.describe DeliveryUpdateInviteMailer, type: :mailer do
     let(:invites) { [invite1, invite2, invite3] }
     let(:mail) { DeliveryUpdateInviteMailer.invite(user, invites) }
 
+    before do
+      # Mock the current time, so that we can have a fixed deadline in our
+      # email specs
+      travel_to Time.zone.new(2016, 8, 1, 0, 0, 0)
+    end
+
+    after do
+      travel_back
+    end
+
     it "renders the headers" do
-      expect(mail.subject).to eq("It's time to submit your delivery " \
-                                 "indicator reports on ReMIT")
+      expect(mail.subject).to eq("It's time to update MSF-OCA's Research " \
+                                 "Management and Impact Tool (ReMIT) on " \
+                                 "the progress of your research studies")
       expect(mail.to).to eq([user.email])
     end
 
