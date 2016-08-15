@@ -21,7 +21,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body class="<%= content_for :body_class %>">
       <% flash.each do |type, message| %>
         <div class="site-alert alert <%= bootstrap_class_for(type) %>">
           <div class="container">
@@ -35,17 +35,18 @@
                 <a href="<%= root_path %>" class="site-nav__logo">Research Management and Impact Tool (ReMIT)</a>
                 <label class="site-nav__mobile-menu-toggle" for="toggle-mobile-menu">Menu</label>
                 <input type="checkbox" class="site-nav__mobile-menu-checkbox" id="toggle-mobile-menu">
+                <ul class="site-nav__list">
                 <% unless params[:token] %>
-                    <ul class="site-nav__list">
-                        <li><a href="<%= root_path %>">Studies</a></li>
-                      <% if user_signed_in? %>
-                        <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
-                        <li><a href="<%= edit_user_registration_path %>">Change your password</a></li>
-                      <% else %>
-                        <li><a href="<%= new_user_session_path %>">Sign In or Sign Up</a></li>
-                      <% end %>
-                    </ul>
+                    <li><a href="<%= root_path %>">Studies</a></li>
+                  <% if user_signed_in? %>
+                    <li><a href="<%= destroy_user_session_path %>">Sign Out</a></li>
+                    <li><a href="<%= edit_user_registration_path %>">Change your password</a></li>
+                  <% else %>
+                    <li><a href="<%= new_user_session_path %>">Sign In or Sign Up</a></li>
+                  <% end %>
                 <% end %>
+                <li><a href="<%= about_path %>">About</a></li>
+                </ul>
             </div>
         </nav>
 
@@ -57,6 +58,7 @@
                     <% if user_signed_in? && current_user.is_admin %>
                         <li><a href="<%= admin_dashboard_path %>">Admin panel</a></li>
                     <% end %>
+                    <li><a href="<%= about_path %>">About this site</a></li>
                 </ul>
                 <p class="site-footer__legal">&copy; Médecins Sans Frontières</p>
             </div>

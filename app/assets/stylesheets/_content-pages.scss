@@ -1,0 +1,31 @@
+.content-page__primary {
+  @extend .col-sm-8;
+  @extend .col-sm-pull-4;
+  margin-bottom: 4em;
+}
+
+.content-page__secondary {
+  @extend .col-sm-4;
+  @extend .col-sm-push-8;
+}
+
+.about-page {
+  .site-nav {
+    border-bottom: 1px solid $color-silver-white;
+  }
+}
+
+.about-page__nav {
+  @extend .list-unstyled;
+  border: 1px solid $color-silver-white;
+  li {
+    padding: 0.5em 1em;
+    border-bottom: 1px solid $color-silver-white;
+    &:last-of-type {
+      border-bottom: none;
+    }
+    &:hover, &:active {
+      background-color: $color-off-white;
+    }
+  }
+}

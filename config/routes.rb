@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   root "home#index"
 
+  get "about", to: "about#index"
+
   resources :studies, only: :show do
     resources :documents, only: :create
     resources :study_notes, only: :create
