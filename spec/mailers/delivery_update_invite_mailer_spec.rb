@@ -42,7 +42,7 @@ RSpec.describe DeliveryUpdateInviteMailer, type: :mailer do
     before do
       # Mock the current time, so that we can have a fixed deadline in our
       # email specs
-      travel_to Time.zone.new(2016, 8, 1, 0, 0, 0)
+      travel_to Time.zone.local(2016, 8, 15, 0, 0, 0) - 4.weeks
     end
 
     after do
