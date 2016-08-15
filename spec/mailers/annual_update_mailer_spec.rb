@@ -13,12 +13,14 @@ RSpec.describe AnnualUpdateMailer, type: :mailer do
       FactoryGirl.create(:study, study_stage: "delivery",
                                  protocol_needed: false,
                                  reference_number: "ABC123",
+                                 title: "Study 1 Title",
                                  id: 1)
     end
     let(:active_study2) do
       FactoryGirl.create(:study, study_stage: "delivery",
                                  protocol_needed: false,
                                  reference_number: "ABC124",
+                                 title: "Study 2 Title",
                                  id: 2)
     end
     let(:inactive_study) do
