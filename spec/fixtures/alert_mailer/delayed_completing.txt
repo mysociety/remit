@@ -4,11 +4,14 @@ This is an automated alert to let you know that:
 
 Test Study longer than thirty characters to test truncation
 
-Reference number: ABC123 is delayed completing according to the
-information we have in the ReMIT database.
+Reference number: ABC123 is delayed completing according to the information we have in the MSF OCA Research Management and Impact Tool (ReMIT).
 
 The expected completion date was 15th February 2015.
 
 You can see this study on ReMIT here:
 
 http://www.example.com/studies/1
+
+Many thanks,
+
+MSF ReMIT team.

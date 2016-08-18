@@ -36,7 +36,8 @@ RSpec.describe AlertMailer, type: :mailer do
                       "delayed_completing.txt")
     end
     let(:expected_subject) do
-      "Study ABC123 (Test Study longer than thir...) is delayed completing"
+      "Study ABC123 (Test Study longer than thir...) is marked as " \
+      "incomplete in ReMIT"
     end
 
     before do
