@@ -75,7 +75,8 @@ RSpec.describe AlertMailer, type: :mailer do
                       "response_overdue.txt")
     end
     let(:expected_subject) do
-      "Study ABC123 (Test Study longer than thir...) ERB response is overdue"
+      "Study ABC123 (Test Study longer than thir...) has been with the ERB " \
+      "for 3 months"
     end
 
     before do

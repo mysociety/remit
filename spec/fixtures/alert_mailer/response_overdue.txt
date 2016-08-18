@@ -4,11 +4,14 @@ This is an automated alert to let you know that:
 
 Test Study longer than thirty characters to test truncation
 
-Reference number: ABC123 is delayed in receiving a response from the
-Ethical Review Board, according to the information we have in the ReMIT database.
+Reference number: ABC123 has not yet received a response from the MSF Ethics Review Board, according to the information we have in the ReMIT database.
 
 The protocol was submitted on 15th February 2015.
 
 You can see this study on ReMIT here:
 
 http://www.example.com/studies/1
+
+Many thanks
+
+MSF ReMIT team
