@@ -11,15 +11,22 @@ ActiveAdmin.register StudyImpact do
   index do
     selectable_column
     column :impact_type
-    column "Study Ref" do |instance|
-      instance.study.reference_number
-    end
-    column "Study Title" do |instance|
-      instance.study.title
-    end
+    column("Study Ref") { |instance| instance.study.reference_number }
+    column("Study Title") { |instance| instance.study.title }
     column :description
     column :user
     column :created_at
     actions
+  end
+
+  csv do
+    # Active Admin doesn't do as much auto-field seleting magic for CSVs
+    # so we have to be explicit about what we want from the foreign keys
+    column("Impact Type") { |i| i.impact_type.name }
+    column("Study Ref") { |instance| instance.study.reference_number }
+    column("Study Title") { |instance| instance.study.title }
+    column :description
+    column("User") { |instance| instance.user.name }
+    column :created_at
   end
 end
