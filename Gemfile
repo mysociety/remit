@@ -37,7 +37,7 @@ gem 'countries'
 gem 'country_select'
 
 # For an admin site
-gem 'activeadmin', '~> 1.0.0.pre2'
+gem 'activeadmin', '~> 1.0.0.pre4'
 
 # For the list of "activity" on studies
 gem 'public_activity'
