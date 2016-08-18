@@ -29,9 +29,9 @@ RSpec.describe StudyInviteMailer, type: :mailer do
     end
 
     it "sets the subject" do
-      expected_subject = "Theodor Corraidhín would like you to contribute to" \
-                         " their Médecins Sans Frontières research study " \
-                         "(OCA123)"
+      expected_subject = "Theodor Corraidhín has nominated you to report " \
+                         "on the dissemination and impact of a research " \
+                         "study (OCA123)"
       expect(mail.subject).to eq expected_subject
     end
 

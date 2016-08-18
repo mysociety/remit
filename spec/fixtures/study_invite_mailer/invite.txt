@@ -1,16 +1,16 @@
 Hi Isaia Wubbe,
 
-Theodor Corraidhín (tc@example.com) has invited you to contribute to their study:
+Theodor Corraidhín (tc@example.com) has invited you to update MSF-OCA’s Research Management and Impact Tool (ReMIT) with any impact or dissemination information about the study listed below.
 
-Test inviting study
+OCA123 - Test inviting study
 
-on the Médecins Sans Frontières ReMIT website.
+Why are you receiving this email?
 
-You can click this link:
+You are receiving this email because you have been involved with a research study that MSF-OCA has conducted. ReMIT collects information on where study findings have been disseminated and where research has had impact i.e. an effect on patients, policy are programmes. Theodor Corraidhín has nominated you as someone who would be able to report on this.
+
+You can click the link below at any time and there you'll find forms to describe any disseminations or other impact this study has had.
 
 http://www.example.com/studies/1/outputs/new?token=invite-token
-
-at any time and there you'll find forms to describe any disseminations or other impact this study has had.
 
 Many thanks,
 
