@@ -3,14 +3,17 @@ Hello Test User,
 It’s time to update MSF-OCA’s Research Management and Impact Tool (ReMIT) with any impact or dissemination information.
 
 Why are you receiving this email?
+---------------------------------
 
 You are receiving this email because you are the PI, or the primary MSF contact, for one or more research studies. ReMIT collects information on where study findings have been disseminated and where research has had impact i.e. an effect on patients, policy are programmes. We are requesting that you complete this information for the studies you are involved with.
 
 What is ReMIT?
+--------------
 
 For more information and instructions on how to add data to the system see: http://www.example.com/about
 
 What do I need to do?
+---------------------
 
 Click the links below to update your studies. The deadline to do this is 15th August 2016.
 

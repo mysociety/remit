@@ -3,14 +3,17 @@ Hi Test User,
 It’s time to update MSF-OCA's Research Management and Impact Tool (ReMIT) on the progress of your research studies.
 
 Why are you receiving this email?
+---------------------------------
 
 You are receiving this email because you are the PI, or the primary MSF contact, for one or more research studies. All studies are tracked using ReMIT and to enable to research process to be managed more effectively, we would like to know how the studies listed below are progressing.
 
 What is ReMIT?
+--------------
 
 For more information see: http://www.example.com/about
 
 What do I need to do?
+---------------------
 
 Your studies are listed as ongoing i.e. your study findings have not been written up. We would like to know if whether you are currently collecting data, analysing data, or writing up your studies. We are also asking you to describe if and why your studies have been delayed compared to the timeline estimated when you wrote your research protocols.
 

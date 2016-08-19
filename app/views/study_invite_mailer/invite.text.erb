@@ -1,4 +1,4 @@
-<% message.subject = "#{@inviting_user.name} has nominated you to report on the dissemination and impact of a research study (#{@study.reference_number})" %>
+<% message.subject = "#{@inviting_user.name} has nominated you to report on the dissemination and impact of a research study: #{@study.reference_number} (#{truncate(@study.title)})" %>
 Hi <%= @invited_user.name %>,
 
 <%= @inviting_user.name %> (<%= @inviting_user.email %>) has invited you to update MSF-OCA’s Research Management and Impact Tool (ReMIT) with any impact or dissemination information about the study listed below.
@@ -6,6 +6,7 @@ Hi <%= @invited_user.name %>,
 <%= @study.reference_number %> - <%= @study.title %>
 
 Why are you receiving this email?
+---------------------------------
 
 You are receiving this email because you have been involved with a research study that MSF-OCA has conducted. ReMIT collects information on where study findings have been disseminated and where research has had impact i.e. an effect on patients, policy are programmes. <%= @inviting_user.name %> has nominated you as someone who would be able to report on this.
 
