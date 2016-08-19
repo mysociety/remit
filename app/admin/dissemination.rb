@@ -14,6 +14,7 @@ ActiveAdmin.register Dissemination do
     column :dissemination_category
     column("Study Ref") { |i| i.study.reference_number }
     column("Study Title") { |i| i.study.title }
+    column :other_dissemination_category
     column :user
     column :created_at
     actions
