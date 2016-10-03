@@ -14,8 +14,8 @@ ActiveAdmin.register Dissemination do
     column :dissemination_category
     column("Study Ref") { |i| i.study.reference_number }
     column("Study Title") { |i| i.study.title }
-    column :other_dissemination_category
-    column :details
+    column :other_dissemination_category, max_width: "75px"
+    column :details, max_width: "150px"
     column :user
     column :created_at
     actions
