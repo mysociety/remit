@@ -27,5 +27,17 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :delayed_completing_study do
+      expected_completion_date Time.zone.today - 2.days
+    end
+
+    factory :erb_approval_expiring_study do
+      erb_approval_expiry Study.erb_approval_expiry_warning_at - 2.days
+    end
+
+    factory :erb_response_overdue_study do
+      erb_submitted Study.erb_response_overdue_at - 2.days
+    end
   end
 end
