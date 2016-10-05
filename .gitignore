@@ -50,3 +50,6 @@ public/system
 uploads
 # And the files that get created during tests
 spec/test_files
+
+# Ignore generated assets
+public/assets

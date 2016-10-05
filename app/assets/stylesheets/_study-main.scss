@@ -178,70 +178,70 @@ label.action {
 .file--publication {
   &:before {
     @include img-retina("file-publication.png", "file-publication@2x.png", 40px, 40px);
-    background-image: url("file-publication.svg"), none;
+    background-image: image-url("file-publication.svg"), none;
   }
 }
 
 .file--document {
   &:before {
     @include img-retina("file-document.png", "file-document@2x.png", 40px, 40px);
-    background-image: url("file-document.svg"), none;
+    background-image: image-url("file-document.svg"), none;
   }
 }
 
 .file--pdf {
   &:before {
     @include img-retina("file-pdf.png", "file-pdf@2x.png", 40px, 40px);
-    background-image: url("file-pdf.svg"), none;
+    background-image: image-url("file-pdf.svg"), none;
   }
 }
 
 .file--spreadsheet {
   &:before {
     @include img-retina("file-spreadsheet.png", "file-spreadsheet@2x.png", 40px, 40px);
-    background-image: url("file-spreadsheet.svg"), none;
+    background-image: image-url("file-spreadsheet.svg"), none;
   }
 }
 
 .file--presentation {
   &:before {
     @include img-retina("file-presentation.png", "file-presentation@2x.png", 40px, 40px);
-    background-image: url("file-presentation.svg"), none;
+    background-image: image-url("file-presentation.svg"), none;
   }
 }
 
 .action--impacts {
   &:before {
     @include img-retina("action-impacts.png", "action-impacts@2x.png", 40px, 40px);
-    background-image: url("action-impacts.svg"), none;
+    background-image: image-url("action-impacts.svg"), none;
   }
 }
 
 .action--invite {
   &:before {
     @include img-retina("action-invite.png", "action-invite@2x.png", 40px, 40px);
-    background-image: url("action-invite.svg"), none;
+    background-image: image-url("action-invite.svg"), none;
   }
 }
 
 .action--admin {
   &:before {
     @include img-retina("action-admin.png", "action-admin@2x.png", 40px, 40px);
-    background-image: url("action-admin.svg"), none;
+    background-image: image-url("action-admin.svg"), none;
   }
 }
 
 .action--next {
   &:before {
     @include img-retina("action-next.png", "action-next@2x.png", 40px, 40px);
-    background-image: url("action-next.svg"), none;
+    background-image: image-url("action-next.svg"), none;
   }
 }
 
 .action--status {
   &:before {
     @include img-retina("action-status.png", "action-status@2x.png", 40px, 40px);
-    background-image: url("action-status.svg"), none;
+    background-image: image-url("action-status.svg"), none;
   }
 }
 

@@ -16,7 +16,7 @@
   @include img-retina("msf-running-man.png", "msf-running-man@2x.png", 39px, 30px);
 
   // Upgrade to SVG for modern browsers
-  background-image: url("msf-running-man.svg"), none;
+  background-image: image-url("msf-running-man.svg"), none;
 
   background-repeat: no-repeat;
   background-position: 0% 50%;
@@ -93,7 +93,7 @@
   @include img-retina("menu-toggle.png", "menu-toggle@2x.png", 20px, 20px);
 
   // Upgrade to SVG for modern browsers
-  background-image: url("menu-toggle.svg"), none;
+  background-image: image-url("menu-toggle.svg"), none;
 
   background-repeat: no-repeat;
   background-position: 50% 50%;

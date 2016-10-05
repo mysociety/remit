@@ -117,22 +117,22 @@
 
   .step--todo + .step--todo {
     @include img-retina("stage-white-to-white.png", "stage-white-to-white@2x.png", 16px, 100px);
-    background-image: url("stage-white-to-white.svg"), none;
+    background-image: image-url("stage-white-to-white.svg"), none;
   }
 
   .step--doing + .step--todo {
     @include img-retina("stage-toffee-to-white.png", "stage-toffee-to-white@2x.png", 16px, 100px);
-    background-image: url("stage-toffee-to-white.svg"), none;
+    background-image: image-url("stage-toffee-to-white.svg"), none;
   }
 
   .step--done + .step--doing {
     @include img-retina("stage-green-to-toffee.png", "stage-green-to-toffee@2x.png", 16px, 100px);
-    background-image: url("stage-green-to-toffee.svg"), none;
+    background-image: image-url("stage-green-to-toffee.svg"), none;
   }
 
   .step--done + .step--done {
     @include img-retina("stage-green-to-green.png", "stage-green-to-green@2x.png", 16px, 100px);
-    background-image: url("stage-green-to-green.svg"), none;
+    background-image: image-url("stage-green-to-green.svg"), none;
 
     // The tick!
     img {

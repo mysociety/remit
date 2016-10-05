@@ -73,7 +73,7 @@
     @include img-retina("search.png", "search@2x.png", 27px, 27px);
 
     // Upgrade to SVG for modern browsers
-    background-image: url("search.svg"), none;
+    background-image: image-url("search.svg"), none;
 
     opacity: 0.5;
 
