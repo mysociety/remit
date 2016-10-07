@@ -36,9 +36,13 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  # Override the update to ignore empty passwords (so that we can change
-  # other things without having to set a password every time).
+  # Override the create to tell devise to skip confirmation for
+  # admin-created users
+  before_create(&:skip_confirmation!)
+
   controller do
+    # Override the update to ignore empty passwords (so that we can change
+    # other things without having to set a password every time).
     def update
       if params[:user][:password].blank? && \
          params[:user][:password_confirmation].blank?
