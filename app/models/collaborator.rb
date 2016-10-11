@@ -14,4 +14,6 @@ class Collaborator < ActiveRecord::Base
   has_many :studies, through: :study_collaborators
 
   validates :name, presence: true
+
+  default_scope { order("name ASC") }
 end

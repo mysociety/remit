@@ -17,4 +17,6 @@ class StudySetting < ActiveRecord::Base
   has_many :studies, inverse_of: :study_setting
 
   validates :name, presence: true, uniqueness: true
+
+  default_scope { order("name ASC") }
 end

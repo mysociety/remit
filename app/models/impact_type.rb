@@ -17,4 +17,6 @@ class ImpactType < ActiveRecord::Base
   has_many :study_impacts, inverse_of: :impact_type
 
   validates :name, presence: true, uniqueness: true
+
+  default_scope { order("name ASC") }
 end

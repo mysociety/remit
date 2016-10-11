@@ -24,6 +24,8 @@ class MsfLocation < ActiveRecord::Base
     locked_value: EXTERNAL_LOCATION_NAME,
     attribute: :name)
 
+  default_scope { order("name ASC") }
+
   def self.external_location
     MsfLocation.find_by_name!(EXTERNAL_LOCATION_NAME)
   rescue ActiveRecord::RecordNotFound

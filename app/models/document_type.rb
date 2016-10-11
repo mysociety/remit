@@ -17,4 +17,6 @@ class DocumentType < ActiveRecord::Base
   has_many :documents, inverse_of: :document_type
 
   validates :name, presence: true, uniqueness: true
+
+  default_scope { order("name ASC") }
 end

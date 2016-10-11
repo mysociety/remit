@@ -25,6 +25,8 @@ class StudyType < ActiveRecord::Base
     locked_value: OTHER_STUDY_TYPE_NAME,
     attribute: :name)
 
+  default_scope { order("name ASC") }
+
   def self.other_study_type
     StudyType.find_by_name!(OTHER_STUDY_TYPE_NAME)
   rescue ActiveRecord::RecordNotFound

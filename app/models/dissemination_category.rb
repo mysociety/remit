@@ -32,6 +32,8 @@ class DisseminationCategory < ActiveRecord::Base
   validates :dissemination_category_type, presence: true
   validate :lock_other_category_names
 
+  default_scope { order("name ASC") }
+
   def lock_other_category_names
     return if !OTHER_CATEGORY_NAMES.include?(name_was) || new_record?
 

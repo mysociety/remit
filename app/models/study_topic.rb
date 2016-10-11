@@ -17,4 +17,6 @@ class StudyTopic < ActiveRecord::Base
   has_and_belongs_to_many :studies, inverse_of: :study_topics
 
   validates :name, presence: true, uniqueness: true
+
+  default_scope { order("name ASC") }
 end
