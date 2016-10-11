@@ -97,20 +97,21 @@ class Study < ActiveRecord::Base
              class_name: :User,
              inverse_of: :research_manager_studies
   has_and_belongs_to_many :study_topics, inverse_of: :studies
-  has_many :study_impacts, inverse_of: :study
-  has_many :disseminations, inverse_of: :study
-  has_many :publications, inverse_of: :study
-  has_many :study_notes, inverse_of: :study
-  has_many :documents, inverse_of: :study
-  has_many :sent_alerts, inverse_of: :study
-  has_many :study_invites, inverse_of: :study
-  has_many :invited_users, through: :study_invites
-  has_many :delivery_updates, inverse_of: :study
-  has_many :delivery_update_invites, inverse_of: :study
+  has_many :study_impacts, inverse_of: :study, dependent: :destroy
+  has_many :disseminations, inverse_of: :study, dependent: :destroy
+  has_many :publications, inverse_of: :study, dependent: :destroy
+  has_many :study_notes, inverse_of: :study, dependent: :destroy
+  has_many :documents, inverse_of: :study, dependent: :destroy
+  has_many :sent_alerts, inverse_of: :study, dependent: :destroy
+  has_many :study_invites, inverse_of: :study, dependent: :destroy
+  has_many :invited_users, through: :study_invites, dependent: :destroy
+  has_many :delivery_updates, inverse_of: :study, dependent: :destroy
+  has_many :delivery_update_invites, inverse_of: :study, dependent: :destroy
   has_many :delivery_update_invited_users, through: :delivery_update_invites,
-                                           source: :invited_user
-  has_many :study_collaborators, inverse_of: :study
-  has_many :collaborators, through: :study_collaborators
+                                           source: :invited_user,
+                                           dependent: :destroy
+  has_many :study_collaborators, inverse_of: :study, dependent: :destroy
+  has_many :collaborators, through: :study_collaborators, dependent: :destroy
 
   validates :title, presence: true
   validates :reference_number, presence: true
