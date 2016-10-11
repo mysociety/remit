@@ -31,7 +31,8 @@ class DeliveryUpdate < ActiveRecord::Base
     class_name: :DeliveryUpdateStatus
   )
   belongs_to :user, inverse_of: :delivery_updates
-  has_many :delivery_update_invites, inverse_of: :delivery_update
+  has_many :delivery_update_invites, inverse_of: :delivery_update,
+                                     dependent: :destroy
 
   validates :study, presence: true
   validates :data_analysis_status, presence: true
