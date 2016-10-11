@@ -2,14 +2,34 @@
   <form method="get" class="list-of-things__sorting">
     <%= page_entries_info @studies, entry_name: "study" %> by
     <select name="order">
-        <option value="updated" <%= "selected" if params[:order] == "updated" %>>most recently updated</option>
-        <option value="created" <%= "selected" if params[:order] == "created" %>>most recently created</option>
+      <option value="updated" <%= "selected" if params[:order] == "updated" %>>
+        most recently updated
+      </option>
+      <option value="created" <%= "selected" if params[:order] == "created" %>>
+        most recently created
+      </option>
     </select>
     <input type="hidden" name="q" value="<%= @q %>" />
-    <input type="hidden" name="study_stage[]" value="<%= @selected_study_stages %>" />
-    <input type="hidden" name="country[]" value="<%= @selected_countries %>" />
-    <input type="hidden" name="study_type[]" value="<%= @selected_study_types %>" />
-    <input type="hidden" name="study_topic[]" value="<%= @selected_study_topics %>" />
+    <%= render partial: "shared/multiple_select_hidden_fields",
+               locals: {
+                 values: @selected_study_stages,
+                 field_name: "study_stage"
+               } %>
+    <%= render partial: "shared/multiple_select_hidden_fields",
+               locals: {
+                 values: @selected_countries,
+                 field_name: "country"
+               } %>
+    <%= render partial: "shared/multiple_select_hidden_fields",
+               locals: {
+                 values: @selected_study_types,
+                 field_name: "study_type"
+               } %>
+    <%= render partial: "shared/multiple_select_hidden_fields",
+               locals: {
+                 values: @selected_study_topics,
+                 field_name: "study_topic"
+               } %>
     <input type="hidden" name="include_archived" value="<%= "1" if @include_archived %>" />
     <button type="submit" class="btn btn-success">
         Go
