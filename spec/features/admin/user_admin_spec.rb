@@ -21,7 +21,8 @@ RSpec.describe "UserAdmin" do
     expect(page).to have_text "User was successfully created"
     user = User.find_by_name("A New User")
     expect(user).not_to be nil
-    expect(user.confirmed?).to be false
+    # Admin auto-confirms new users
+    expect(user.confirmed?).to be true
   end
 
   context "with an existing user" do
