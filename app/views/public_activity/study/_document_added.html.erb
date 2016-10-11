@@ -4,7 +4,7 @@
     <%= " by #{a.owner.name}" unless a.owner.blank? %>
 <% end %>
 <% content_for :description, flush: true do %>
-    <a href="<%= a.related_content.document.url %>" class="file file--<%= a.related_content.nice_content_type[:generic_type].parameterize %>">
+    <a href="<%= document_path(a.related_content) %>" class="file file--<%= a.related_content.nice_content_type[:generic_type].parameterize %>">
         <span class="file__name">
             <%= a.related_content.document_file_name %>
         </span>
