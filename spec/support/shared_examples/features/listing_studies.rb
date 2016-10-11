@@ -29,8 +29,9 @@ RSpec.shared_examples_for "study listing page" do
     FactoryGirl.create(:dissemination, study: expected_studies.second)
     FactoryGirl.create(:study_impact, study: expected_studies.third)
 
-    # Re-sort the studies because we've messed with the update timestamps
-    expected_studies.sort! { |a, b| a.updated_at <=> b.updated_at }
+    # Re-sort the studies to make sure they match the way the view will sort
+    # them.
+    expected_studies.sort! { |a, b| a.created_at <=> b.created_at }
   end
 
   it "shows study and location counts" do

@@ -52,10 +52,13 @@ module ListingStudies
     case params[:order]
     when "updated"
       @ordering = { updated_at: :desc }
+      @selected_ordering = "updated"
     when "created"
       @ordering = { created_at: :desc }
+      @selected_ordering = "created"
     else
-      @ordering = { updated_at: :desc }
+      @ordering = { created_at: :desc }
+      @selected_ordering = "created"
     end
   end
 

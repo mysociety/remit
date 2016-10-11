@@ -2,6 +2,10 @@ require "rails_helper"
 require "support/devise"
 
 RSpec.shared_examples_for "study listing controller" do
+  before do
+    studies.sort! { |a, b| a.created_at <=> b.created_at }
+  end
+
   it "lists the studies" do
     get action, params
     expect(assigns[:studies]).to match_array(studies.last(10))
@@ -173,10 +177,10 @@ RSpec.shared_examples_for "study listing controller" do
         principal_investigator_id: params[:user_id])
     end
 
-    it "defaults to ordering by most recently updated" do
+    it "defaults to ordering by most recently created" do
       get action, params
-      expect(assigns[:studies].first).to eq @study1
-      expect(assigns[:studies].last).to eq @study2
+      expect(assigns[:studies].first).to eq @study2
+      expect(assigns[:studies].last).to eq @study1
     end
 
     it "can be ordered by updated_at" do

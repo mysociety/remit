@@ -2,11 +2,11 @@
   <form method="get" class="list-of-things__sorting">
     <%= page_entries_info @studies, entry_name: "study" %> by
     <select name="order">
-      <option value="updated" <%= "selected" if params[:order] == "updated" %>>
-        most recently updated
-      </option>
-      <option value="created" <%= "selected" if params[:order] == "created" %>>
+      <option value="created" <%= "selected" if @selected_ordering == "created" %>>
         most recently created
+      </option>
+      <option value="updated" <%= "selected" if @selected_ordering == "updated" %>>
+        most recently updated
       </option>
     </select>
     <input type="hidden" name="q" value="<%= @q %>" />
