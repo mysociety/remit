@@ -64,7 +64,7 @@ module ListingStudies
 
   def get_filtered_studies
     if current_user
-      studies = Study.send(@study_scope)
+      studies = get_studies_for_user(current_user)
     else
       studies = Study.visible.send(@study_scope)
     end
@@ -105,6 +105,16 @@ module ListingStudies
     end
 
     studies
+  end
+
+  # PIs and RMs can view their own hidden studies, admins can view any hidden
+  # study.
+  def get_studies_for_user(user)
+    if user.is_admin?
+      Study.send(@study_scope)
+    else
+      Study.visible_to_user(user).send(@study_scope)
+    end
   end
 
   def set_flagged_studies_count

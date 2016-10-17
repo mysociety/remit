@@ -29,7 +29,11 @@ class StudiesController < ApplicationController
 
   def show
     if current_user
-      @study = Study.find(params[:id])
+      if current_user.is_admin?
+        @study = Study.find(params[:id])
+      else
+        @study = Study.visible_to_user(current_user).find(params[:id])
+      end
     else
       @study = Study.visible.find(params[:id])
     end

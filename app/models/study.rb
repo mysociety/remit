@@ -127,6 +127,15 @@ class Study < ActiveRecord::Base
     where(hidden: false)
   end
 
+  def self.visible_to_user(user)
+    query = <<-SQL
+      hidden = ? OR
+      (hidden = ? AND principal_investigator_id = ?) OR
+      (hidden = ? AND research_manager_id = ?)
+    SQL
+    where(query, false, true, user.id, true, user.id)
+  end
+
   def self.active
     query = <<-SQL
         study_stage = 'delivery'

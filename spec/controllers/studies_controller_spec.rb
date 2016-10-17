@@ -5,7 +5,17 @@ require "support/shared_examples/controllers/study_management_access_control"
 
 RSpec.describe StudiesController, type: :controller do
   describe "GET #show" do
-    let(:study) { FactoryGirl.create(:study) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:admin) { FactoryGirl.create(:admin_user) }
+    let(:pi) { FactoryGirl.create(:user) }
+    let(:rm) { FactoryGirl.create(:user) }
+    let(:study) do
+      FactoryGirl.create(
+        :study,
+        principal_investigator_id: pi.id,
+        research_manager_id: rm.id
+      )
+    end
 
     it "returns http success" do
       get :show, id: study.id
@@ -23,16 +33,46 @@ RSpec.describe StudiesController, type: :controller do
         study.save!
       end
 
-      it "is hidden from anonymous users" do
-        expect do
+      context "when a user is the study PI" do
+        it "shows the study" do
+          sign_in pi
           get :show, id: study.id
-        end.to raise_error(ActiveRecord::RecordNotFound)
+          expect(response).to have_http_status(:success)
+        end
       end
 
-      it "is shown to logged in users" do
-        sign_in FactoryGirl.create(:user)
-        get :show, id: study.id
-        expect(response).to have_http_status(:success)
+      context "when a user is the study RM" do
+        it "shows the study" do
+          sign_in rm
+          get :show, id: study.id
+          expect(response).to have_http_status(:success)
+        end
+      end
+
+      context "when a user is an admin" do
+        it "shows the study" do
+          sign_in admin
+          get :show, id: study.id
+          expect(response).to have_http_status(:success)
+        end
+      end
+
+      context "when a user is a normal user" do
+        it "hides the study" do
+          sign_in user
+          expect do
+            get :show, id: study.id
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      context "when a user is logged out" do
+        it "hides the study" do
+          sign_out :user
+          expect do
+            get :show, id: study.id
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
   end

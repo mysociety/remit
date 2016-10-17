@@ -244,13 +244,47 @@ end
 
 RSpec.shared_examples_for "hidden study listing controller" do
   let(:user) { FactoryGirl.create(:user) }
-  let(:hidden) { FactoryGirl.create(:study, hidden: true) }
+  let(:admin) { FactoryGirl.create(:admin_user) }
+  let(:pi) { FactoryGirl.create(:user) }
+  let(:rm) { FactoryGirl.create(:user) }
+  let(:hidden) do
+    FactoryGirl.create(
+      :study,
+      hidden: true,
+      principal_investigator_id: pi.id,
+      research_manager_id: rm.id
+    )
+  end
 
-  context "when a user is logged in" do
+  context "when a user is the study PI" do
     it "includes hidden studies" do
-      sign_in user
+      sign_in pi
       get :index
       expect(assigns[:studies]).to include(hidden)
+    end
+  end
+
+  context "when a user is the study RM" do
+    it "includes hidden studies" do
+      sign_in rm
+      get :index
+      expect(assigns[:studies]).to include(hidden)
+    end
+  end
+
+  context "when a user is an admin" do
+    it "includes hidden studies" do
+      sign_in admin
+      get :index
+      expect(assigns[:studies]).to include(hidden)
+    end
+  end
+
+  context "when a user is a normal user" do
+    it "excludes hidden studies" do
+      sign_in user
+      get :index
+      expect(assigns[:studies]).not_to include(hidden)
     end
   end
 
