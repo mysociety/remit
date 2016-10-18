@@ -1271,7 +1271,7 @@ RSpec.describe Study, type: :model do
         todays_date,
         todays_date,
         todays_date,
-        collaborators.map(&:name).to_sentence,
+        collaborators.map(&:name).sort!.to_sentence,
         "5",
         "5",
         "5",
