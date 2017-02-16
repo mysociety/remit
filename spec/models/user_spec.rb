@@ -158,10 +158,10 @@ RSpec.describe User, type: :model do
   describe "user approval" do
     context "when the user has an msf.org email address" do
       let(:user) do
-        User.new(email: "test.user@msf.org",
-                 name: "test user",
-                 password: "password",
-                 password_confirmation: "password")
+        User.create(email: "test.user@msf.org",
+                    name: "test user",
+                    password: "password",
+                    password_confirmation: "password")
       end
 
       before do
@@ -181,10 +181,10 @@ RSpec.describe User, type: :model do
 
     context "when the user has an subdomain.msf.org email address" do
       let(:user) do
-        User.new(email: "test.user@london.msf.org",
-                 name: "test user",
-                 password: "password",
-                 password_confirmation: "password")
+        User.create(email: "test.user@london.msf.org",
+                    name: "test user",
+                    password: "password",
+                    password_confirmation: "password")
       end
 
       before do
@@ -205,10 +205,10 @@ RSpec.describe User, type: :model do
     context "when the user has an non-MSF email address" do
       let!(:admin) { FactoryGirl.create(:admin_user) }
       let(:user) do
-        User.new(email: "test@londonmsf.org",
-                 name: "test user",
-                 password: "password",
-                 password_confirmation: "password")
+        User.create(email: "test@londonmsf.org",
+                    name: "test user",
+                    password: "password",
+                    password_confirmation: "password")
       end
 
       before do

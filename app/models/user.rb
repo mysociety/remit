@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validate :external_location_is_set_if_msf_location_is_external
 
-  after_initialize :auto_approve_msf_emails, if: :new_record?
+  before_create :auto_approve_msf_emails
   after_create :send_admin_approval_mail, unless: :approved?
   after_update :send_approval_mail, if: :approved_changed?
 
