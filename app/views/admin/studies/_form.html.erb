@@ -1,3 +1,5 @@
+<% current_user.msf_location.try(:name) == "OCB" ? default_operating_center = "OCB" : default_operating_center = "OCA" %>
+
 <script type="text/javascript">
   (function(window){
     window.ReMIT = window.ReMIT || {};
@@ -15,7 +17,7 @@
     f.inputs class: "reference-number-wrapper" do
       f.label :reference_number, "Reference Number"
 
-      f.select :operating_center, Study::OPERATING_CENTER
+      f.select :operating_center, Study::OPERATING_CENTER, selected: default_operating_center
 
       f.text_field :generated_reference_id, readonly: true
     end

@@ -259,10 +259,10 @@ class Study < ActiveRecord::Base
   # These are essentially an incrementing number, with some extra fluff like
   # the operating centre (currently we only support one, OCA, e.g Operating
   # Centre Amsterdam) and (god knows why) a two digit year padded to three.
-  def self.current_reference_number
+  def self.current_reference_number(operating_center = "OCB")
     latest_query = where(
       "reference_number like ?",
-      "OCA#{current_reference_number_year}-%"
+      "#{operating_center}#{current_reference_number_year}-%"
     )
     # We might not have any studies for the current year
     if latest_query.exists?

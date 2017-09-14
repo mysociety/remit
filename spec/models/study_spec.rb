@@ -1318,10 +1318,17 @@ RSpec.describe Study, type: :model do
         FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-1")
         FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-2")
         FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-3")
+
+        FactoryGirl.create(:study, reference_number: "OCB#{padded_year}-1")
+        FactoryGirl.create(:study, reference_number: "OCB#{padded_year}-2")
       end
 
       it "returns the current reference number" do
-        expect(Study.current_reference_number).to eq(3)
+        expect(Study.current_reference_number("OCA")).to eq(3)
+      end
+
+      it "defaults to OCB if no operating center is passed" do
+        expect(Study.current_reference_number).to eq(2)
       end
     end
   end
