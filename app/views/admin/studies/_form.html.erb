@@ -11,7 +11,15 @@
 <%= active_admin_form_for [:admin, resource] do |f|
   f.inputs "Details" do
     f.input :title, as: :string
-    f.input :reference_number, as: :string
+
+    f.inputs class: "reference-number-wrapper" do
+      f.label :reference_number, "Reference Number"
+
+      f.select :operating_center, Study::OPERATING_CENTER
+
+      f.text_field :generated_reference_id, readonly: true
+    end
+
     f.input :study_stage, as: :select,
                           collection: Study::STUDY_STAGE_OPTIONS
     f.input :study_topics, input_html: { size: 10 }

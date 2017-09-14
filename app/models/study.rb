@@ -41,10 +41,15 @@
 #  index_studies_on_study_type_id              (study_type_id)
 #
 
+
 class Study < ActiveRecord::Base
   # Include the base class for PublicActivity because we don't want to track
   # everything about this, just some specific things
   include PublicActivity::Common
+
+  # generated_reference_id is the reference number without the operating center prefixed to it
+  attr_accessor :operating_center, :generated_reference_id
+
   ACTIVITY_TRACKED_ATTRS = %w(study_stage erb_status_id title
                               principal_investigator_id research_manager_id
                               erb_submitted erb_approved local_erb_submitted
@@ -76,6 +81,11 @@ class Study < ActiveRecord::Base
     withdrawn_postponed: "",
     archived: "",
   }.freeze
+
+  OPERATING_CENTER = {
+    OCA: "OCA",
+    OCB: "OCB"
+  }
 
   after_save :log_changes
 
@@ -112,6 +122,8 @@ class Study < ActiveRecord::Base
                                            dependent: :destroy
   has_many :study_collaborators, inverse_of: :study, dependent: :destroy
   has_many :collaborators, through: :study_collaborators, dependent: :destroy
+
+  before_validation :set_reference_number
 
   validates :title, presence: true
   validates :reference_number, presence: true
@@ -352,6 +364,11 @@ class Study < ActiveRecord::Base
     return "" if value.blank?
     value.to_formatted_s(:medium_ordinal)
   end
+
+  # Combine the operating number with the generated reference id to make the reference number
+  def set_reference_number
+  end
+
 
   # Is this study archived?
   # Things get automatically archived after they've been completed for more

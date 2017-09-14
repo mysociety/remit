@@ -1,5 +1,5 @@
 ActiveAdmin.register Study do
-  permit_params :study_stage, :title, :reference_number, :study_type_id,
+  permit_params :study_stage, :title, :reference_number, :operating_center, :generated_reference_id, :study_type_id,
                 :study_setting_id, :research_team, :concept_paper_date,
                 :protocol_needed, :pre_approved_protocol, :erb_status_id,
                 :erb_submitted, :erb_approved,
