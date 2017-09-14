@@ -264,6 +264,7 @@ class Study < ActiveRecord::Base
       "reference_number like ?",
       "#{operating_center}#{current_reference_number_year}-%"
     )
+
     # We might not have any studies for the current year
     if latest_query.exists?
       latest_query.

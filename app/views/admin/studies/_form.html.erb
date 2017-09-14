@@ -6,7 +6,7 @@
     // This is a number but shouldn't be parsed as one because it's padded
     window.ReMIT.currentReferenceNumberYear = '<%= Study.current_reference_number_year %>';
     // This should be parsed as a number
-    window.ReMIT.currentReferenceNumber = <%= Study.current_reference_number %>;
+    window.ReMIT.currentReferenceNumber = <%= Study.current_reference_number(default_operating_center) %>;
   })(window);
 </script>
 
