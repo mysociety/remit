@@ -1315,12 +1315,12 @@ RSpec.describe Study, type: :model do
       let(:padded_year) { two_digit_year.rjust(3, "0") }
 
       before do
-        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-1")
-        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-2")
-        FactoryGirl.create(:study, reference_number: "OCA#{padded_year}-3")
+        FactoryGirl.create(:study, operating_center: "OCA", generated_reference_id: "#{padded_year}-1")
+        FactoryGirl.create(:study, operating_center: "OCA", generated_reference_id: "#{padded_year}-2")
+        FactoryGirl.create(:study, operating_center: "OCA", generated_reference_id: "#{padded_year}-3")
 
-        FactoryGirl.create(:study, reference_number: "OCB#{padded_year}-1")
-        FactoryGirl.create(:study, reference_number: "OCB#{padded_year}-2")
+        FactoryGirl.create(:study, operating_center: "OCB", generated_reference_id: "#{padded_year}-1")
+        FactoryGirl.create(:study, operating_center: "OCB", generated_reference_id: "#{padded_year}-2")
       end
 
       it "returns the current reference number" do
@@ -1339,6 +1339,22 @@ RSpec.describe Study, type: :model do
 
     it "returns the current year padded with a zero" do
       expect(Study.current_reference_number_year).to eq(padded_year)
+    end
+  end
+
+  describe "#set_reference_number" do
+    before do
+      FactoryGirl.create(:study, operating_center: "OCB", generated_reference_id: "017-1")
+
+      FactoryGirl.create(:study, reference_number: "OCA017-03")
+    end
+
+    it "returns if the study already has a reference number" do
+      expect(Study.where(reference_number: "OCA017-03").count).to eq(1)
+    end
+
+    it "combines the operating center with the generated reference id to form the reference number" do
+      expect(Study.where(reference_number: "OCB017-1").count).to eq(1)
     end
   end
 end

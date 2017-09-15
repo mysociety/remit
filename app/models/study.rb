@@ -368,6 +368,9 @@ class Study < ActiveRecord::Base
 
   # Combine the operating number with the generated reference id to make the reference number
   def set_reference_number
+    return if self.reference_number.present?
+
+    self.reference_number = "#{operating_center}#{generated_reference_id}"
   end
 
 
