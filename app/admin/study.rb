@@ -21,6 +21,12 @@ ActiveAdmin.register Study do
     label: "Study Stage")
   filter :study_topics
   filter :study_type
+  filter(
+    :by_operating_center_in,
+    label: "Operating Center",
+    as: :select,
+    collection: Study::OPERATING_CENTER.invert
+  )
   filter :erb_status
   filter :principal_investigator
   filter :research_manager

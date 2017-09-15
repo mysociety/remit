@@ -83,9 +83,9 @@ class Study < ActiveRecord::Base
   }.freeze
 
   OPERATING_CENTER = {
-    OCA: "OCA",
-    OCB: "OCB"
-  }
+    OCA: "Operating Center Amsterdam",
+    OCB: "Operating Center Belgium"
+  }.freeze
 
   after_save :log_changes
 
@@ -134,6 +134,13 @@ class Study < ActiveRecord::Base
   validates :erb_status, presence: true, if: :erb_status_needed?
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
+
+  ransacker :by_operating_center, formatter: proc{ |oc|
+    data = Study.where("reference_number like ?", "#{oc}%").map(&:id)
+    data = data.present? ? data : nil
+  } do |parent|
+    parent.table[:id]
+  end
 
   def self.visible
     where(hidden: false)
