@@ -14,14 +14,18 @@
   f.inputs "Details" do
     f.input :title, as: :string
 
-    f.inputs class: "reference-number-wrapper" do
-      f.label :reference_number, "Reference Number"
+    if f.object.new_record?
+      f.inputs class: "reference-number-wrapper" do
+        f.label :reference_number, "Reference Number"
 
-      f.select :operating_center,
-        options_for_select(Study::OPERATING_CENTER.map{ |k,v| [v, k, {'data-current-reference-number'=> Study.current_reference_number(v)}] }) , selected: default_operating_center,
-        data: { "reference-number" => "017-10" }
+        f.select :operating_center,
+          options_for_select(Study::OPERATING_CENTER.map{ |k,v| [v, k, {'data-current-reference-number'=> Study.current_reference_number(v)}] }) , selected: default_operating_center,
+          data: { "reference-number" => "017-10" }
 
-      f.text_field :generated_reference_id, readonly: true
+        f.text_field :generated_reference_id, readonly: true
+      end
+    else
+      f.input :reference_number, as: :string
     end
 
     f.input :study_stage, as: :select,
