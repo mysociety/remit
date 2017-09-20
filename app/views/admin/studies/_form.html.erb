@@ -19,13 +19,12 @@
         f.label :reference_number, "Reference Number"
 
         f.select :operating_center,
-          options_for_select(Study::OPERATING_CENTER.map{ |k,v| [v, k, {'data-current-reference-number'=> Study.current_reference_number(k)}] }) , selected: default_operating_center,
-          data: { "reference-number" => "017-10" }
+          options_for_select(Study::OPERATING_CENTER.map{ |k,v| [v, k, {'data-current-reference-number'=> Study.current_reference_number(k)}] }, selected: default_operating_center)
 
         f.text_field :generated_reference_id, readonly: true
       end
     else
-      f.input :reference_number, as: :string
+      f.input :reference_number, as: :string, input_html: { readonly: true }
     end
 
     f.input :study_stage, as: :select,

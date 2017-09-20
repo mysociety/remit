@@ -380,7 +380,6 @@ class Study < ActiveRecord::Base
     self.reference_number = "#{operating_center}#{generated_reference_id}"
   end
 
-
   # Is this study archived?
   # Things get automatically archived after they've been completed for more
   # than a year
