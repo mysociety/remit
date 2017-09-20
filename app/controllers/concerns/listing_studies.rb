@@ -32,6 +32,7 @@ module ListingStudies
   def set_filter_form_values
     @study_types = StudyType.all.order(name: :asc)
     @study_topics = StudyTopic.all.order(name: :asc)
+    @operating_centers = Study::OPERATING_CENTER
     @countries = {}
     codes = Study.select(:country_codes).distinct.map(&:country_codes).flatten
     codes.each do |code_string|
@@ -46,6 +47,7 @@ module ListingStudies
     @selected_study_stages = []
     @selected_study_topics = []
     @selected_countries = []
+    @selected_operating_centers = []
   end
 
   def set_ordering
@@ -85,8 +87,16 @@ module ListingStudies
       # rubocop:disable Style/MultilineOperationIndentation
       studies = studies.joins(:study_topics).
                         where(study_topic_sql, downcased_study_topics)
-      # rubocop:enable Style/MultilineOperationIndentation
+      # rubocop:enable Style/MultilineOperationIndentationk
       @selected_study_topics = downcased_study_topics
+    end
+
+    unless params[:operating_center].blank?
+      operating_centers = params[:operating_center].collect { |oc| "%#{oc}%" }
+      studies = studies.where("reference_number like any ( array[?] )", operating_centers)
+
+      # rubocop:enable Style/MultilineOperationIndentation
+      @selected_operating_centers = params[:operating_center]
     end
 
     unless params[:country].blank?

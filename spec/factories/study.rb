@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :study do
     sequence(:title) { |n| "Study #{n}" }
-    sequence(:reference_number) { |n| "OCA015-#{n}" }
     sequence(:concept_paper_date) { |n| n.weeks.ago }
     protocol_needed true
     study_stage "concept"
+    operating_center "OCA"
+    sequence(:generated_reference_id) { |n| "015-#{n}" }
 
     # Associations are to things that must have unique names, so we create
     # them in these hooks and look up any existing ones first
