@@ -1357,4 +1357,21 @@ RSpec.describe Study, type: :model do
       expect(Study.where(reference_number: "OCB017-1").count).to eq(1)
     end
   end
+
+  describe ".not_ocb" do
+    context "when there are studies in the current year" do
+      before do
+        FactoryGirl.create_list(:study, 10)
+        FactoryGirl.create_list(:study, 8, operating_center: "OCB")
+      end
+
+      it "returns a list without OCBs" do
+        expect(Study.not_ocb.count).to eq(10)
+      end
+
+      it "returns a list OCB" do
+        expect(Study.count).to eq(18)
+      end
+    end
+  end
 end

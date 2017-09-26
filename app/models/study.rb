@@ -135,6 +135,8 @@ class Study < ActiveRecord::Base
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
 
+  scope :not_ocb, -> { where("reference_number not like ?", "OCB%") }
+
   ransacker :by_operating_center, formatter: proc{ |oc|
     data = Study.where("reference_number like ?", "#{oc}%").map(&:id)
     data = data.present? ? data : nil
