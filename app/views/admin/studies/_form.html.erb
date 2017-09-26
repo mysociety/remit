@@ -40,8 +40,14 @@
       include_blank: true,
       priority_countries: %w(BD CD ET HT NG SS UZ ZW),
       input_html: { multiple: true, size: 10 })
-    f.input :principal_investigator
-    f.input :research_manager
+
+    f.input :principal_investigator,
+      as: :select,
+      collection: User.all.map{|u| ["#{u.name}", u.id]}.unshift(["Not Applicable", ""])
+    f.input :research_manager,
+      as: :select,
+      collection: User.all.map{|u| ["#{u.name}", u.id]}.unshift(["Not Applicable", ""])
+
     f.input :research_team
     f.input :concept_paper_date
     f.input :expected_completion_date
