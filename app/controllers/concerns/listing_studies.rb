@@ -68,7 +68,7 @@ module ListingStudies
     if current_user
       studies = get_studies_for_user(current_user)
     else
-      studies = Study.not_ocb.visible.send(@study_scope)
+      studies = Study.visible.send(@study_scope)
     end
 
     unless params[:study_type].blank?

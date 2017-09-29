@@ -86,24 +86,22 @@
                   <% end %>
               </select>
           </p>
-          <%- if current_user.try(:approved) %>
-            <p>
-                <label for="sidebar-operating_center" class="sr-only">Operating centers:</label>
-                <select name="operating_center[]"
-                        id="sidebar-operating_center"
-                        multiple="true"
-                        data-none-selected-text="All Operating centers"
-                        data-actions-box="true"
-                        data-live-search-placeholder="Search study operating centers...">
-                    <% @operating_centers.each do |oc_key, oc_value| %>
-                      <option value="<%= oc_key %>"
-                              <%= "selected" if @selected_operating_centers.include? oc_key.to_s %>>
-                        <%= oc_value %>
-                      </option>
-                    <% end %>
-                </select>
-            </p>
-          <% end %>
+          <p>
+              <label for="sidebar-operating_center" class="sr-only">Operating centers:</label>
+              <select name="operating_center[]"
+                      id="sidebar-operating_center"
+                      multiple="true"
+                      data-none-selected-text="All Operating centers"
+                      data-actions-box="true"
+                      data-live-search-placeholder="Search study operating centers...">
+                  <% @operating_centers.each do |oc_key, oc_value| %>
+                    <option value="<%= oc_key %>"
+                            <%= "selected" if @selected_operating_centers.include? oc_key.to_s %>>
+                      <%= oc_value %>
+                    </option>
+                  <% end %>
+              </select>
+          </p>
           <p>
               <label for="include_archived">
                 <input id="include_archived"
