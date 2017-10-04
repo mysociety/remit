@@ -41,10 +41,15 @@
 #  index_studies_on_study_type_id              (study_type_id)
 #
 
+
 class Study < ActiveRecord::Base
   # Include the base class for PublicActivity because we don't want to track
   # everything about this, just some specific things
   include PublicActivity::Common
+
+  # generated_reference_id is the reference number without the operating center prefixed to it
+  attr_accessor :operating_center, :generated_reference_id
+
   ACTIVITY_TRACKED_ATTRS = %w(study_stage erb_status_id title
                               principal_investigator_id research_manager_id
                               erb_submitted erb_approved local_erb_submitted
@@ -75,6 +80,11 @@ class Study < ActiveRecord::Base
                 "report has been written up.",
     withdrawn_postponed: "",
     archived: "",
+  }.freeze
+
+  OPERATING_CENTER = {
+    OCA: "Operating Center Amsterdam",
+    OCB: "Operating Center Belgium"
   }.freeze
 
   after_save :log_changes
@@ -113,6 +123,8 @@ class Study < ActiveRecord::Base
   has_many :study_collaborators, inverse_of: :study, dependent: :destroy
   has_many :collaborators, through: :study_collaborators, dependent: :destroy
 
+  before_validation :set_reference_number
+
   validates :title, presence: true
   validates :reference_number, presence: true
   validates :study_stage, presence: true
@@ -122,6 +134,15 @@ class Study < ActiveRecord::Base
   validates :erb_status, presence: true, if: :erb_status_needed?
   validates :protocol_needed, inclusion: { in: [true, false] }
   validate :other_study_type_is_set_when_study_type_is_other
+
+  scope :not_ocb, -> { where("reference_number not like ?", "OCB%") }
+
+  ransacker :by_operating_center, formatter: proc{ |oc|
+    data = Study.where("reference_number like ?", "#{oc}%").map(&:id)
+    data = data.present? ? data : nil
+  } do |parent|
+    parent.table[:id]
+  end
 
   def self.visible
     where(hidden: false)
@@ -247,11 +268,12 @@ class Study < ActiveRecord::Base
   # These are essentially an incrementing number, with some extra fluff like
   # the operating centre (currently we only support one, OCA, e.g Operating
   # Centre Amsterdam) and (god knows why) a two digit year padded to three.
-  def self.current_reference_number
+  def self.current_reference_number(operating_center = "OCB")
     latest_query = where(
       "reference_number like ?",
-      "OCA#{current_reference_number_year}-%"
+      "#{operating_center}#{current_reference_number_year}-%"
     )
+
     # We might not have any studies for the current year
     if latest_query.exists?
       latest_query.
@@ -351,6 +373,13 @@ class Study < ActiveRecord::Base
   def formatted_date(value)
     return "" if value.blank?
     value.to_formatted_s(:medium_ordinal)
+  end
+
+  # Combine the operating number with the generated reference id to make the reference number
+  def set_reference_number
+    return if self.reference_number.present?
+
+    self.reference_number = "#{operating_center}#{generated_reference_id}"
   end
 
   # Is this study archived?

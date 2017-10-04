@@ -203,7 +203,8 @@ RSpec.shared_examples_for "study listing controller" do
               FactoryGirl.create(:brucellosis)
       @study = FactoryGirl.create(
         :study,
-        reference_number: "OCA12-34",
+        operating_center: "OCA",
+        generated_reference_id: "12-34",
         country_codes: ["ZW"],
         title: "water sanitation study",
         study_topics: [topic],

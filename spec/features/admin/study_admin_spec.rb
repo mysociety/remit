@@ -18,7 +18,7 @@ RSpec.describe "StudyAdmin" do
   it "allows you to create a new study" do
     click_link "New Study"
     fill_in "Title", with: "Test study title"
-    fill_in "Reference number", with: "OCA123-45"
+    select "Operating Center Amsterdam", from: "study_operating_center"
     select Study::STUDY_STAGE_LABELS[:concept], from: "Study stage"
     select amr_topic.name, from: "Study topics"
     select randomised_type.name, from: "Study type"
@@ -45,7 +45,7 @@ RSpec.describe "StudyAdmin" do
   it "allows you to create a new study with multiple countries" do
     click_link "New Study"
     fill_in "Title", with: "Test study title"
-    fill_in "Reference number", with: "OCA123-45"
+    select "Operating Center Amsterdam", from: "study_operating_center"
     select Study::STUDY_STAGE_LABELS[:concept], from: "Study stage"
     select amr_topic.name, from: "Study topics"
     select randomised_type.name, from: "Study type"
@@ -73,7 +73,7 @@ RSpec.describe "StudyAdmin" do
   it "allows you to create a new study with multiple topics" do
     click_link "New Study"
     fill_in "Title", with: "Test study title"
-    fill_in "Reference number", with: "OCA123-45"
+    select "Operating Center Amsterdam", from: "study_operating_center"
     select Study::STUDY_STAGE_LABELS[:concept], from: "Study stage"
     select amr_topic.name, from: "Study topics"
     select brucellosis.name, from: "Study topics"
@@ -102,7 +102,7 @@ RSpec.describe "StudyAdmin" do
   it "allows you to create a new study with multiple collaborators" do
     click_link "New Study"
     fill_in "Title", with: "Test study title"
-    fill_in "Reference number", with: "OCA123-45"
+    select "Operating Center Amsterdam", from: "study_operating_center"
     select Study::STUDY_STAGE_LABELS[:concept], from: "Study stage"
     select amr_topic.name, from: "Study topics"
     select randomised_type.name, from: "Study type"
